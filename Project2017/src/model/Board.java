@@ -49,9 +49,47 @@ public class Board {
 		}
 		return deepboard;
 	}
+	/**
+	 * Calculates the index in the linear array of fields from a collection (row, col, leven).
+	 * 
+	 * 
+	 * @return the index belonging to the (row,col,level)-field
+	 */
+	// @ requires 0 <= row & row < DIM;
+	// @ requires 0 <= col & col < DIM;
+	// @ requires 0 <= level & level < DIM;
+	/* @pure */
+	public int index(int row, int col, int level) {
+		return row * DIM + col + level * DIM * DIM;
+	}
 	
+	/**
+	 * Returns true if i is a valid index of a field on the board.
+	 * 
+	 * @return true if 0 <= index < DIM*DIM*DIM
+	 */
+	// @ ensures \result == (0 <= index && index < DIM * DIM * DIM);
+	/* @pure */
+	public boolean isField(int index) {
+		if (index >= 0 && index < DIM * DIM * DIM) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
-	
+	/**
+	 * Returns true if the (row,col,level) collection refers to a valid field on the
+	 * board.
+	 *
+	 * @return true if 0 <= row < DIM && 0 <= col < DIM && 0 <= level < DIM
+	 */
+	// @ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM && 0 <= level && level < DIM) ;
+	/* @pure */
+	public boolean isField(int row, int col, int level) {
+		return isField(index(row, col, level));
+
+	}
 	
 	private void reset() {
 		// TODO Auto-generated method stub
