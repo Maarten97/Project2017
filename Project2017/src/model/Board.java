@@ -236,8 +236,20 @@ public class Board {
 	}
 	
 	public boolean hasLevel(Mark m) {
+		boolean level = true;
+		for (int col = 0; col < DIM; col++) {
+			for (int i = 0; i < DIM; i++) {
+				for (int row = 0; row < DIM; row++) {
+					if (getField(row, col, i) != m) {
+						level = false;
+					}
+				}
+			}
+			if (level) {
+				return true;
+			}
+		}
 		return false;
-		//TODO implement!
 	}
 	
 	// Does this work and can it be done better/more efficient?
