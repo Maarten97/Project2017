@@ -354,7 +354,7 @@ public class Board {
 	// @ ensures this.getField(i) == m;
 	public void setField(int i, Mark m) {
 		if (this.isField(i)) {
-			fields[i] = m;
+			fields[i] = m; 
 		}
 	}
 
