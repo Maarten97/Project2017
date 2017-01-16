@@ -31,7 +31,7 @@ public class Board {
 	// Mark.EMPTY);
 	public Board() {
 		fields = new Mark[DIM * DIM * DIM];
-		reset();
+		reset(); 
 	}
 	
 	/**
