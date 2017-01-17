@@ -58,9 +58,14 @@ public class Board {
 	// @ requires 0 <= col & col < DIM;
 	// @ requires 0 <= level & level < DIM;
 	/* @pure */
-	//TODO moet ik deze requiements ook implementeren? Test komt hierdoor foutief uit.
 	public int index(int row, int col, int level) {
-		return row * DIM + col + level * DIM * DIM;
+		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM) {
+			return row * DIM + col + level * DIM * DIM;
+		} else {
+			System.err.println("IndexOutOfBount!");
+		}
+		return -1;
+
 	}
 	
 	/**
@@ -375,6 +380,21 @@ public class Board {
 	// @ ensures this.getField(row,col,level) == m;
 	public void setField(int row, int col, int level, Mark m) {
     	setField(index(row, col, level), m);
+	}
+	
+	public void setField(int row, int col, Mark m){
+		int level = dropDown(row, col);
+		setField(row, col, level, m);
+	}
+	
+	// TODO nog testen!!!
+	public int dropDown(int row, int col) {
+		for (int i = 3; i > 0; i--) {
+			if (!isEmptyField(row, col, i - 1)) {
+				return i;
+			}
+		}
+		return 0;
 	}
 	
 //	public String toString() {
