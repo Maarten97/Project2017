@@ -1,5 +1,7 @@
 package model;
 
+
+
 /**
  * Board of the 3D 4 in a row game.
  * 
@@ -7,7 +9,6 @@ package model;
  * @version 1.0
  *
  */
-
 public class Board {
 
 	public static final int DIM = 4;
@@ -58,7 +59,6 @@ public class Board {
 	// @ requires 0 <= col & col < DIM;
 	// @ requires 0 <= level & level < DIM;
 	/* @pure */
-	//TODO moet ik deze requiements ook implementeren? Test komt hierdoor foutief uit.
 	public int index(int row, int col, int level) {
 		return row * DIM + col + level * DIM * DIM;
 	}
@@ -252,7 +252,7 @@ public class Board {
 		return false;
 	}
 	
-	//TODO Does this work and can it be done better/more efficient?
+	// Does this work and can it be done better/more efficient?
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -377,8 +377,8 @@ public class Board {
     	setField(index(row, col, level), m);
 	}
 	
-//	public String toString() {
-//		return "Please implement this method in class TUI!";
-//	}
+	public String toString() {
+		return "Please implement this method in class TUI!";
+	}
 
 }
