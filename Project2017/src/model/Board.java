@@ -257,7 +257,7 @@ public class Board {
 		return false;
 	}
 	
-	//TODO Does this work and can it be done better/more efficient?
+	//Does this work and can it be done better/more efficient?
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -330,7 +330,7 @@ public class Board {
 	// @ ensures \result == isWinner(Mark.XX) | \result == isWinner(Mark.OO);
 	/* @pure */
 	public boolean hasWinner() {
-		return isWinner(Mark.OO) || isWinner(Mark.XX);
+		return isWinner(Mark.BLUE) || isWinner(Mark.RED);
 	}
 
 	/**
