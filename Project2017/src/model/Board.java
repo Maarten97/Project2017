@@ -247,11 +247,9 @@ public class Board {
 		return false;
 	}
 	
-<<<<<<< HEAD
-	// Does this work and can it be done better/more efficient?
-=======
+
 	//Does this work and can it be done better/more efficient?
->>>>>>> refs/remotes/origin/Maarten
+
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -342,12 +340,8 @@ public class Board {
     	setField(index(row, col, level), m);
 	}
 	
-<<<<<<< HEAD
-	public String toString() {
-		return "Please implement this method in class TUI!";
-	}
-=======
-	public void setField(int row, int col, Mark m){
+
+	public void setField(int row, int col, Mark m) {
 		int level = dropDown(row, col);
 		setField(row, col, level, m);
 	}
@@ -365,6 +359,6 @@ public class Board {
 //	public String toString() {
 //		return "Please implement this method in class TUI!";
 //	}
->>>>>>> refs/remotes/origin/Maarten
+
 
 }
