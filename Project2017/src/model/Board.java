@@ -60,7 +60,13 @@ public class Board {
 	// @ requires 0 <= level & level < DIM;
 	/* @pure */
 	public int index(int row, int col, int level) {
-		return row * DIM + col + level * DIM * DIM;
+		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM) {
+			return row * DIM + col + level * DIM * DIM;
+		} else {
+			System.err.println("IndexOutOfBount!");
+		}
+		return -1;
+
 	}
 	
 	/**
@@ -170,18 +176,7 @@ public class Board {
 		return isEmptyField(index(row, col, level));
 	}
 	
-	/**
-	 * Returns true if the game is over. The game is over when there is a winner.
-	 * In this game, it is not possible to get a draw.
-	 *
-	 * @return true if the game is over
-	 */
-	// @ ensures \result == this.hasWinner();
-	/* @pure */
-	public boolean gameOver() {
-		return this.hasWinner();
-	}
-	
+
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 *
@@ -252,7 +247,11 @@ public class Board {
 		return false;
 	}
 	
+<<<<<<< HEAD
 	// Does this work and can it be done better/more efficient?
+=======
+	//Does this work and can it be done better/more efficient?
+>>>>>>> refs/remotes/origin/Maarten
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -292,40 +291,6 @@ public class Board {
 	public boolean hasVerticalDiagonal(Mark m) {
 		//TODO Has to be implemented.
 		return false;
-	}
-	/**
-	 * Checks if the mark m has won. A mark wins if it controls at least one
-	 * row, column or diagonal.
-	 *
-	 * @param m
-	 *            the mark of interest
-	 * @return true if the mark has won
-	 */
-	public boolean isWinner(Mark m) {
-		if (this.hasColumn(m)) {
-			return true;
-		} else if (this.hasRow(m)) {
-			return true;
-		} else if (this.hasPlaneDiagonal(m)) {
-			return true;
-		} else if (this.hasVerticalDiagonal(m)) {
-			return true;
-		} else if (this.hasLevel(m)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	/**
-	 * Returns true if the game has a winner. This is the case when one of the
-	 * marks controls at least one row, column or diagonal.
-	 *
-	 * @return true if the student has a winner.
-	 */
-	// @ ensures \result == isWinner(Mark.XX) | \result == isWinner(Mark.OO);
-	/* @pure */
-	public boolean hasWinner() {
-		return isWinner(Mark.OO) || isWinner(Mark.XX);
 	}
 
 	/**
@@ -377,8 +342,29 @@ public class Board {
     	setField(index(row, col, level), m);
 	}
 	
+<<<<<<< HEAD
 	public String toString() {
 		return "Please implement this method in class TUI!";
 	}
+=======
+	public void setField(int row, int col, Mark m){
+		int level = dropDown(row, col);
+		setField(row, col, level, m);
+	}
+	
+	// TODO nog testen!!!
+	public int dropDown(int row, int col) {
+		for (int i = 3; i > 0; i--) {
+			if (!isEmptyField(row, col, i - 1)) {
+				return i;
+			}
+		}
+		return 0;
+	}
+	
+//	public String toString() {
+//		return "Please implement this method in class TUI!";
+//	}
+>>>>>>> refs/remotes/origin/Maarten
 
 }

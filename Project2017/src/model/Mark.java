@@ -1,7 +1,7 @@
 package model;
 public enum Mark {
     
-    EMPTY, XX, OO;
+    EMPTY, RED, BLUE;
 
     /*@
        ensures this == Mark.XX ==> \result == Mark.OO;
@@ -14,10 +14,10 @@ public enum Mark {
      * @return The other mark. If the Mark is Empty, Empty will be returned.
      */
     public Mark other() {
-        if (this == XX) {
-            return OO;
-        } else if (this == OO) {
-            return XX;
+        if (this == RED) {
+            return BLUE;
+        } else if (this == BLUE) {
+            return RED;
         } else {
             return EMPTY;
         }
