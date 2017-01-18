@@ -175,18 +175,7 @@ public class Board {
 		return isEmptyField(index(row, col, level));
 	}
 	
-	/**
-	 * Returns true if the game is over. The game is over when there is a winner.
-	 * In this game, it is not possible to get a draw.
-	 *
-	 * @return true if the game is over
-	 */
-	// @ ensures \result == this.hasWinner();
-	/* @pure */
-	public boolean gameOver() {
-		return this.hasWinner();
-	}
-	
+
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 *
@@ -297,40 +286,6 @@ public class Board {
 	public boolean hasVerticalDiagonal(Mark m) {
 		//TODO Has to be implemented.
 		return false;
-	}
-	/**
-	 * Checks if the mark m has won. A mark wins if it controls at least one
-	 * row, column or diagonal.
-	 *
-	 * @param m
-	 *            the mark of interest
-	 * @return true if the mark has won
-	 */
-	public boolean isWinner(Mark m) {
-		if (this.hasColumn(m)) {
-			return true;
-		} else if (this.hasRow(m)) {
-			return true;
-		} else if (this.hasPlaneDiagonal(m)) {
-			return true;
-		} else if (this.hasVerticalDiagonal(m)) {
-			return true;
-		} else if (this.hasLevel(m)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	/**
-	 * Returns true if the game has a winner. This is the case when one of the
-	 * marks controls at least one row, column or diagonal.
-	 *
-	 * @return true if the student has a winner.
-	 */
-	// @ ensures \result == isWinner(Mark.XX) | \result == isWinner(Mark.OO);
-	/* @pure */
-	public boolean hasWinner() {
-		return isWinner(Mark.BLUE) || isWinner(Mark.RED);
 	}
 
 	/**
