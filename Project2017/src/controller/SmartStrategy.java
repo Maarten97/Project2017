@@ -5,14 +5,17 @@ import model.Mark;
 
 public class SmartStrategy implements Strategy {
 
-	public SmartStrategy() {
-		// TODO Auto-generated constructor stub
-	}
-
+	// -- Instance variables -----------------------------------------
+	private static String name = "Naive";
+		
+	// -- Queries ----------------------------------------------------
+	/**
+	 * Returns the name of this strategy.
+	 * @return strategy name
+	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override

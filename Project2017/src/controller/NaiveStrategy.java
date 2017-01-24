@@ -2,21 +2,19 @@ package controller;
 
 import model.Board;
 import model.Mark;
-import ss.week5.tictactoe.CommonStrategyUtils;
 
 public class NaiveStrategy implements Strategy {
 
 	// -- Instance variables -----------------------------------------
 	private static String name = "Naive";
 	
-	
-	public NaiveStrategy()  {
-		// TODO Auto-generated constructor stub
-	}
-
+	// -- Queries ----------------------------------------------------
+	/**
+	 * Returns the name of this strategy.
+	 * @return strategy name
+	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 	
