@@ -69,8 +69,7 @@ public abstract class Player {
      * @param board the current board
      */
     public void makeMove(Board board) {
-        int keuze = determineMove(board);
-        board.setField(keuze, getMark());
+        int[] keuze = determineMove(board);
+        board.setField(keuze[0], keuze[1], getMark());
     }
-	
 }

@@ -310,6 +310,7 @@ public class Board {
 		setField(row, col, level, m);
 	}
 
+
 	public int dropDown(int row, int col) throws FieldNotExsistException{
 		for (int i = 3; i > 0; i--) {
 			if (!isEmptyField(row, col, i - 1)) {

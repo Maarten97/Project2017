@@ -55,7 +55,8 @@ public class CommonStrategyUtils {
 			}
 			i++;
 		}
-		return coordinate;
+		int[] xycoordinate = new int[]{coordinate[0], coordinate[2]};
+		return xycoordinate;
 	}
 
 }
