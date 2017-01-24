@@ -179,13 +179,10 @@ public class Board {
 
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
-	 *
-	 * @param m
-	 *            the mark of interest
+	 * @param m the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
-	/* @ pure */
-	public boolean hasRow(Mark m) {
+	/* @ pure */public boolean hasRow(Mark m) {
 		boolean row = true;
 		for (int level = 0; level < DIM; level++) {
 			for (int i = 0; i < DIM; i++) {
@@ -198,17 +195,13 @@ public class Board {
 			if (row) {
 				return true;
 			}
-
 		}
 		return false;
 	}
 
 	/**
-	 * Checks whether there is a column which is full and only contains the mark
-	 * m.
-	 *
-	 * @param m
-	 *            the mark of interest
+	 * Checks whether there is a column which is full and only contains the mark m.
+	 * @param m the mark of interest
 	 * @return true if there is a column controlled by m
 	 */
 	/* @ pure */
@@ -224,7 +217,6 @@ public class Board {
 			}
 			if (column) {
 				return true;
-
 			}
 		}
 		return false;
@@ -249,7 +241,6 @@ public class Board {
 	
 
 	//Does this work and can it be done better/more efficient?
-
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -307,11 +298,8 @@ public class Board {
 
 	/**
 	 * Sets the content of field i to the mark m.
-	 *
-	 * @param i
-	 *            the field number 
-	 * @param m
-	 *            the mark to be placed
+	 * @param i the field number 
+	 * @param m the mark to be placed
 	 */
 	// @ requires this.isField(i);
 	// @ ensures this.getField(i) == m;
@@ -324,15 +312,10 @@ public class Board {
 	/**
 	 * Sets the content of the field represented by the (row,col,level) collection to the
 	 * mark m.
-	 *
-	 * @param row
-	 *            the field's row
-	 * @param col
-	 *            the field's column
-	 * @param level 
-	 * 			  the hight(or level) of the field. 
-	 * @param m
-	 *            the mark to be placed
+	 * @param row the field's row
+	 * @param col the field's column
+	 * @param level the height(or level) of the field. 
+	 * @param m the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
 	// @ ensures this.getField(row,col,level) == m;
