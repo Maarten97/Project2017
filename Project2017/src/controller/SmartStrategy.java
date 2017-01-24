@@ -6,7 +6,7 @@ import model.Mark;
 public class SmartStrategy implements Strategy {
 
 	// -- Instance variables -----------------------------------------
-	private static String name = "Naive";
+	private static String name = "Smart";
 		
 	// -- Queries ----------------------------------------------------
 	/**
@@ -18,10 +18,14 @@ public class SmartStrategy implements Strategy {
 		return name;
 	}
 
+	/**
+	 * Returns a random free coordinate.
+	 * @return a random free coordinate.
+	 */
 	@Override
-	public int determineMove(Board b, Mark m) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int[] determineMove(Board b, Mark m) {
+		// TODO to be implemented
+		return CommonStrategyUtils.getRandomFreeField(b);
 	}
 
 }

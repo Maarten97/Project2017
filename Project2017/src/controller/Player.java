@@ -56,7 +56,7 @@ public abstract class Player {
      * @param board the current game board
      * @return the player's choice
      */
-    public abstract int determineMove(Board board);
+    public abstract int[] determineMove(Board board);
 
     
  // -- Commands ---------------------------------------------------

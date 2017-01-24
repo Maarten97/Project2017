@@ -18,40 +18,44 @@ public class CommonStrategyUtils {
 	 */
 	/*@ requires board != null; 
 	 */
-	public static Set<Integer> getFreeFields(Board b) {
-		Set<Integer> freeFieldIndexes = new HashSet<Integer>();
-		int fieldCount = Board.DIM * Board.DIM * Board.DIM - 1;
-		for (int i = 0; i < fieldCount; i++) {
-			if (b.isEmptyField(i)) {
-				freeFieldIndexes.add(i);
+	public static Set<int[]> getFreeFields(Board b) {
+		Set<int[]> randomFreeCoordinate = new HashSet<>();
+		
+		for (int x = 0; x < Board.DIM; x++) {
+			for (int y = 0; y < Board.DIM; y++) {
+				for (int z = 0; z < Board.DIM; z++) {
+					if (b.isEmptyField(x, y, z)) {
+						randomFreeCoordinate.add(new int[]{x, y, z});
+					}
+				}
 			}
 		}
-		return freeFieldIndexes;
+		return randomFreeCoordinate;
 		
 	}
 	
 	/**
-	 * Get a random empty field index.
-	 * @param b board to get free index from
-	 * @return the index of a random empty field
+	 * Get a random empty field.
+	 * @param b board to get free coordinates from
+	 * @return the coordinates of a random empty field in an int array
 	 */
 	/* @ requires board != null; 
 	 */
-	public static int getRandomFreeField(Board b) {
-		Set<Integer> freeFieldIndexes = getFreeFields(b);
+	public static int[] getRandomFreeField(Board b) {
+		Set<int[]> freeFieldIndexes = getFreeFields(b);
 
 		// Picks a random field from the list
-		Integer randomFreeIndex = new Integer(-1);
+		int[] coordinate = new int[3];
 		int randomValue = new Random().nextInt(freeFieldIndexes.size());
 		// make up a random number within the range of the set.
 		int i = 0;
-		for (Integer a : freeFieldIndexes) {
+		for (int[] a : freeFieldIndexes) {
 			if (i == randomValue) {
-				randomFreeIndex = a;
+				coordinate = a;
 			}
 			i++;
 		}
-		return randomFreeIndex.intValue();
+		return coordinate;
 	}
 
 }

@@ -8,8 +8,9 @@ package model;
  *
  */
 public class Board {
-	// TODO Still have to change the JML and the Javadoc!
+	// TODO Still have to change the JML and the Javadoc and separate queries and commands
 
+	// -- Instance variables -----------------------------------------
 	public static final int DIM = 4;
 
 	/**
@@ -22,8 +23,10 @@ public class Board {
 	 */
 	private Mark[][][] fields;
 
+	
+	// -- Constructors -----------------------------------------------
 	/**
-	 * Creates a list with the fields of a game.
+	 * Creates an empty board, and a list with the fields of a game.
 	 */
 
 	// @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i)
@@ -34,6 +37,7 @@ public class Board {
 		reset();
 	}
 
+	// -- Queries/Commands ----------------------------------------------------
 	/**
 	 * Creates a deep copy of this field.
 	 */
@@ -57,8 +61,7 @@ public class Board {
 
 	/**
 	 * Calculates the index in the linear array of fields from a collection
-	 * (row, col, leven).
-	 * 
+	 * (row, col, level).
 	 * 
 	 * @return the index belonging to the (row,col,level)-field
 	 */
@@ -110,12 +113,9 @@ public class Board {
 	/**
 	 * Returns the content of the field referred to by the (row,col) pair.
 	 *
-	 * @param row
-	 *            the row of the field
-	 * @param col
-	 *            the column of the field
-	 * @param level
-	 *            the hight(or level) of the field.
+	 * @param row the row of the field
+	 * @param col the column of the field
+	 * @param level the height(or level) of the field.
 	 * @return the mark on the field
 	 */
 	// @ requires this.isField(row,col,level);
@@ -130,13 +130,9 @@ public class Board {
 	/**
 	 * Returns true if the field referred to by the (row,col) pair it empty.
 	 *
-	 * @param row
-	 *            the row of the field
-	 * @param col
-	 *            the column of the field
-	 * @param level
-	 *            the hight(or level) of the field.
-	 * 
+	 * @param row the row of the field
+	 * @param col the column of the field
+	 * @param level the height(or level) of the field.
 	 * @return true if the field is empty
 	 */
 	// @ requires this.isField(row,col);
@@ -154,8 +150,7 @@ public class Board {
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 * 
-	 * @param m
-	 *            the mark of interest
+	 * @param m the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
 	/* @ pure */public boolean hasRow(Mark m) {
@@ -176,11 +171,8 @@ public class Board {
 	}
 
 	/**
-	 * Checks whether there is a column which is full and only contains the mark
-	 * m.
-	 * 
-	 * @param m
-	 *            the mark of interest
+	 * Checks whether there is a column which is full and only contains the mark m.
+	 * @param m the mark of interest
 	 * @return true if there is a column controlled by m
 	 */
 	/* @ pure */
@@ -283,14 +275,12 @@ public class Board {
 	}
 
 	/**
-	 * Empties all fields of this student (i.e., let them refer to the value
-	 * Mark.EMPTY).
+	 * Empties all fields of this board; places an empty tile at all fields
 	 */
 	/*
 	 * @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i)
 	 * == Mark.EMPTY); @
 	 */
-
 	public void reset() {
 		for (int x = 0; x < DIM; x++) {
 			for (int y = 0; y < DIM; y++) {
@@ -306,14 +296,10 @@ public class Board {
 	 * Sets the content of the field represented by the (row,col,level)
 	 * collection to the mark m.
 	 * 
-	 * @param row
-	 *            the field's row
-	 * @param col
-	 *            the field's column
-	 * @param level
-	 *            the height(or level) of the field.
-	 * @param m
-	 *            the mark to be placed
+	 * @param row the field's row
+	 * @param col the field's column
+	 * @param level the height(or level) of the field.
+	 * @param m the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
 	// @ ensures this.getField(row,col,level) == m;

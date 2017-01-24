@@ -26,7 +26,6 @@ public class HumanPlayer extends Player {
 	 */
 	public HumanPlayer(String name, Mark mark) {
 		super(name, mark);
-		// TODO Auto-generated constructor stub
 	}
 
 	// -- Commands ---------------------------------------------------
@@ -43,18 +42,46 @@ public class HumanPlayer extends Player {
 	 * @param board the game board
 	 * @return the player's chosen field
 	 */
-	public int determineMove(Board board) {
-		String prompt = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-				+ "what is your choice? ";
-		int choice = readInt(prompt);
-		boolean valid = board.isField(choice) && board.isEmptyField(choice);
-		while (!valid) {
-			System.out.println("ERROR: field " + choice + " is no valid choice.");
-			choice = readInt(prompt);
-			valid = board.isField(choice) && board.isEmptyField(choice);
+	public int[] determineMove(Board board) {
+		
+		boolean needsInput = true;
+		int choiceX = -1;
+		int choiceZ = -1;
+		int choiceY = -1;
+		
+		while (needsInput) {
+			String promptX = "> " + getName() + " (" + getMark().toString() + ")" + ", "
+					+ "What X coordinate do you want to place your tile?";
+			choiceX = readInt(promptX);
+
+			String promptZ = "> " + getName() + " (" + getMark().toString() + ")" + ", "
+					+ "What Z coordinate do you want to place your tile?";
+			choiceZ = readInt(promptZ);
+
+			String promptY = "> " + getName() + " (" + getMark().toString() + ")" + ", "
+					+ "What Y coordinate do you want to place your tile?";
+			choiceY = readInt(promptY);
+
+			needsInput = board.isField(choiceX, choiceZ, choiceY) && 
+					board.isEmptyField(choiceX, choiceZ, choiceY);
+			
+			if (needsInput == false) {
+				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + "," + choiceY + ") "
+					+ "is not a valid choice. Please provide an other coordinate");
+			}
+			
 		}
-		return choice;
+		return new int[]{choiceX, choiceZ, choiceY};
 	}
+	
+	// TODO check if valid in controller!
+	/*while (!valid) {
+		System.out.println("ERROR:  " + choice + " is no valid choice.");
+		choice = readInt(prompt);
+		valid = board.isField(choice) && board.isEmptyField(choice);
+	}
+	return choice; 
+	*/
 
 	/**
 	 * Writes a prompt to standard out and tries to read an int value from

@@ -19,12 +19,11 @@ public class NaiveStrategy implements Strategy {
 	}
 	
 	/**
-	 * Returns a random free index, and -1 if the bord is full.
-	 * @return a random free index; -1 if there are no free indexes.
+	 * Returns a random free coordinate.
+	 * @return a random free coordinate.
 	 */
-	//gets the available empty fields from the game.
 	@Override
-	public int determineMove(Board b, Mark m) {
+	public int[] determineMove(Board b, Mark m) {
 		return CommonStrategyUtils.getRandomFreeField(b);
 	}
 

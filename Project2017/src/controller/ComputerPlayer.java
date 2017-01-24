@@ -43,7 +43,7 @@ public class ComputerPlayer extends Player {
 	 * board.isEmptyField(\result);
 	 * 
 	 */
-	public int determineMove(Board board) {
+	public int[] determineMove(Board board) {
 		return strat.determineMove(board, mark);
 	}
 
