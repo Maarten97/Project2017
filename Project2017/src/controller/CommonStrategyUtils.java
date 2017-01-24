@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import exception.FieldNotExsistException;
 import model.Board;
 
 /**
@@ -15,10 +16,11 @@ public class CommonStrategyUtils {
 	 * Returns a set of all free fields
 	 * @param b Board to find empty field from.
 	 * @return Set with all free indexes
+	 * @throws FieldNotExsistException 
 	 */
 	/*@ requires board != null; 
 	 */
-	public static Set<int[]> getFreeFields(Board b) {
+	public static Set<int[]> getFreeFields(Board b) throws FieldNotExsistException {
 		Set<int[]> randomFreeCoordinate = new HashSet<>();
 		
 		for (int x = 0; x < Board.DIM; x++) {
@@ -38,10 +40,11 @@ public class CommonStrategyUtils {
 	 * Get a random empty field.
 	 * @param b board to get free coordinates from
 	 * @return the coordinates of a random empty field in an int array
+	 * @throws FieldNotExsistException 
 	 */
 	/* @ requires board != null; 
 	 */
-	public static int[] getRandomFreeField(Board b) {
+	public static int[] getRandomFreeField(Board b) throws FieldNotExsistException {
 		Set<int[]> freeFieldIndexes = getFreeFields(b);
 
 		// Picks a random field from the list

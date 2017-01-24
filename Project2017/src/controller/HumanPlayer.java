@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Scanner;
 
+import exception.FieldNotExsistException;
 import model.Board;
 import model.Mark;
 
@@ -43,35 +44,45 @@ public class HumanPlayer extends Player {
 	 * @return the player's chosen field
 	 */
 	public int[] determineMove(Board board) {
-		
+
 		boolean needsInput = true;
 		int choiceX = -1;
 		int choiceZ = -1;
-		
+
 		while (needsInput) {
-			String promptX = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What X coordinate do you want to place your tile?";
-			choiceX = readInt(promptX);
+			try {
+				String promptX = "> " + getName() + " (" + getMark().toString() + ")" + ", "
+						+ "What X coordinate do you want to place your tile?";
+				choiceX = readInt(promptX);
 
-			String promptZ = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What Z coordinate do you want to place your tile?";
-			choiceZ = readInt(promptZ);
+				String promptZ = "> " + getName() + " (" + getMark().toString() + ")" + ", "
+						+ "What Z coordinate do you want to place your tile?";
+				choiceZ = readInt(promptZ);
 
-			needsInput = !board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ));
-			
-			
-			System.out.println("is field: " + board.isField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));			
-			System.out.println("Is empty field: " + board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));
-			
+				needsInput = !board.isEmptyField(choiceX, choiceZ, 
+							board.dropDown(choiceX, choiceZ));
+
+				System.out.println("is field: " + board.isField(choiceX, choiceZ, 
+							board.dropDown(choiceX, choiceZ)));
+
+				System.out.println(
+						"Is empty field: " + board.isEmptyField(choiceX, choiceZ, 
+							board.dropDown(choiceX, choiceZ)));
+
+			} catch (FieldNotExsistException e) {
+				e.printStackTrace();
+				this.determineMove(board);
+			}
+
 			if (needsInput == true) {
 				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + ") "
-					+ "is not a valid choice. Please provide another coordinate");
+						+ "is not a valid choice. Please provide another coordinate");
 			}
-			
+
 		}
-		return new int[]{choiceX, choiceZ};
+		return new int[] {choiceX, choiceZ};
 	}
-	
+
 	// TODO check if valid in controller!
 	/*while (!valid) {
 		System.out.println("ERROR:  " + choice + " is no valid choice.");

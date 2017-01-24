@@ -1,5 +1,6 @@
 package controller;
 
+import exception.FieldNotExsistException;
 import model.Mark;
 
 public class GameMain {
@@ -8,7 +9,7 @@ public class GameMain {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FieldNotExsistException {
 		Player player1;
 		Player player2;
 		player1 = new HumanPlayer("Thomas", Mark.BLUE);

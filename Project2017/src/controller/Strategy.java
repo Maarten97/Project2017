@@ -1,5 +1,6 @@
 package controller;
 
+import exception.FieldNotExsistException;
 import model.Board;
 import model.Mark;
 
@@ -11,5 +12,5 @@ import model.Mark;
 public interface Strategy {
 
 	public String getName();
-	public int[] determineMove(Board b, Mark m);
+	public int[] determineMove(Board b, Mark m) throws FieldNotExsistException;
 }

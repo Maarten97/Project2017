@@ -1,5 +1,6 @@
 package controller;
 
+import exception.FieldNotExsistException;
 import model.Board;
 import model.Mark;
 
@@ -21,9 +22,10 @@ public class SmartStrategy implements Strategy {
 	/**
 	 * Returns a random free coordinate.
 	 * @return a random free coordinate.
+	 * @throws FieldNotExsistException 
 	 */
 	@Override
-	public int[] determineMove(Board b, Mark m) {
+	public int[] determineMove(Board b, Mark m) throws FieldNotExsistException {
 		// TODO to be implemented
 		return CommonStrategyUtils.getRandomFreeField(b);
 	}

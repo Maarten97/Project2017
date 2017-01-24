@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Observable;
 
+import exception.FieldNotExsistException;
 import model.*;
 import view.GameTUI;
 
@@ -26,8 +27,9 @@ public class Game /* extends Observable */ {
 	 * Starts the Tic Tac Toe game. <br>
 	 * Asks after each ended game if the user want to continue. Continues until
 	 * the user does not want to play anymore.
+	 * @throws FieldNotExsistException 
 	 */
-	public void start() {
+	public void start() throws FieldNotExsistException {
 		boolean doorgaan = true;
 		String input = null;
 		while (doorgaan) {
@@ -42,7 +44,7 @@ public class Game /* extends Observable */ {
 		}
 	}
 
-	private void play() {
+	private void play() throws FieldNotExsistException {
 		update();
 		while (!this.gameOver()) {
 			players[currentPlayer].makeMove(board);
