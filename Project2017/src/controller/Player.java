@@ -1,6 +1,5 @@
 package controller;
 
-import exception.FieldNotExsistException;
 import model.Board;
 import model.Mark;
 
@@ -68,9 +67,8 @@ public abstract class Player {
     /**
      * Makes a move on the board.
      * @param board the current board
-     * @throws FieldNotExsistException 
      */
-    public void makeMove(Board board) throws FieldNotExsistException {
+    public void makeMove(Board board) {
         int[] keuze = determineMove(board);
         board.setField(keuze[0], keuze[1], getMark());
     }
