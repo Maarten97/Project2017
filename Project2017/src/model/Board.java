@@ -80,21 +80,6 @@ public class Board {
 	}
 
 	/**
-	 * Returns true if i is a valid index of a field on the board.
-	 * 
-	 * @return true if 0 <= index < DIM*DIM*DIM
-	 */
-	// @ ensures \result == (0 <= index && index < DIM * DIM * DIM);
-	/* @pure */
-	public boolean isField(int index) {
-		if (index >= 0 && index < DIM * DIM * DIM) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Returns true if the (row,col,level) collection refers to a valid field on
 	 * the board.
 	 *
@@ -106,9 +91,12 @@ public class Board {
 	 */
 	/* @pure */
 	public boolean isField(int row, int col, int level) {
-		return isField(index(row, col, level));
-
+		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM){
+			return true;
+		}
+		return false;
 	}
+
 
 	/**
 	 * Returns the content of the field referred to by the (row,col) pair.
