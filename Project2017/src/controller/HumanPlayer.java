@@ -47,7 +47,6 @@ public class HumanPlayer extends Player {
 		boolean needsInput = true;
 		int choiceX = -1;
 		int choiceZ = -1;
-		int choiceY = -1;
 		
 		while (needsInput) {
 			String promptX = "> " + getName() + " (" + getMark().toString() + ")" + ", "
@@ -58,20 +57,16 @@ public class HumanPlayer extends Player {
 					+ "What Z coordinate do you want to place your tile?";
 			choiceZ = readInt(promptZ);
 
-			String promptY = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What Y coordinate do you want to place your tile?";
-			choiceY = readInt(promptY);
-
-			needsInput = board.isField(choiceX, choiceZ, choiceY) && 
-					board.isEmptyField(choiceX, choiceZ, choiceY);
+			needsInput = board.isField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)) && 
+					board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ));
 			
 			if (needsInput == false) {
-				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + "," + choiceY + ") "
+				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + ") "
 					+ "is not a valid choice. Please provide an other coordinate");
 			}
 			
 		}
-		return new int[]{choiceX, choiceZ, choiceY};
+		return new int[]{choiceX, choiceZ};
 	}
 	
 	// TODO check if valid in controller!
