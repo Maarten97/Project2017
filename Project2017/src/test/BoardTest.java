@@ -3,7 +3,10 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+
+import exception.FieldNotExsistException;
 import model.*;
 
 public class BoardTest {
@@ -23,13 +26,21 @@ public class BoardTest {
 	// gebruiken?
 	public void setUp() throws Exception {
 		board = new Board();
+		board.setField(0, 0, Mark.BLUE);
+		board.setField(0, 1, Mark.BLUE);
+		board.setField(1, 1, Mark.BLUE);
+		board.setField(2, 1, Mark.BLUE);
+		board.setField(1, 0, Mark.RED);
+		board.setField(1, 2, Mark.RED);
+		board.setField(2, 2, Mark.RED);
+		board.setField(0, 3, Mark.RED);
 	}
 
-	// TODO need to test the length of the field list?
+
 
 	@Test
 	public void deepCopyTest() {
-		assertEquals(board, board.deepCopy());
+		//TODO implement boardprint
 	}
 
 	@Test
@@ -41,19 +52,9 @@ public class BoardTest {
 		assertNotEquals(18, board.index(2, 0, 1));
 	}
 
+
 	@Test
 	public void testIsField() {
-		assertTrue(board.isField(0));
-		assertTrue(board.isField(63));
-		assertTrue(board.isField(26));
-		assertFalse(board.isField(-1));
-		assertFalse(board.isField(64));
-		assertFalse(board.isField(100));
-
-	}
-
-	@Test
-	public void testIsFieldCoords() {
 		assertTrue(board.isField(0, 0, 0));
 		assertTrue(board.isField(3, 3, 3));
 		assertTrue(board.isField(1, 2, 0));
@@ -64,6 +65,28 @@ public class BoardTest {
 
 	@Test
 	public void testGetField() {
-
+		assertEquals(board.getField(0, 0, 0), Mark.BLUE);
+		assertEquals(board.getField(0, 1, 0), Mark.BLUE);
+		assertEquals(board.getField(1, 2, 0), Mark.RED);
+		assertEquals(board.getField(3, 0, 1), Mark.EMPTY);
+		assertNotEquals(board.getField(0, 3, 0), Mark.BLUE);
+		assertNotEquals(board.getField(3, 3, 1), Mark.BLUE);
+	}
+	//TODO check if exception has been thrown if field does not exists.
+	
+//	@Rule
+//	public ExpectedException exception = FieldNotExsistException.none();
+//	
+//	@Test
+//	public void testIsEmptyField() throws FieldNotExsistException{
+//		assertTrue(board.isEmptyField(3, 3, 3));
+//		assertTrue(board.isEmptyField(3, 3, 0));
+//		assertFalse(board.isEmptyField(2, 1, 0));
+//		exception.expect(FieldNotExsistException.class);
+//	
+//	}
+	@Test
+	public void testHasRow(){
+		
 	}
 }

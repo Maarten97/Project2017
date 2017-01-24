@@ -1,5 +1,7 @@
 package model;
 
+import exception.*;
+
 /**
  * Board of the 3D 4 in a row game.
  * 
@@ -126,13 +128,14 @@ public class Board {
 	// @ requires this.isField(row,col);
 	// @ ensures \result == (this.getField(row,col) == Mark.EMPTY);
 	/* @pure */
-	public boolean isEmptyField(int row, int col, int level) {
+	//TODO make an exception of this.
+	public boolean isEmptyField(int row, int col, int level) throws FieldNotExsistException{
 		if (isField(row, col, level)) {
-			if (fields[row][level][col] == Mark.EMPTY) {
-				return true;
-			}
+			return fields[row][level][col] == Mark.EMPTY;
+		} else {
+			throw new FieldNotExsistException("The field does not exist!");
 		}
-		return false;
+
 	}
 
 	/**
@@ -294,6 +297,8 @@ public class Board {
 	public void setField(int row, int col, int level, Mark m) {
 		if (this.isField(row, col, level)) {
 			fields[row][level][col] = m;
+		} else {
+			
 		}
 
 	}
