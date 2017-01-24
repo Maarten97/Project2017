@@ -57,12 +57,15 @@ public class HumanPlayer extends Player {
 					+ "What Z coordinate do you want to place your tile?";
 			choiceZ = readInt(promptZ);
 
-			needsInput = board.isField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)) && 
-					board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ));
+			needsInput = !board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ));
 			
-			if (needsInput == false) {
+			
+			System.out.println("is field: " + board.isField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));			
+			System.out.println("Is empty field: " + board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));
+			
+			if (needsInput == true) {
 				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + ") "
-					+ "is not a valid choice. Please provide an other coordinate");
+					+ "is not a valid choice. Please provide another coordinate");
 			}
 			
 		}
