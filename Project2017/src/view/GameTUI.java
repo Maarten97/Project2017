@@ -12,8 +12,8 @@ public class GameTUI {
 	
 	//TODO Implement.
 	
-	public GameTUI() {
-
+	public GameTUI(Game game) {
+		this.game = game;
 	}
 	
 	//TODO has to be implemented!

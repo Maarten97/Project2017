@@ -11,8 +11,10 @@ public class Game /* extends Observable */ {
 	private Board board;
 	private Player[] players;
 	private int currentPlayer;
+	private GameTUI gameTui;
 
 	public Game(Player s0, Player s1) {
+		gameTui = new GameTUI(this);
 		board = new Board();
 		players = new Player[2];
 		players[0] = s0;
@@ -49,9 +51,9 @@ public class Game /* extends Observable */ {
 		}
 		if (hasWinner()) {
 			if (isWinner(players[0].getMark())) {
-				GameTUI.printResult(players[0]);
+				gameTui.printResult(players[0]);
 			} else {
-				GameTUI.printResult(players[1]);
+				gameTui.printResult(players[1]);
 			}
 		} else {
 			GameTUI.printDraw();
@@ -72,7 +74,7 @@ public class Game /* extends Observable */ {
 	 * Prints the game situation.
 	 */
 	private void update() {
-		System.out.println("\ncurrent game situation: \n\n" + GameTUI.toString() + "\n");
+		System.out.println("\ncurrent game situation: \n\n" + gameTui.toString() + "\n");
 	}
 
 	public Board getBoard() {
