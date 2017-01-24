@@ -1,9 +1,12 @@
 package controller;
 
+import java.util.Observable;
+
 import model.*;
+import view.GameTUI;
 
 
-public class Game {
+public class Game extends Observable {
 	
 	private Board board;
 	private Player[] players;
@@ -17,6 +20,57 @@ public class Game {
         currentPlayer = 0;
 	}
 	
+    /**
+     * Starts the Tic Tac Toe game. <br>
+     * Asks after each ended game if the user want to continue. Continues until
+     * the user does not want to play anymore.
+     */
+	public void start() {
+		boolean doorgaan = true;
+		String input = null;
+		while (doorgaan) {
+			reset();
+			play();
+			input = GameTUI.readString("\n> Play another time? Yes/No");
+			if (input.startsWith("y") || input.startsWith("Y")) {
+				doorgaan = true;
+			} else {
+				doorgaan = false;
+			}
+		}
+	}
+	
+	
+	
+	
+	private void play() {
+		update();
+		while (!this.gameOver()) {
+			players[currentPlayer].makeMove(board);
+			update();
+			currentPlayer = (currentPlayer + 1) % 2;
+		}
+		GameTUI.printResult(board);	
+	}
+
+    /**
+     * Resets the game. <br>
+     * The board is emptied and player[0] becomes the current player.
+     */
+	private void reset() {
+        currentPlayer = 0;
+        board.reset();
+		
+	}
+	
+    /**
+     * Prints the game situation.
+     */
+    private void update() {
+        System.out.println("\ncurrent game situation: \n\n" + GameTUI.toString()
+                + "\n");
+    }
+
 	public Board getBoard() {
 		return board;
 	}
@@ -30,7 +84,7 @@ public class Game {
 	// @ ensures \result == this.hasWinner();
 	/* @pure */
 	public boolean gameOver() {
-		return this.hasWinner();
+		return this.hasWinner() || this.isDraw();
 	}
 	
 	
@@ -57,7 +111,22 @@ public class Game {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Get a boolean 
+	 *
+	 * @return true if all fields are occupied
+	 */
+	// @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM;
+	// this.getField(i) != Mark.EMPTY);
+	/* @pure */
+	public boolean isDraw() {
+		if (board.isFull()) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Returns true if the game has a winner. This is the case when one of the
 	 * marks controls at least one row, column or diagonal.

@@ -4,8 +4,8 @@ public enum Mark {
     EMPTY, RED, BLUE;
 
     /*@
-       ensures this == Mark.XX ==> \result == Mark.OO;
-       ensures this == Mark.OO ==> \result == Mark.XX;
+       ensures this == Mark.RED ==> \result == Mark.RED;
+       ensures this == Mark.BLUE ==> \result == Mark.BLUE;
        ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
      */
     /**
