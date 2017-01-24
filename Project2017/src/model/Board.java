@@ -91,7 +91,7 @@ public class Board {
 	 */
 	/* @pure */
 	public boolean isField(int row, int col, int level) {
-		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM){
+		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM) {
 			return true;
 		}
 		return false;
