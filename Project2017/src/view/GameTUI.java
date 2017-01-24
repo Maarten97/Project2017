@@ -8,6 +8,7 @@ import controller.*;
 import model.*;
 
 public class GameTUI {
+	private Game game;
 	
 	//TODO Implement.
 	
@@ -34,15 +35,15 @@ public class GameTUI {
 		return (antw == null) ? "" : antw;
 	}
 	
-    public void printResult(Board board) {
-//        if () {
-//            Player winner = board.isWinner(players[0].getMark()) ? players[0]
-//                    : players[1];
-//            System.out.println("Speler " + winner.getName() + " ("
-//                    + winner.getMark().toString() + ") has won!");
-//        } else {
-//            System.out.println("Draw. There is no winner!");
-//        }
-    }
+	public void printResult(Player player) {
+		System.out.println("Speler " + player.getName() + " (" + 
+				player.getMark().toString() + ") has won!");
+
+	}
+
+	public static void printDraw() {
+		System.out.println("Draw. There is no winner!");
+		
+	}
 
 }
