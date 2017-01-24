@@ -303,9 +303,9 @@ public class Board {
 		setField(row, col, level, m);
 	}
 
-	// TODO nog testen!!!
+	// TODO nog testen!!! checken of 4 leeg is!
 	public int dropDown(int row, int col) {
-		for (int i = 3; i > 0; i--) {
+		for (int i = 4; i > 0; i--) {
 			if (!isEmptyField(row, col, i - 1)) {
 				return i;
 			}
