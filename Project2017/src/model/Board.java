@@ -1,7 +1,5 @@
 package model;
 
-
-
 /**
  * Board of the 3D 4 in a row game.
  * 
@@ -289,6 +287,22 @@ public class Board {
 	public boolean hasVerticalDiagonal(Mark m) {
 		//TODO Has to be implemented.
 		return false;
+	}
+	/**
+	 * Tests if the whole board is full.
+	 *
+	 * @return true if all fields are occupied
+	 */
+	// @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM * DIM;
+	// this.getField(i) != Mark.EMPTY);
+	/* @pure */
+	public boolean isFull() {
+		for (int i = 0; i < DIM * DIM * DIM; i++) {
+			if (fields[i].equals(Mark.EMPTY)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
