@@ -72,5 +72,4 @@ public abstract class Player {
         int[] keuze = determineMove(board);
         board.setField(keuze[0], keuze[1], getMark());
     }
-	
 }
