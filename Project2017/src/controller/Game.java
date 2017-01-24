@@ -138,10 +138,7 @@ public class Game /* extends Observable */ {
 	// this.getField(i) != Mark.EMPTY);
 	/* @pure */
 	public boolean isDraw() {
-		if (board.isFull()) {
-			return true;
-		}
-		return false;
+		return board.isFull();
 	}
 
 	/**
