@@ -5,26 +5,26 @@ import java.util.Observable;
 import model.*;
 import view.GameTUI;
 
+public class Game /* extends Observable */ {
+	// TODO make method that puts tiles on board for a player!
 
-public class Game extends Observable {
-	
 	private Board board;
 	private Player[] players;
 	private int currentPlayer;
 
 	public Game(Player s0, Player s1) {
-        board = new Board();
-        players = new Player[2];
-        players[0] = s0;
-        players[1] = s1;
-        currentPlayer = 0;
+		board = new Board();
+		players = new Player[2];
+		players[0] = s0;
+		players[1] = s1;
+		currentPlayer = 0;
 	}
-	
-    /**
-     * Starts the Tic Tac Toe game. <br>
-     * Asks after each ended game if the user want to continue. Continues until
-     * the user does not want to play anymore.
-     */
+
+	/**
+	 * Starts the Tic Tac Toe game. <br>
+	 * Asks after each ended game if the user want to continue. Continues until
+	 * the user does not want to play anymore.
+	 */
 	public void start() {
 		boolean doorgaan = true;
 		String input = null;
@@ -39,10 +39,7 @@ public class Game extends Observable {
 			}
 		}
 	}
-	
-	
-	
-	
+
 	private void play() {
 		update();
 		while (!this.gameOver()) {
@@ -50,34 +47,41 @@ public class Game extends Observable {
 			update();
 			currentPlayer = (currentPlayer + 1) % 2;
 		}
-		GameTUI.printResult(board);	
+		if (hasWinner()) {
+			if (isWinner(players[0].getMark())) {
+				GameTUI.printResult(players[0]);
+			} else {
+				GameTUI.printResult(players[1]);
+			}
+		} else {
+			GameTUI.printDraw();
+		}
 	}
 
-    /**
-     * Resets the game. <br>
-     * The board is emptied and player[0] becomes the current player.
-     */
+	/**
+	 * Resets the game. <br>
+	 * The board is emptied and player[0] becomes the current player.
+	 */
 	private void reset() {
-        currentPlayer = 0;
-        board.reset();
-		
+		currentPlayer = 0;
+		board.reset();
+
 	}
-	
-    /**
-     * Prints the game situation.
-     */
-    private void update() {
-        System.out.println("\ncurrent game situation: \n\n" + GameTUI.toString()
-                + "\n");
-    }
+
+	/**
+	 * Prints the game situation.
+	 */
+	private void update() {
+		System.out.println("\ncurrent game situation: \n\n" + GameTUI.toString() + "\n");
+	}
 
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	/**
-	 * Returns true if the game is over. The game is over when there is a winner.
-	 * In this game, it is not possible to get a draw.
+	 * Returns true if the game is over. The game is over when there is a
+	 * winner. In this game, it is not possible to get a draw.
 	 *
 	 * @return true if the game is over
 	 */
@@ -86,8 +90,7 @@ public class Game extends Observable {
 	public boolean gameOver() {
 		return this.hasWinner() || this.isDraw();
 	}
-	
-	
+
 	/**
 	 * Checks if the mark m has won. A mark wins if it controls at least one
 	 * row, column or diagonal.
@@ -112,8 +115,20 @@ public class Game extends Observable {
 		}
 	}
 
+	// @ requires hasWinner() == true;
+	public Mark getWinner() {
+		if (hasWinner()) {
+			if (isWinner(Mark.BLUE)) {
+				return Mark.BLUE;
+			} else {
+				return Mark.RED;
+			}
+		}
+		return Mark.EMPTY;
+	}
+
 	/**
-	 * Get a boolean 
+	 * Get a boolean
 	 *
 	 * @return true if all fields are occupied
 	 */
