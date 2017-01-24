@@ -8,47 +8,56 @@ package model;
  *
  */
 public class Board {
+	// TODO Still have to change the JML and the Javadoc!
 
 	public static final int DIM = 4;
-	
+
 	/**
-	 * The DIM by DIM by DIM fields of the game. 
+	 * The DIM by DIM by DIM fields of the game.
 	 */
 	// @ private invariant fields.length == DIM*DIM*DIM;
 	/*
 	 * @ invariant (\forall int i; 0 <= i & i < DIM*DIM; getField(i) ==
 	 * Mark.EMPTY || getField(i) == Mark.XX || getField(i) == Mark.OO);
 	 */
-	private Mark[] fields;
-	
+	private Mark[][][] fields;
+
 	/**
 	 * Creates a list with the fields of a game.
 	 */
-	
-	// @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i) ==
+
+	// @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i)
+	// ==
 	// Mark.EMPTY);
 	public Board() {
-		fields = new Mark[DIM * DIM * DIM];
-		reset(); 
+		fields = new Mark[DIM][DIM][DIM];
+		reset();
 	}
-	
+
 	/**
 	 * Creates a deep copy of this field.
 	 */
 	/*
-	 * @ ensures \result != this; ensures (\forall int i; 0 <= i & i < DIM *
-	 * DIM * DIM; \result.getField(i) == this.getField(i));
+	 * @ ensures \result != this; ensures (\forall int i; 0 <= i & i < DIM * DIM
+	 * * DIM; \result.getField(i) == this.getField(i));
 	 * 
-	 */ 
+	 */
 	public Board deepCopy() {
 		Board deepboard = new Board();
-		for (int i = 0; i < DIM * DIM * DIM; i++) {
-			deepboard.fields[i] = this.fields[i];
+		for (int x = 0; x < DIM; x++) {
+			for (int y = 0; y < DIM; y++) {
+				for (int z = 0; z < DIM; z++) {
+					deepboard.fields[x][y][z] = this.fields[x][y][z];
+				}
+			}
+
 		}
 		return deepboard;
 	}
+
 	/**
-	 * Calculates the index in the linear array of fields from a collection (row, col, leven).
+	 * Calculates the index in the linear array of fields from a collection
+	 * (row, col, leven).
 	 * 
 	 * 
 	 * @return the index belonging to the (row,col,level)-field
@@ -57,16 +66,16 @@ public class Board {
 	// @ requires 0 <= col & col < DIM;
 	// @ requires 0 <= level & level < DIM;
 	/* @pure */
-	public int index(int row, int col, int level) {
-		if (row >= 0 & col >= 0 & level >= 0 && row < DIM && col < DIM && level < DIM) {
-			return row * DIM + col + level * DIM * DIM;
+	public int index(int x, int z, int y) {
+		if (x >= 0 & z >= 0 & y >= 0 && x < DIM && z < DIM && y < DIM) {
+			return x * DIM + z + y * DIM * DIM;
 		} else {
 			System.err.println("IndexOutOfBount!");
 		}
 		return -1;
 
 	}
-	
+
 	/**
 	 * Returns true if i is a valid index of a field on the board.
 	 * 
@@ -81,42 +90,23 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Returns true if the (row,col,level) collection refers to a valid field on the
-	 * board.
+	 * Returns true if the (row,col,level) collection refers to a valid field on
+	 * the board.
 	 *
 	 * @return true if 0 <= row < DIM && 0 <= col < DIM && 0 <= level < DIM
 	 */
 	/*
-	 *  @ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM 
-	 *  && 0 <= level && level < DIM) ;
+	 * @ ensures \result == (0 <= row && row < DIM && 0 <= col && col < DIM && 0
+	 * <= level && level < DIM) ;
 	 */
 	/* @pure */
 	public boolean isField(int row, int col, int level) {
 		return isField(index(row, col, level));
 
 	}
-	
-	/**
-	 * Returns the content of the field i.
-	 *
-	 * @param i  
-	 * 			The index of the requested field on the board.
-	 *            
-	 * @return The mark on the field.
-	 */
-	// @ requires this.isField(i);
-	// @ ensures \result == Mark.EMPTY || \result == Mark.XX || \result ==
-	// Mark.OO;
-	/* @pure */
-	public Mark getField(int i) {
-		if (isField(i)) {
-			return fields[i];
-		}
-		return null;
-	}
-	
+
 	/**
 	 * Returns the content of the field referred to by the (row,col) pair.
 	 *
@@ -124,8 +114,8 @@ public class Board {
 	 *            the row of the field
 	 * @param col
 	 *            the column of the field
-	 * @param level 
-	 * 			the hight(or level) of the field.          
+	 * @param level
+	 *            the hight(or level) of the field.
 	 * @return the mark on the field
 	 */
 	// @ requires this.isField(row,col,level);
@@ -133,26 +123,8 @@ public class Board {
 	// Mark.OO;
 	/* @pure */
 	public Mark getField(int row, int col, int level) {
-		return getField(index(row, col, level));
+		return fields[row][level][col];
 
-	}
-	/**
-	 * Returns true if the field i is empty.
-	 *
-	 * @param i
-	 *            the index of the field.
-	 * @return true if the field is empty
-	 */
-	// @ requires this.isField(i);
-	// @ ensures \result == (this.getField(i) == Mark.EMPTY);
-	/* @pure */
-	public boolean isEmptyField(int i) {
-		if (isField(i)) {
-			if (fields[i] == Mark.EMPTY) {
-				return true;
-			} 
-		} 
-		return false;
 	}
 
 	/**
@@ -162,22 +134,28 @@ public class Board {
 	 *            the row of the field
 	 * @param col
 	 *            the column of the field
-	 * @param level 
-	 * 			  the hight(or level) of the field. 
-	 *  
+	 * @param level
+	 *            the hight(or level) of the field.
+	 * 
 	 * @return true if the field is empty
 	 */
 	// @ requires this.isField(row,col);
 	// @ ensures \result == (this.getField(row,col) == Mark.EMPTY);
 	/* @pure */
 	public boolean isEmptyField(int row, int col, int level) {
-		return isEmptyField(index(row, col, level));
+		if (isField(row, col, level)) {
+			if (fields[row][level][col] == Mark.EMPTY) {
+				return true;
+			}
+		}
+		return false;
 	}
-	
 
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
-	 * @param m the mark of interest
+	 * 
+	 * @param m
+	 *            the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
 	/* @ pure */public boolean hasRow(Mark m) {
@@ -198,8 +176,11 @@ public class Board {
 	}
 
 	/**
-	 * Checks whether there is a column which is full and only contains the mark m.
-	 * @param m the mark of interest
+	 * Checks whether there is a column which is full and only contains the mark
+	 * m.
+	 * 
+	 * @param m
+	 *            the mark of interest
 	 * @return true if there is a column controlled by m
 	 */
 	/* @ pure */
@@ -219,7 +200,7 @@ public class Board {
 		}
 		return false;
 	}
-	
+
 	public boolean hasLevel(Mark m) {
 		boolean level = true;
 		for (int col = 0; col < DIM; col++) {
@@ -236,9 +217,8 @@ public class Board {
 		}
 		return false;
 	}
-	
 
-	//Does this work and can it be done better/more efficient?
+	// Does this work and can it be done better/more efficient?
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -275,10 +255,12 @@ public class Board {
 		}
 		return false;
 	}
+
 	public boolean hasVerticalDiagonal(Mark m) {
-		//TODO Has to be implemented.
+		// TODO Has to be implemented.
 		return false;
 	}
+
 	/**
 	 * Tests if the whole board is full.
 	 *
@@ -288,9 +270,13 @@ public class Board {
 	// this.getField(i) != Mark.EMPTY);
 	/* @pure */
 	public boolean isFull() {
-		for (int i = 0; i < DIM * DIM * DIM; i++) {
-			if (fields[i].equals(Mark.EMPTY)) {
-				return false;
+		for (int x = 0; x < DIM; x++) {
+			for (int y = 0; y < DIM; y++) {
+				for (int z = 0; z < DIM; z++) {
+					if (fields[x][y][z].equals(Mark.EMPTY)) {
+						return false;
+					}
+				}
 			}
 		}
 		return true;
@@ -301,48 +287,48 @@ public class Board {
 	 * Mark.EMPTY).
 	 */
 	/*
-	 * @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i) ==
-	 * Mark.EMPTY); @
+	 * @ ensures (\forall int i; 0 <= i & i < DIM * DIM * DIM; this.getField(i)
+	 * == Mark.EMPTY); @
 	 */
+
 	public void reset() {
-		for (int i = 0; i < DIM * DIM * DIM; i++) {
-			fields[i] = Mark.EMPTY;
+		for (int x = 0; x < DIM; x++) {
+			for (int y = 0; y < DIM; y++) {
+				for (int z = 0; z < DIM; z++) {
+					fields[x][y][z] = Mark.EMPTY;
+
+				}
+			}
 		}
 	}
 
 	/**
-	 * Sets the content of field i to the mark m.
-	 * @param i the field number 
-	 * @param m the mark to be placed
-	 */
-	// @ requires this.isField(i);
-	// @ ensures this.getField(i) == m;
-	public void setField(int i, Mark m) {
-		if (this.isField(i)) {
-			fields[i] = m; 
-		}
-	}
-
-	/**
-	 * Sets the content of the field represented by the (row,col,level) collection to the
-	 * mark m.
-	 * @param row the field's row
-	 * @param col the field's column
-	 * @param level the height(or level) of the field. 
-	 * @param m the mark to be placed
+	 * Sets the content of the field represented by the (row,col,level)
+	 * collection to the mark m.
+	 * 
+	 * @param row
+	 *            the field's row
+	 * @param col
+	 *            the field's column
+	 * @param level
+	 *            the height(or level) of the field.
+	 * @param m
+	 *            the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
 	// @ ensures this.getField(row,col,level) == m;
 	public void setField(int row, int col, int level, Mark m) {
-    	setField(index(row, col, level), m);
+		if (this.isField(row, col, level)) {
+			fields[row][level][col] = m;
+		}
+
 	}
-	
 
 	public void setField(int row, int col, Mark m) {
 		int level = dropDown(row, col);
 		setField(row, col, level, m);
 	}
-	
+
 	// TODO nog testen!!!
 	public int dropDown(int row, int col) {
 		for (int i = 3; i > 0; i--) {
@@ -352,10 +338,9 @@ public class Board {
 		}
 		return 0;
 	}
-	
-//	public String toString() {
-//		return "Please implement this method in class TUI!";
-//	}
 
+	// public String toString() {
+	// return "Please implement this method in class TUI!";
+	// }
 
 }
