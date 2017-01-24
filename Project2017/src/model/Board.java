@@ -124,16 +124,18 @@ public class Board {
 	 * @param col the column of the field
 	 * @param level the height(or level) of the field.
 	 * @return true if the field is empty
+	 * @throws FieldNotExsistException 
 	 */
 	// @ requires this.isField(row,col);
 	// @ ensures \result == (this.getField(row,col) == Mark.EMPTY);
 	/* @pure */
 	//TODO make an exception of this.
-	public boolean isEmptyField(int row, int col, int level) throws FieldNotExsistException{
+	public boolean isEmptyField(int row, int col, int level) throws FieldNotExsistException {
 		if (isField(row, col, level)) {
 			return fields[row][level][col] == Mark.EMPTY;
 		} else {
-			throw new FieldNotExsistException("The field does not exist!");
+				throw new FieldNotExsistException("The field does not exist!");
+
 		}
 
 	}
@@ -303,13 +305,12 @@ public class Board {
 
 	}
 
-	public void setField(int row, int col, Mark m) {
+	public void setField(int row, int col, Mark m) throws FieldNotExsistException {
 		int level = dropDown(row, col);
 		setField(row, col, level, m);
 	}
 
-	// TODO nog testen!!!
-	public int dropDown(int row, int col) {
+	public int dropDown(int row, int col) throws FieldNotExsistException{
 		for (int i = 3; i > 0; i--) {
 			if (!isEmptyField(row, col, i - 1)) {
 				return i;
