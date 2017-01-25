@@ -7,19 +7,24 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+import java.util.ArrayList;
 
-import ss.week7.cmdchat.ClientHandler;
+
 
 public class Server {
 	
 	private int port = 1337;
 	public String localhost;
+	private List<ClientHandler> instances;
 	
 	public static void main(String[] args) {
 		new Server();
 	}
 
 	public Server() {
+		this.instances = new ArrayList<>();
+		
 
 		
 		try {
@@ -57,6 +62,8 @@ public class Server {
 		
 		
 	}
+	
+//	public String getIP()
 
 	public static String readString(String tekst) {
 		System.out.print(tekst);
