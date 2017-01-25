@@ -20,6 +20,7 @@ public class BoardTest {
 	 */
 
 	private Board board;
+	private static final int DIM = 4;
 
 	@Before
 	// TODO kan ik ook tiles op board leggen zonder de methode setTiles() te
@@ -77,16 +78,74 @@ public class BoardTest {
 //	@Rule
 //	public ExpectedException exception = FieldNotExsistException.none();
 //	
-//	@Test
-//	public void testIsEmptyField() throws FieldNotExsistException{
-//		assertTrue(board.isEmptyField(3, 3, 3));
-//		assertTrue(board.isEmptyField(3, 3, 0));
-//		assertFalse(board.isEmptyField(2, 1, 0));
+	@Test
+	public void testIsEmptyField() throws FieldNotExsistException{
+		assertTrue(board.isEmptyField(3, 3, 3));
+		assertTrue(board.isEmptyField(3, 3, 0));
+		assertFalse(board.isEmptyField(2, 1, 0));
 //		exception.expect(FieldNotExsistException.class);
-//	
-//	}
+	}
+	
 	@Test
 	public void testHasRow(){
+		assertFalse(board.hasRow(Mark.BLUE));
+		board.setField(0, 2, Mark.BLUE);
+		board.setField(0, 3, Mark.BLUE);
+		assertFalse(board.hasRow(Mark.RED));
+		assertTrue(board.hasRow(Mark.BLUE));
+	}
+	
+	@Test
+	public void testHasColumn(){
+		assertFalse(board.hasColumn(Mark.BLUE));
+		board.setField(3, 1, Mark.BLUE);
+		assertFalse(board.hasColumn(Mark.RED));
+		assertTrue(board.hasColumn(Mark.BLUE));
+	}
+	
+	@Test
+	public void testHasLevel(){
+		assertFalse(board.hasLevel(Mark.RED));
+		assertFalse(board.hasLevel(Mark.BLUE));
+		board.setField(0, 3, Mark.RED);
+		board.setField(0, 3, Mark.RED);
+		board.setField(0, 3, Mark.RED);
+		assertTrue(board.hasLevel(Mark.RED));
+		assertFalse(board.hasLevel(Mark.BLUE));
+	}
+	
+	public void testHasPlaneDiagonal(){
+		assertFalse(board.hasPlaneDiagonal(Mark.RED));
+		assertFalse(board.hasPlaneDiagonal(Mark.BLUE));
+		board.setField(3, 3, Mark.RED);
+		board.setField(3, 3, Mark.RED);
+		board.setField(2, 2, Mark.RED);
+		board.setField(0, 0, Mark.RED);
+		board.setField(1, 1, Mark.RED);
+		assertFalse(board.hasPlaneDiagonal(Mark.BLUE));
+		assertTrue(board.hasPlaneDiagonal(Mark.RED));
+	}
+	
+	//TODO test of verticaldiagonals.
+	
+	public void testisFull(){
+		assertFalse(board.isFull());
+		for (int x = 0; x < DIM; x++) {
+			for (int y = 0; y < DIM; y++) {
+				for (int z = 0; z < DIM; z++) {
+					board.setField(x, z, y, Mark.BLUE);
+
+				}
+			}
+		}
+		assertTrue(board.isFull());
+	}
+	
+	public void testDropDown() {
+		board.setField(0, 0, Mark.RED);
+		assertNotEquals(board.getField(0, 0, 0, Mark.RED));
+		assertNotEquals(board.getField(0, 0, 2, Mark.RED));
+		assertEquals(board.getField(0, 0, 1, Mark.RED));
 		
 	}
 }
