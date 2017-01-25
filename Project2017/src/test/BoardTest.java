@@ -3,10 +3,8 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-import exception.FieldNotExsistException;
 import model.*;
 
 public class BoardTest {
@@ -73,17 +71,12 @@ public class BoardTest {
 		assertNotEquals(board.getField(0, 3, 0), Mark.BLUE);
 		assertNotEquals(board.getField(3, 3, 1), Mark.BLUE);
 	}
-	//TODO check if exception has been thrown if field does not exists.
-	
-//	@Rule
-//	public ExpectedException exception = FieldNotExsistException.none();
-//	
+
 	@Test
-	public void testIsEmptyField() throws FieldNotExsistException{
+	public void testIsEmptyField() {
 		assertTrue(board.isEmptyField(3, 3, 3));
 		assertTrue(board.isEmptyField(3, 3, 0));
 		assertFalse(board.isEmptyField(2, 1, 0));
-//		exception.expect(FieldNotExsistException.class);
 	}
 	
 	@Test
@@ -143,9 +136,9 @@ public class BoardTest {
 	
 	public void testDropDown() {
 		board.setField(0, 0, Mark.RED);
-		assertNotEquals(board.getField(0, 0, 0, Mark.RED));
-		assertNotEquals(board.getField(0, 0, 2, Mark.RED));
-		assertEquals(board.getField(0, 0, 1, Mark.RED));
+		assertNotEquals(board.getField(0, 0, 0), Mark.RED);
+		assertNotEquals(board.getField(0, 0, 2), Mark.RED);
+		assertEquals(board.getField(0, 0, 1), Mark.RED);
 		
 	}
 }
