@@ -65,6 +65,11 @@ public class Server {
 	
 //	public String getIP()
 
+	private void addHandler(ClientHandler handler) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public static String readString(String tekst) {
 		System.out.print(tekst);
 		String antw = null;
