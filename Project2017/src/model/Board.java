@@ -134,6 +134,17 @@ public class Board {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks if the given move is valid; if there are no 4 tiles on the same X and Z value.
+	 *return true if valid, false if not
+	 */
+	/* @ pure */public boolean validMove(int x, int z) {
+		if (x >= 0 && x < DIM && z >= 0 && z < DIM) {
+			return isEmptyField(x, z, dropDown(x, z));
+		}
+		return false;
+	}
 
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
@@ -313,8 +324,55 @@ public class Board {
 		return 0;
 	}
 
-	// public String toString() {
-	// return "Please implement this method in class TUI!";
-	// }
-
+	/**
+	 * To String for board. Prints the board in 8 different ways.
+	 */
+	public String toString() {
+		//first info line 
+		String board = "";
+		for (int i = 0; i < DIM; i++) {
+			board = board + "Level: " + i + "                ";
+		}
+		//Enter/return after level indications:
+		board = board + "\n";
+		
+		//Lines of the board itself. One line per Y level.
+		for (int y = 0; y < DIM; y++) {
+			//Per level
+			for (int l = 0; l < DIM; l++) {
+				//All 4 X values
+				String row = "";
+				for (int x = 0; x < DIM; x++) {
+					row = row + getField(y, x, l).toShortString() + " ";
+				}
+				//Spaces for Next level:
+				board = board + row + "        ";
+			}
+			//Enter/return after the first row of levels:
+			board = board + "\n";
+		}
+		return board;
+		
+		
+		
+		
+		/* per level:
+		String level = "";
+		for (int k = 0; k < 4; k++) {
+			if (k > 0) {
+				level = level + "\n";
+			}
+			level = level + "Level: " + k + "\n";
+			
+			for (int j = 0; j < 4; j++) {
+				String row = "";
+				for (int i = 0; i < 4; i++) {
+					row = row + getField(i, j, k).toShortString() + " ";
+				}
+				level = level + row + "\n";
+			}
+		}
+		return level;
+	*/
+	}
 }

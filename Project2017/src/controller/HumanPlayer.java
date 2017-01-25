@@ -50,18 +50,14 @@ public class HumanPlayer extends Player {
 		
 		while (needsInput) {
 			String promptX = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What X coordinate do you want to place your tile?";
+					+ "What row do you want to place your tile?";
 			choiceX = readInt(promptX);
 
 			String promptZ = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What Z coordinate do you want to place your tile?";
+					+ "What colmn do you want to place your tile?";
 			choiceZ = readInt(promptZ);
 
-			needsInput = !board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ));
-			
-			
-			System.out.println("is field: " + board.isField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));			
-			System.out.println("Is empty field: " + board.isEmptyField(choiceX, choiceZ, board.dropDown(choiceX, choiceZ)));
+			needsInput = !board.validMove(choiceX, choiceZ);
 			
 			if (needsInput == true) {
 				System.out.println("Coordinate: (" + choiceX + "," + choiceZ + ") "

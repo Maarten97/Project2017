@@ -19,23 +19,8 @@ public class GameTUI {
 	//TODO has to be implemented!
 	public String toString() {
 		Board b = game.getBoard();
+		return b.toString();
 		
-		String level = "";
-		for (int k = 0; k < 4; k++) {
-			if (k > 0) {
-				level = level + "\n";
-			}
-			level = level + "Level: " + k + "\n";
-			
-			for (int j = 0; j < 4; j++) {
-				String row = "";
-				for (int i = 0; i < 4; i++) {
-					row = row + b.getField(i, j, k).toString();
-				}
-				level = level + row + "\n";
-			}
-		}
-		return level;
 	}
 	
 	

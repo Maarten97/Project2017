@@ -22,4 +22,18 @@ public enum Mark {
             return EMPTY;
         }
     }
+    
+    /**
+     * String used for printing tiles in TUI.
+     * @return Mark for TUI
+     */
+    public String toShortString() {
+		switch (this) {
+	        case RED: return "[X]";
+	        case BLUE: return "[O]";
+	        case EMPTY: return "[ ]";
+	        default: throw new IllegalArgumentException();
+		}
+    }
+    
 }
