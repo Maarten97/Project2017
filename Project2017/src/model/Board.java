@@ -8,7 +8,8 @@ package model;
  *
  */
 public class Board {
-	// TODO Still have to change the JML and the Javadoc and separate queries and commands
+	// TODO Still have to change the JML and the Javadoc and separate queries
+	// and commands
 
 	// -- Instance variables -----------------------------------------
 	public static final int DIM = 4;
@@ -23,7 +24,6 @@ public class Board {
 	 */
 	private Mark[][][] fields;
 
-	
 	// -- Constructors -----------------------------------------------
 	/**
 	 * Creates an empty board, and a list with the fields of a game.
@@ -97,13 +97,15 @@ public class Board {
 		return false;
 	}
 
-
 	/**
 	 * Returns the content of the field referred to by the (row,col) pair.
 	 *
-	 * @param row the row of the field
-	 * @param col the column of the field
-	 * @param level the height(or level) of the field.
+	 * @param row
+	 *            the row of the field
+	 * @param col
+	 *            the column of the field
+	 * @param level
+	 *            the height(or level) of the field.
 	 * @return the mark on the field
 	 */
 	// @ requires this.isField(row,col,level);
@@ -118,20 +120,23 @@ public class Board {
 	/**
 	 * Returns true if the field referred to by the (row,col) pair it empty.
 	 *
-	 * @param row the row of the field
-	 * @param col the column of the field
-	 * @param level the height(or level) of the field.
+	 * @param row
+	 *            the row of the field
+	 * @param col
+	 *            the column of the field
+	 * @param level
+	 *            the height(or level) of the field.
 	 * @return true if the field is empty
+	 * @throws FieldNotExsistException
 	 */
 	// @ requires this.isField(row,col);
 	// @ ensures \result == (this.getField(row,col) == Mark.EMPTY);
 	/* @pure */
+	// TODO make an exception of this.
 	public boolean isEmptyField(int row, int col, int level) {
 		if (isField(row, col, level)) {
-			if (fields[row][level][col] == Mark.EMPTY) {
-				return true;
-			}
-		}
+			return fields[row][level][col] == Mark.EMPTY;
+		} 
 		return false;
 	}
 	
@@ -149,9 +154,11 @@ public class Board {
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 * 
-	 * @param m the mark of interest
+	 * @param m
+	 *            the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */public boolean hasRow(Mark m) {
 		boolean row = true;
 		for (int level = 0; level < DIM; level++) {
@@ -170,10 +177,14 @@ public class Board {
 	}
 
 	/**
-	 * Checks whether there is a column which is full and only contains the mark m.
-	 * @param m the mark of interest
+	 * Checks whether there is a column which is full and only contains the mark
+	 * m.
+	 * 
+	 * @param m
+	 *            the mark of interest
 	 * @return true if there is a column controlled by m
 	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasColumn(Mark m) {
 		boolean column = true;
@@ -192,6 +203,8 @@ public class Board {
 		return false;
 	}
 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
 	public boolean hasLevel(Mark m) {
 		boolean level = true;
 		for (int col = 0; col < DIM; col++) {
@@ -209,7 +222,8 @@ public class Board {
 		return false;
 	}
 
-	// Does this work and can it be done better/more efficient?
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
 	public boolean hasPlaneDiagonal(Mark m) {
 		int numberHits = 0;
 		int dRow = 0;
@@ -247,8 +261,121 @@ public class Board {
 		return false;
 	}
 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
 	public boolean hasVerticalDiagonal(Mark m) {
-		// TODO Has to be implemented.
+		return hasXXXDiagonal(m) && hasXYXDiagonal(m) && hasYXXDiagonal(m) && hasYYXDiagonal(m);
+	}
+
+	// Tests 000, 111, 222, 333 (with DIM ==4)
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasXXXDiagonal(Mark m) {
+		int coord = 0;
+		boolean level = true;
+		while (coord < DIM) {
+			if (!getField(coord, coord, coord).equals(m)) {
+				level = false;
+			}
+			coord++;
+		}
+		return level;
+	}
+
+	// Tests 030, 121, 212, 303 (with DIM ==4)
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasXYXDiagonal(Mark m) {
+		int coord = 0;
+		int column = DIM;
+		boolean level = true;
+		while (coord < DIM) {
+			if (!getField(coord, column, coord).equals(m)) {
+				level = false;
+			}
+			coord++;
+			column--;
+		}
+		return level;
+	}
+
+	// Tests 300, 211, 122, 033 (with DIM ==4)
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasYXXDiagonal(Mark m) {
+		int coord = 0;
+		int row = DIM;
+		boolean level = true;
+		while (coord < DIM) {
+			if (!getField(row, coord, coord).equals(m)) {
+				level = false;
+			}
+			coord++;
+			row--;
+		}
+		return level;
+	}
+
+	// Tests 330, 221, 112, 003 (with DIM ==4)
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasYYXDiagonal(Mark m) {
+		int coord = DIM;
+		int column = 0;
+		boolean level = true;
+		while (coord > 0) {
+			if (!getField(coord, coord, column).equals(m)) {
+				level = false;
+			}
+			coord--;
+			column++;
+		}
+		return level;
+	}
+
+	/**
+	 * Test for every row if there is a diagonal between column and level.
+	 * 
+	 * @param m
+	 * @return true is Mark m has a complete diagonal on column and level.
+	 */
+	// TODO TESTING THIS, WORKS THIS?
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasLevelDiagonal(Mark m) {
+		int numberHits = 0;
+		int level = 0;
+		int dColumn = 0;
+		for (int row = 0; row < DIM; row++) {
+			while (level < DIM) {
+				if (getField(row, dColumn, level).equals(m)) {
+					numberHits++;
+					level++;
+					dColumn++;
+				} else {
+					break;
+				}
+			}
+			if (numberHits == DIM) {
+				return true;
+			} else {
+				numberHits = 0;
+				level = DIM - 1;
+				dColumn = 0;
+				while (dColumn < DIM) {
+					if (getField(row, dColumn, level).equals(m)) {
+						numberHits++;
+						level--;
+						dColumn++;
+					} else {
+						break;
+					}
+				}
+				if (numberHits == DIM) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
@@ -295,10 +422,14 @@ public class Board {
 	 * Sets the content of the field represented by the (row,col,level)
 	 * collection to the mark m.
 	 * 
-	 * @param row the field's row
-	 * @param col the field's column
-	 * @param level the height(or level) of the field.
-	 * @param m the mark to be placed
+	 * @param row
+	 *            the field's row
+	 * @param col
+	 *            the field's column
+	 * @param level
+	 *            the height(or level) of the field.
+	 * @param m
+	 *            the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
 	// @ ensures this.getField(row,col,level) == m;
@@ -314,9 +445,8 @@ public class Board {
 		setField(row, col, level, m);
 	}
 
-	// TODO nog testen!!! checken of 4 leeg is!
 	public int dropDown(int row, int col) {
-		for (int i = 4; i > 0; i--) {
+		for (int i = 3; i > 0; i--) {
 			if (!isEmptyField(row, col, i - 1)) {
 				return i;
 			}

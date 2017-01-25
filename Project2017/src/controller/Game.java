@@ -1,22 +1,43 @@
 package controller;
 
-import java.util.Observable;
+//import java.util.Observable;
 
 import model.*;
 import view.GameTUI;
 
 public class Game /* extends Observable */ {
-	// TODO make method that puts tiles on board for a player!
 
+	/*@
+	 * private invariant board != null;
+	 * private invariant gameTui != null;
+	 * private invariant players.length == NUMBER_PLAYERS;
+	 * private invariant (\forall int i; 0 <= i && i < NUMBER_PLAYERS; players[i] != null);
+	 * private invariant 0 <= current  && current < NUMBER_PLAYERS;
+	 */
 	private Board board;
 	private Player[] players;
 	private int currentPlayer;
 	private GameTUI gameTui;
+	public static final int NUMBER_PLAYERS = 2;
+	
 
+	
+	/**
+	 * Creates a new Game object.
+	 * 
+	 * @param s0 
+	 * 		The first player.
+	 * @param s1
+	 * 		The second player.
+	 */
+    /*@
+    requires s0 != null;
+    requires s1 != null;
+   */
 	public Game(Player s0, Player s1) {
 		gameTui = new GameTUI(this);
 		board = new Board();
-		players = new Player[2];
+		players = new Player[NUMBER_PLAYERS];
 		players[0] = s0;
 		players[1] = s1;
 		currentPlayer = 0;
@@ -41,13 +62,20 @@ public class Game /* extends Observable */ {
 			}
 		}
 	}
-
+	
+    /**
+     * Plays the Tic Tac Toe game. 
+     * First the (still empty) board is shown. Then the game is played until it
+     * is over. Players can make a move one after the other. After each move,
+     * the changed game situation is printed. in the end, the winner will be 
+     * printed. If there is a draw, this will be printed.
+     */
 	private void play() {
 		update();
 		while (!this.gameOver()) {
 			players[currentPlayer].makeMove(board);
 			update();
-			currentPlayer = (currentPlayer + 1) % 2;
+			currentPlayer = (currentPlayer + 1) % NUMBER_PLAYERS;
 		}
 		if (hasWinner()) {
 			if (isWinner(players[0].getMark())) {
@@ -112,12 +140,20 @@ public class Game /* extends Observable */ {
 			return true;
 		} else if (board.hasLevel(m)) {
 			return true;
+		} else if (board.hasVerticalDiagonal(m)) {
+			return true;
+		} else if (board.hasLevelDiagonal(m)) {
+			return true;
 		} else {
 			return false;
 		}
 	}
-
-	// @ requires hasWinner() == true;
+	/**
+	 * If the game has ended and there is a winner, it will return the Mark of the winner.
+	 * @return Mark.BLUE or Mark.RED.
+	 */
+	//@ requires hasWinner() == true;
+	//@ ensures \result == Mark.BLUE || \result == Mark.RED;
 	public Mark getWinner() {
 		if (hasWinner()) {
 			if (isWinner(Mark.BLUE)) {
@@ -138,10 +174,7 @@ public class Game /* extends Observable */ {
 	// this.getField(i) != Mark.EMPTY);
 	/* @pure */
 	public boolean isDraw() {
-		if (board.isFull()) {
-			return true;
-		}
-		return false;
+		return board.isFull();
 	}
 
 	/**
