@@ -27,6 +27,17 @@ public class ComputerPlayer extends Player {
 		super(strategy.getName() + "-" + mark.toString(), mark);
 		strat = strategy;
 	}
+	
+	/**
+	 * Creates a computerPlayer with an custom name.
+	 * This constructor is used by the clients and the servers.
+	 * @param name Name of the created ComputerPlayer
+	 * @param mark Mark of the created ComputerPlayer
+	 */
+	public ComputerPlayer(String name, Mark mark){
+		super(name, mark);
+		strat = new NaiveStrategy();
+	}
 
 	/**
 	 * Creates naive player
@@ -36,14 +47,7 @@ public class ComputerPlayer extends Player {
 		this(mark, new NaiveStrategy());
 	}
 	
-	/**
-	 * Creates a computerPlayer with an custom name.
-	 * @param name Name of the created ComputerPlayer
-	 * @param mark Mark of the created ComputerPlayer
-	 */
-	public ComputerPlayer(String name, Mark mark){
-		super(name, mark);
-	}
+
 
 	// -- Commands ---------------------------------------------------
 
