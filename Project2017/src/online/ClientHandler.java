@@ -21,6 +21,16 @@ public class ClientHandler extends Thread {
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 	}
+
+	public void close() {
+		// TODO close the client.
+		
+	}
+
+	public void sendMessage(String message) {
+		// TODO send message from server to Client.
+		
+	}
 	
 	
 
