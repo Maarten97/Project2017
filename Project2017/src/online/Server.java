@@ -35,7 +35,7 @@ public class Server {
 
 		try {
 			String inputPort = readString("\nWhat is the Server's port? " 
-										+ "\n(leave blank for standard port)");
+										+ "\n(Leave blank for standard port)");
 			if (inputPort.equals("")) {
 				port = Protocol.PORTNUMBER;
 			} else {
