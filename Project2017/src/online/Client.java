@@ -29,7 +29,7 @@ public class Client extends Thread {
 		new Client();
 	}
 
-	private void startClient() {
+	public void startClient() {
 		print("Welcome by Connect Four 3D!");
 		String gameMode = readString("Do you want to play online? (Y/N)");
 		if (!gameMode.toLowerCase().startsWith("y")) {
@@ -39,7 +39,7 @@ public class Client extends Thread {
 		}
 	}
 
-	private void setupOfflineGame() {
+	public void setupOfflineGame() {
 		// TODO Auto-generated method stub
 
 	}
@@ -131,12 +131,12 @@ public class Client extends Thread {
 
 	}
 
-	private void print(String text) {
+	public void print(String text) {
 		System.out.println(text);
 
 	}
 
-	private void printError(String text) {
+	public void printError(String text) {
 		System.err.println(text);
 
 	}
