@@ -35,6 +35,15 @@ public class ComputerPlayer extends Player {
 	public ComputerPlayer(Mark mark) {
 		this(mark, new NaiveStrategy());
 	}
+	
+	/**
+	 * Creates a computerPlayer with an custom name.
+	 * @param name Name of the created ComputerPlayer
+	 * @param mark Mark of the created ComputerPlayer
+	 */
+	public ComputerPlayer(String name, Mark mark){
+		super(name, mark);
+	}
 
 	// -- Commands ---------------------------------------------------
 
