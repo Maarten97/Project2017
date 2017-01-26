@@ -63,6 +63,7 @@ public class Client extends Thread {
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
+			//TODO import Validator as Jar (Monday). InetAddressValidator.getInstance().isValid(host);
 		} catch (UnknownHostException e) {
 			printError("That is not a valid IP-Adres");
 			setupClient();
