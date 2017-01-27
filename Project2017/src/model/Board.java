@@ -221,7 +221,8 @@ public class Board {
 		}
 		return false;
 	}
-
+	
+	//TODO Thomas, ik krijg een ArrayindexOutOfBountException hier in de eerste getField als ik twee AIs tegen elkaar laat spelen, zou jij hiernaar willen kijken?
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasPlaneDiagonal(Mark m) {

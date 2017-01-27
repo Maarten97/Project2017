@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import controller.*;
-import model.Mark;
+import model.*;
 
 public class Client extends Thread {
 
@@ -20,6 +20,7 @@ public class Client extends Thread {
 	private InetAddress host = null;
 	private int port = 0;
 	private Socket socket;
+	private Player opponentPlayer;
 
 	public Client() {
 		startClient();
@@ -38,31 +39,22 @@ public class Client extends Thread {
 			setupClient();
 		}
 	}
-
+		
 	public void setupOfflineGame() {
-		// TODO Auto-generated method stub
-
+		print("\nPlayer 1, please answer the next questions:");
+		clientPlayer = createPlayer(Mark.RED);
+		print("\nPlayer 2, please answer the next questions:");
+		opponentPlayer = createPlayer(Mark.BLUE);
+		Game game = new Game(clientPlayer, opponentPlayer);
+		game.start();
 	}
 
 	public void setupClient() {
-		String playerType = readString("Are you a human? (Y/N)");
-		if (!playerType.toLowerCase().equals("y") && !playerType.toLowerCase().equals("n")) {
-			printError("Please enter a 'y' or a 'n'");
-			setupClient();
-		}
-		if (playerType.toLowerCase().equals("y")) {
-			String playerName = readString("What is your name?");
-			if (playerName.contains(" ")) {
-				printError("Please do not use a space in your name.");
-				setupClient();
-			}
-			clientPlayer = new HumanPlayer(playerName, Mark.RED);
-		} else {
-			clientPlayer = new ComputerPlayer(Mark.RED);
-		}
+
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
+			//TODO import Validator as Jar (Monday). InetAddressValidator.getInstance().isValid(host);
 		} catch (UnknownHostException e) {
 			printError("That is not a valid IP-Adres");
 			setupClient();
@@ -95,6 +87,27 @@ public class Client extends Thread {
 		}
 		//TODO now connecting to server?
 
+	}
+	
+	public Player createPlayer(Mark mark) {
+		String playerType = readString("Are you a human? (Y/N)");
+		if (!playerType.toLowerCase().equals("y") && !playerType.toLowerCase().equals("n")) {
+			printError("Please enter a 'y' or a 'n'");
+			createPlayer(mark);
+		}
+
+		String playerName = readString("What is your name?");
+		if (playerName.contains(" ")) {
+			printError("Please do not use a space in your name.");
+			createPlayer(mark);
+		}
+		if (playerType.toLowerCase().equals("y")) {
+			Player player = new HumanPlayer(playerName, mark);
+			return player;
+		} else {
+			Player player = new ComputerPlayer(playerName, mark);
+			return player;
+		}
 	}
 
 	/**
