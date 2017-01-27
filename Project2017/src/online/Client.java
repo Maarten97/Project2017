@@ -50,7 +50,7 @@ public class Client extends Thread {
 	}
 
 	public void setupClient() {
-
+		clientPlayer = createPlayer(Mark.RED);
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
