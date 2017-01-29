@@ -17,21 +17,52 @@ public class ClientHandler extends Thread {
 	public ClientHandler(Server serverArg, Socket socketArg) throws IOException {
 		server = serverArg;
 		sock = socketArg;
-		System.out.println("Handler created!");
+		print("Handler created!");
 		in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
 	}
 
 	public void close() {
-		// TODO close the client.
-		
-	}
-
-	public void sendMessage(String message) {
-		// TODO send message from server to Client.
+		server.removeHandler(this);
 		
 	}
 	
+	public void run(){
+		try{
+			while(true){
+				String input = in.readLine();
+				server.sendedMessage(input, this);
+			}
+		} catch (IOException e){
+			printError("Could not read input");
+			print(e.getMessage());
+			close();
+			
+		}
+	}
+	
+	public void sendMessage(String message) {
+		try{
+			out.write(message);
+			out.newLine();
+			out.flush();
+		} catch(IOException e){
+			printError("Message could not be send");
+			print(e.getMessage());
+			close();
+		}
+		
+	}
+	
+	public void print(String text) {
+		System.out.println(text);
+
+	}
+
+	public void printError(String text) {
+		System.err.println(text);
+
+	}
 	
 
 }

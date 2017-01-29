@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Server {
 
+	private static final String MESSAGE_SEPERATOR = " ";
 	private int port = 1337;
 	public String localhost;
 
@@ -19,6 +20,8 @@ public class Server {
 	 * All clients connected to the server.
 	 */
 	private List<ClientHandler> clients;
+	private List<ClientHandler> playGame;
+	private List<ClientHandler> lobby;
 	private ServerSocket serverSock;
 
 	/**
@@ -32,6 +35,7 @@ public class Server {
 
 	public Server() {
 		this.clients = new ArrayList<>();
+		this.playGame = new ArrayList<>();
 
 		try {
 			String inputPort = readString("\nWhat is the Server's port? " 
@@ -55,7 +59,7 @@ public class Server {
 			int i = 0;
 			while (true) {
 				Socket sock = serverSock.accept();
-				System.out.println("Client number " + (i++) + "connected");
+				print("Client number " + (i++) + "connected");
 				ClientHandler handler = new ClientHandler(this, sock);
 				handler.start();
 				addHandler(handler);
@@ -65,6 +69,27 @@ public class Server {
 			start();
 		}
 
+	}
+	
+	/** 
+	 * This method processes all the incoming messages from the clientHandlers to this Server.
+	 * @param input The message that was sended to the server
+	 * @param clientHandler The clientHandler that sended the message.
+	 */
+	//TODO Synchronized?
+	public /*synchronized*/ void sendedMessage(String input, ClientHandler clientHandler) {
+		String[] words = input.split(MESSAGE_SEPERATOR);
+		switch (words[0]) {
+		// Lobby
+			case Protocol.CLIENT_JOINREQUEST:
+				break;
+			case Protocol.CLIENT_GAMEREQUEST:
+				break;
+	
+			// Game
+			case Protocol.CLIENT_SETMOVE:
+				break;
+		}
 	}
 
 	/**
@@ -151,5 +176,7 @@ public class Server {
 	public void printError(String string) {
 		System.err.println(string);
 	}
+
+
 
 }

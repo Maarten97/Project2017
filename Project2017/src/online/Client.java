@@ -21,6 +21,7 @@ public class Client extends Thread {
 	private int port = 0;
 	private Socket socket;
 	private Player opponentPlayer;
+	private static final String MESSAGE_SEPERATOR = " ";
 
 	public Client() {
 		startClient();
@@ -130,6 +131,58 @@ public class Client extends Thread {
 			// TODO handle exception, nullpointer if no tekst was entered?
 		}
 		// here a shutdown?
+	}
+	
+	private void readServerResponse() {
+		// Server_InvalidCommand and Server_ConnectionLost not yet implemented.
+		String answer;
+		try {
+			answer = in.readLine();
+			String[] replyList = answer.split(MESSAGE_SEPERATOR);
+			while (replyList != null) {
+				switch (replyList[0]) {
+				// Lobbypart
+					case Protocol.SERVER_ACCEPTREQUEST:
+						print("Client has joined the server");
+						// Do something
+						break;
+					case Protocol.SERVER_DENYREQUEST:
+						printError("The name '" + replyList[1] + "' is not allowed." + 
+															"Please choose an other one.");
+						// Name is not valid.
+						break;
+					case Protocol.SERVER_WAITFORCLIENT:
+						print("Wait until another player to join!");
+						break;
+					case Protocol.SERVER_STARTGAME:
+						print("A game is being created for clients " + replyList[1] + 
+																	"and" + replyList[2]);
+						break;
+	
+					// GamePart
+					case Protocol.SERVER_MOVEREQUEST:
+						print("It is your turn to make a move");
+						// doMove
+						break;
+					case Protocol.SERVER_DENYMOVE:
+						printError("That move was not valid");
+						break;
+					case Protocol.SERVER_NOTIFYMOVE:
+						// TODO implement
+						break;
+					case Protocol.SERVER_GAMEOVER:
+						print("Player " + replyList[1] + "has won the game!");
+						break;
+					default:
+						print(answer);
+						
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/** send a message to a ClientHandler. */
