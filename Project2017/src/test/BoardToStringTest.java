@@ -20,5 +20,8 @@ public class BoardToStringTest {
 		
 		System.out.println(b.toString());
 		System.out.println("hai");
+		System.out.println(b.getField(0, 0, 0));
+		System.out.println(Mark.RED == b.getField(0, 0, 0));
+		System.out.println("test: "  + (false || true || false));
 	}
 }
