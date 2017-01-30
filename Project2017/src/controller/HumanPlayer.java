@@ -54,7 +54,7 @@ public class HumanPlayer extends Player {
 			choiceX = readInt(promptX);
 
 			String promptZ = "> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What colmn do you want to place your tile?";
+					+ "What column do you want to place your tile?";
 			choiceZ = readInt(promptZ);
 
 			needsInput = !board.validMove(choiceX, choiceZ);
