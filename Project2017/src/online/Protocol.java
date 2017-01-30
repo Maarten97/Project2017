@@ -4,16 +4,18 @@ package online;
  * Programming Project module 2 Software Systems 2016-2017
  * Interface Protocol with the made agreements during the practical of 11-01-2017 
  * @author Niek Khasuntsev
- * @version 1.0.2 (25-01-2017)
+ * @version 1.0.3 (26-01-2017)
  * 
  * Changelog:
+ * 
+ * v1.0.3:
+ * 	Deleted whisper commands
  * 
  * v1.0.2:
  *  Added standart port number
  *  Made all strings "public static final" (just to be sure that you cannot override them)
  * 	Added example to the challengelist command
  * 	Added commands for whisper messages
- * 	Changed notifymove to return only x and z, without the y.
  * 
  * v1.0.1:
  * 	Added command to request the leaderboard. 
@@ -256,12 +258,7 @@ public interface Protocol {
 	 * Direction: Client -> Server
 	 */
 	public static final String CLIENT_SENDMESSAGE = "sendmessage";
-	
-	/**
-	 * Same as the above command, but instead of sending a message to the whole lobby.
-	 * It will only send the message to your opponent 
-	 */
-	public static final String CLIENT_SENDWHISPERMESSAGE = "sendwhispermessage";
+
 	
 	/**
 	 * Used to broadcast the message to all the clients that support the chat feature
@@ -276,11 +273,7 @@ public interface Protocol {
 	 * Direction: Server -> Client
 	 */
 	public static final String SERVER_BROADCASTMESSAGE = "broadcastmessage";
-	
-	/**
-	 * Same as the above command, but the message will only be deliverd to the opponent
-	 */
-	public static final String SERVER_BROADCASTWHISPERMESSAGE = "broadcastwhispermessage";
+
 	
 	/**
 	 * Used to request a list of all the clients that support the challenge feature
