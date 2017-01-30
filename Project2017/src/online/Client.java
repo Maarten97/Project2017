@@ -76,7 +76,7 @@ public class Client extends Thread {
 	}
 
 	public void setupClient() {
-		clientPlayer = createPlayer(Mark.RED);
+//		clientPlayer = createPlayer(Mark.RED);
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
@@ -195,7 +195,7 @@ public class Client extends Thread {
 	public void serverAcceptRequest() {
 		print("Client has joined the server");
 		String start = readString("Enter 'start' if you want to start the game");
-		if (start != "start") {
+		if (!start.contains("start")) {
 			serverAcceptRequest();
 		}
 		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);

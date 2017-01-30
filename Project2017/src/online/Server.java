@@ -9,12 +9,17 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.ArrayList;
+import controller.*;
+import model.Mark;
 
 public class Server {
 
 	private static final String MESSAGE_SEPERATOR = " ";
 	private int port = 1337;
 	public String localhost;
+	private Game game;
+	private ServerPlayer player1;
+	private ServerPlayer player2;
 
 	/**
 	 * All clients connected to the server.
@@ -102,6 +107,9 @@ public class Server {
 				if (playGame.size() == 2) {
 					startServerGame();
 				}
+				if (playGame.size() < 2) {
+					clientHandler.sendMessage(Protocol.SERVER_WAITFORCLIENT);
+				}
 				break;
 	
 			// Game
@@ -113,6 +121,16 @@ public class Server {
 
 	//@ ensures playGame.size == 2;
 	private void startServerGame() {
+		lobby.remove(playGame.get(0));
+		String playerName1 = playGame.get(0).getUserName();
+		lobby.remove(playGame.get(1));
+		String playerName2 = playGame.get(1).getUserName();
+		player1 = new ServerPlayer(playerName1, Mark.RED);
+		game = new Game(player1, player2)
+		
+		
+			
+		
 		this.broadcast(Protocol.SERVER_STARTGAME, playGame);
 		//TODO now we should start a game
 		System.err.println("Do not expect to see this.");
