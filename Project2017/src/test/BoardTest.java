@@ -38,9 +38,23 @@ public class BoardTest {
 
 	@Test
 	public void deepCopyTest() {
-		// TODO implement boardprint
+		System.out.println("originele board: ");
+		System.out.println(board.toString());
+		System.out.println("Deepcopy: ");
+		System.out.println(board.deepCopy().toString());
 	}
 
+	@Test
+	public void validMoveTest() {
+		assertTrue(board.validMove(0, 0));
+		assertTrue(board.validMove(3, 3));
+		board.setField(0, 0, Mark.BLUE);
+		board.setField(0, 0, Mark.BLUE);
+		board.setField(0, 0, Mark.BLUE);
+		assertFalse(board.validMove(0, 0));
+		assertTrue(board.validMove(0, 1));
+	}
+	
 	@Test
 	public void indexTest() {
 		assertEquals(0, board.index(0, 0, 0));

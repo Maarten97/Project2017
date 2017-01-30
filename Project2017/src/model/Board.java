@@ -540,7 +540,7 @@ public class Board {
 	}
 
 	/**
-	 * To String for board. Prints the board in 8 different ways.
+	 * To String for board. Prints the 4 levels of board.
 	 */
 	public String toString() {
 		// first info line

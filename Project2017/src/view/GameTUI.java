@@ -23,9 +23,6 @@ public class GameTUI {
 		
 	}
 	
-	
-	
-	
 	public static String readString(String tekst) {
 		System.out.print(tekst);
 		String antw = null;
