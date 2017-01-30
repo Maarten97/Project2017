@@ -22,16 +22,15 @@ public class Client extends Thread {
 	private Socket socket;
 	private Player opponentPlayer;
 	private static final String MESSAGE_SEPERATOR = " ";
-
-	public Client() {
-		startClient();
-	}
 	
 	public static void main(String[] args) {
-		new Client();
+		Client client = new Client();
+		//eerst startup en socket connection maken.
+		client.start();
+		client.createGame();
 	}
 
-	public void startClient() {
+	public Client() {
 		print("Welcome by Connect Four 3D!");
 		String gameMode = readString("Do you want to play online? (Y/N)");
 		if (!gameMode.toLowerCase().startsWith("y")) {
@@ -40,13 +39,39 @@ public class Client extends Thread {
 			setupClient();
 		}
 	}
+	
+	/**
+	 * Reads the messages in the socket connection. It opens the inputstream and
+	 * will continuously be checked.
+	 */
+
+	public void run() {
+		boolean running = true;
+		try {
+			while (running) {
+
+				while (in.ready()) {
+					readServerResponse(in.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 		
 	public void setupOfflineGame() {
 		print("\nPlayer 1, please answer the next questions:");
-		clientPlayer = createPlayer(Mark.RED);
+		setClientPlayer(createPlayer(Mark.RED));
 		print("\nPlayer 2, please answer the next questions:");
 		opponentPlayer = createPlayer(Mark.BLUE);
-		Game game = new Game(clientPlayer, opponentPlayer);
+		Game game = new Game(getClientPlayer(), opponentPlayer);
 		game.start();
 	}
 
@@ -55,7 +80,8 @@ public class Client extends Thread {
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
-			//TODO import Validator as Jar (Monday). InetAddressValidator.getInstance().isValid(host);
+			//TODO import Validator as Jar (Monday). 
+			//InetAddressValidator.getInstance().isValid(host);
 		} catch (UnknownHostException e) {
 			printError("That is not a valid IP-Adres");
 			setupClient();
@@ -86,8 +112,15 @@ public class Client extends Thread {
 			printError("Something went wrong");
 			setupClient();
 		}
-		//TODO now connecting to server?
+		
 
+	}
+	
+	public void createGame() {
+		setClientPlayer(createPlayer(Mark.RED));
+		String playerName = getClientPlayerName().toLowerCase();
+		this.sendMessage(Protocol.CLIENT_JOINREQUEST + MESSAGE_SEPERATOR + playerName 
+													+ MESSAGE_SEPERATOR + "0 0 0 0");
 	}
 	
 	public Player createPlayer(Mark mark) {
@@ -111,79 +144,63 @@ public class Client extends Thread {
 		}
 	}
 
-	/**
-	 * Reads the messages in the socket connection. It opens the inputstream and
-	 * will continuously be checked.
-	 */
-	// TODO make a shutdown method?
-	public void run() {
-		try {
-			String text = in.readLine();
-			while (text != null) {
-				if (!(text == null) && !text.equalsIgnoreCase("exit")) {
-					print(text);
-				} else if (text.equalsIgnoreCase("exit")) {
-					System.exit(0);
-				}
-				text = in.readLine();
-			}
-		} catch (IOException e) {
-			// TODO handle exception, nullpointer if no tekst was entered?
-		}
-		// here a shutdown?
-	}
+
 	
-	private void readServerResponse() {
+	private void readServerResponse(String answer) {
 		// Server_InvalidCommand and Server_ConnectionLost not yet implemented.
-		String answer;
-		try {
-			answer = in.readLine();
-			String[] replyList = answer.split(MESSAGE_SEPERATOR);
-			while (replyList != null) {
-				switch (replyList[0]) {
-				// Lobbypart
-					case Protocol.SERVER_ACCEPTREQUEST:
-						print("Client has joined the server");
-						// Do something
-						break;
-					case Protocol.SERVER_DENYREQUEST:
-						printError("The name '" + replyList[1] + "' is not allowed." + 
-															"Please choose an other one.");
-						// Name is not valid.
-						break;
-					case Protocol.SERVER_WAITFORCLIENT:
-						print("Wait until another player to join!");
-						break;
-					case Protocol.SERVER_STARTGAME:
-						print("A game is being created for clients " + replyList[1] + 
-																	"and" + replyList[2]);
-						break;
-	
-					// GamePart
-					case Protocol.SERVER_MOVEREQUEST:
-						print("It is your turn to make a move");
-						// doMove
-						break;
-					case Protocol.SERVER_DENYMOVE:
-						printError("That move was not valid");
-						break;
-					case Protocol.SERVER_NOTIFYMOVE:
-						// TODO implement
-						break;
-					case Protocol.SERVER_GAMEOVER:
-						print("Player " + replyList[1] + "has won the game!");
-						break;
-					default:
-						print(answer);
-						
-				}
+
+		String[] replyList = answer.split(MESSAGE_SEPERATOR);
+		while (replyList != null) {
+			switch (replyList[0]) {
+			// Lobbypart
+				case Protocol.SERVER_ACCEPTREQUEST:
+					this.serverAcceptRequest();
+					break;
+				case Protocol.SERVER_DENYREQUEST:
+					printError("The name '" + replyList[1] + "' is not allowed." + 
+														"Please choose an other one.");
+					this.createGame();
+					break;
+				case Protocol.SERVER_WAITFORCLIENT:
+					print("Wait until another player joins!");
+					break;
+				case Protocol.SERVER_STARTGAME:
+					print("A game is being created for clients " + replyList[1] + 
+															"and" + replyList[2]);
+					break;
+
+				// GamePart
+				case Protocol.SERVER_MOVEREQUEST:
+					print("It is your turn to make a move");
+					// doMove
+					break;
+				case Protocol.SERVER_DENYMOVE:
+					printError("That move was not valid");
+					break;
+				case Protocol.SERVER_NOTIFYMOVE:
+					// TODO implement
+					break;
+				case Protocol.SERVER_GAMEOVER:
+					print("Player " + replyList[1] + "has won the game!");
+					break;
+				default:
+					print(answer);
+					
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+
 		
 	}
+	
+	public void serverAcceptRequest() {
+		print("Client has joined the server");
+		String start = readString("Enter 'start' if you want to start the game");
+		if (start != "start") {
+			serverAcceptRequest();
+		}
+		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);
+	}
+
 
 	/** send a message to a ClientHandler. */
 	public void sendMessage(String msg) {
@@ -206,7 +223,7 @@ public class Client extends Thread {
 		System.err.println(text);
 
 	}
-
+	//TODO should have a Thread for itself?
 	public static String readString(String tekst) {
 		System.out.print(tekst + " ");
 		String antw = null;
@@ -218,5 +235,19 @@ public class Client extends Thread {
 		System.out.println(antw);
 		return (antw == null) ? "" : antw;
 	}
+
+	public String getClientPlayerName() {
+		return getClientPlayer().getName();
+	}
+
+	public Player getClientPlayer() {
+		return clientPlayer;
+	}
+
+	public void setClientPlayer(Player clientPlayer) {
+		this.clientPlayer = clientPlayer;
+	}
+	
+
 
 }

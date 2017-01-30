@@ -36,6 +36,7 @@ public class Server {
 	public Server() {
 		this.clients = new ArrayList<>();
 		this.playGame = new ArrayList<>();
+		this.lobby = new ArrayList<>();
 
 		try {
 			String inputPort = readString("\nWhat is the Server's port? " 
@@ -59,7 +60,8 @@ public class Server {
 			int i = 0;
 			while (true) {
 				Socket sock = serverSock.accept();
-				print("Client number " + (i++) + "connected");
+				i++;
+				print("Client number " + i + " connected");
 				ClientHandler handler = new ClientHandler(this, sock);
 				handler.start();
 				addHandler(handler);
@@ -77,19 +79,44 @@ public class Server {
 	 * @param clientHandler The clientHandler that sended the message.
 	 */
 	//TODO Synchronized?
-	public /*synchronized*/ void sendedMessage(String input, ClientHandler clientHandler) {
+	public /* synchronized */ void sendedMessage(String input, ClientHandler clientHandler) {
 		String[] words = input.split(MESSAGE_SEPERATOR);
 		switch (words[0]) {
 		// Lobby
 			case Protocol.CLIENT_JOINREQUEST:
+				if (!lobby.contains(words[1])) {
+					clientHandler.setUserName(words[1]);
+					lobby.add(clientHandler);
+					clientHandler.sendMessage(Protocol.SERVER_ACCEPTREQUEST + MESSAGE_SEPERATOR + words[1]
+							+ MESSAGE_SEPERATOR + words[2] + MESSAGE_SEPERATOR + words[3] + MESSAGE_SEPERATOR + words[4]
+							+ MESSAGE_SEPERATOR + words[5]);
+				} else {
+					clientHandler.sendMessage(Protocol.SERVER_DENYREQUEST + MESSAGE_SEPERATOR + words[1]);
+				}
 				break;
 			case Protocol.CLIENT_GAMEREQUEST:
+				if (!playGame.contains(clientHandler)) {
+					playGame.add(clientHandler);
+				}
+				if (playGame.size() == 2) {
+					startServerGame();
+				}
 				break;
 	
 			// Game
 			case Protocol.CLIENT_SETMOVE:
 				break;
 		}
+	}
+
+
+	//@ ensures playGame.size == 2;
+	private void startServerGame() {
+		this.broadcast(Protocol.SERVER_STARTGAME, playGame);
+		//TODO now we should start a game
+		System.err.println("Do not expect to see this.");
+		
+		
 	}
 
 	/**
@@ -148,9 +175,9 @@ public class Server {
 	 * @param message
 	 *            A String that will be send to all the clients.
 	 */
-	public void broadcast(String message) {
+	public void broadcast(String message, List<ClientHandler> list) {
 		if (message != null) {
-			for (ClientHandler handler : clients) {
+			for (ClientHandler handler : list) {
 				handler.sendMessage(message);
 			}
 		}

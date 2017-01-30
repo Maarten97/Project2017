@@ -8,12 +8,13 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class ClientHandler extends Thread {
-	
+
 	private Server server;
 	private Socket sock;
 	private BufferedReader in;
 	private BufferedWriter out;
-
+	private String userName;
+	
 	public ClientHandler(Server serverArg, Socket socketArg) throws IOException {
 		server = serverArg;
 		sock = socketArg;
@@ -24,36 +25,36 @@ public class ClientHandler extends Thread {
 
 	public void close() {
 		server.removeHandler(this);
-		
+
 	}
-	
-	public void run(){
-		try{
-			while(true){
+
+	public void run() {
+		try {
+			while (true) {
 				String input = in.readLine();
 				server.sendedMessage(input, this);
 			}
-		} catch (IOException e){
+		} catch (IOException e) {
 			printError("Could not read input");
 			print(e.getMessage());
 			close();
-			
+
 		}
 	}
-	
+
 	public void sendMessage(String message) {
-		try{
+		try {
 			out.write(message);
 			out.newLine();
 			out.flush();
-		} catch(IOException e){
+		} catch (IOException e) {
 			printError("Message could not be send");
 			print(e.getMessage());
 			close();
 		}
-		
+
 	}
-	
+
 	public void print(String text) {
 		System.out.println(text);
 
@@ -63,6 +64,13 @@ public class ClientHandler extends Thread {
 		System.err.println(text);
 
 	}
-	
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String name) {
+		this.userName = name;
+	}
 
 }
