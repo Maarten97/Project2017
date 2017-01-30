@@ -87,11 +87,12 @@ public class Server {
 				if (!lobby.contains(words[1])) {
 					clientHandler.setUserName(words[1]);
 					lobby.add(clientHandler);
-					clientHandler.sendMessage(Protocol.SERVER_ACCEPTREQUEST + MESSAGE_SEPERATOR + words[1]
-							+ MESSAGE_SEPERATOR + words[2] + MESSAGE_SEPERATOR + words[3] + MESSAGE_SEPERATOR + words[4]
-							+ MESSAGE_SEPERATOR + words[5]);
+					clientHandler.sendMessage(Protocol.SERVER_ACCEPTREQUEST + MESSAGE_SEPERATOR +
+							words[1] + MESSAGE_SEPERATOR + words[2] + MESSAGE_SEPERATOR + words[3] 
+									+ MESSAGE_SEPERATOR + words[4] + MESSAGE_SEPERATOR + words[5]);
 				} else {
-					clientHandler.sendMessage(Protocol.SERVER_DENYREQUEST + MESSAGE_SEPERATOR + words[1]);
+					clientHandler.sendMessage(Protocol.SERVER_DENYREQUEST
+											+ MESSAGE_SEPERATOR + words[1]);
 				}
 				break;
 			case Protocol.CLIENT_GAMEREQUEST:
