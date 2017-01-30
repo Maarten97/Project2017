@@ -136,13 +136,13 @@ public class Board {
 	public boolean isEmptyField(int row, int col, int level) {
 		if (isField(row, col, level)) {
 			return fields[row][level][col] == Mark.EMPTY;
-		} 
+		}
 		return false;
 	}
-	
+
 	/**
-	 * Checks if the given move is valid; if there are no 4 tiles on the same X and Z value.
-	 *return true if valid, false if not
+	 * Checks if the given move is valid; if there are no 4 tiles on the same X
+	 * and Z value. return true if valid, false if not
 	 */
 	/* @ pure */public boolean validMove(int x, int z) {
 		if (x >= 0 && x < DIM && z >= 0 && z < DIM) {
@@ -160,17 +160,17 @@ public class Board {
 	 */
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */public boolean hasRow(Mark m) {
-		boolean row = true;
 		for (int level = 0; level < DIM; level++) {
-			for (int i = 0; i < DIM; i++) {
+			for (int row = 0; row < DIM; row++) {
+				boolean hasRow = true;
 				for (int col = 0; col < DIM; col++) {
-					if (getField(i, col, level) != m) {
-						row = false;
+					if (getField(row, col, level) != m) {
+						hasRow = false;
 					}
 				}
-			}
-			if (row) {
-				return true;
+				if (hasRow) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -187,198 +187,282 @@ public class Board {
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasColumn(Mark m) {
-		boolean column = true;
+		// System.out.println(this.toString());
 		for (int level = 0; level < DIM; level++) {
-			for (int i = 0; i < DIM; i++) {
+			for (int column = 0; column < DIM; column++) {
+				boolean hasColumn = true;
 				for (int row = 0; row < DIM; row++) {
-					if (getField(row, i, level) != m) {
-						column = false;
+					// System.out.println("level: " + level + " column: " +
+					// column + " row: " + row);
+					if (getField(row, column, level) != m) {
+						hasColumn = false;
 					}
 				}
-			}
-			if (column) {
-				return true;
+				if (hasColumn) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Checks whether there is a level which is full and only contains the mark
+	 * m.
+	 * 
+	 * @param m
+	 *            the mark of interest
+	 * @return true if there is a level controlled by m
+	 */
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasLevel(Mark m) {
-		boolean level = true;
 		for (int col = 0; col < DIM; col++) {
-			for (int i = 0; i < DIM; i++) {
-				for (int row = 0; row < DIM; row++) {
-					if (getField(row, col, i) != m) {
-						level = false;
+			for (int row = 0; row < DIM; row++) {
+				boolean hasLevel = true;
+				for (int level = 0; level < DIM; level++) {
+					if (getField(row, col, level) != m) {
+						hasLevel = false;
 					}
 				}
+				if (hasLevel) {
+					return true;
+				}
 			}
-			if (level) {
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether there is a diagonal which is full and only contains the mark m.
+	 * 
+	 * @param m the mark of interest
+	 * @return true if there is a diagonal controlled by m
+	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasPlaneDiagonal(Mark m) {
+		Boolean hasDiagonal = true;
+		for (int level = 0; level < DIM; level++) {
+			// linksboven --> rechtsonder
+			hasDiagonal = true;
+			for (int i = 0; i < DIM; i++) {
+				if (getField(i, i, level) != m) {
+					hasDiagonal = false;
+				}
+			}
+			if (hasDiagonal) {
+				return true;
+			}
+			//linksonder --> rechtsboven
+			hasDiagonal = true;
+			for (int j = 0; j < DIM; j++) {
+				if (getField(DIM - j - 1, j, level) != m) {
+					hasDiagonal = false;
+				}
+			}
+			if (hasDiagonal) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	//TODO Thomas, ik krijg een ArrayindexOutOfBountException hier in de eerste getField als ik twee AIs tegen elkaar laat spelen, zou jij hiernaar willen kijken?
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
-	/* @ pure */
-	public boolean hasPlaneDiagonal(Mark m) {
-		int numberHits = 0;
-		int dRow = 0;
-		int dColumn = 0;
-		for (int level = 0; level < DIM; level++) {
-			while (dRow < DIM) {
-				if (getField(dRow, dColumn, level).equals(m)) {
-					numberHits++;
-					dRow++;
-					dColumn++;
-				} else {
-					break;
-				}
-			}
-			if (numberHits == DIM) {
-				return true;
-			} else {
-				numberHits = 0;
-				dRow = DIM - 1;
-				dColumn = 0;
-				while (dColumn < DIM) {
-					if (getField(dRow, dColumn, level).equals(m)) {
-						numberHits++;
-						dRow--;
-						dColumn++;
-					} else {
-						break;
-					}
-				}
-				if (numberHits == DIM) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
 
+	/**
+	 * Tests if there is one of 4 possible vertical diagonals.
+	 * 
+	 * @param m the mark to check
+	 * @return true if there is at least one vertical diagonal.
+	 */
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasVerticalDiagonal(Mark m) {
-		return hasXXXDiagonal(m) && hasXYXDiagonal(m) && hasYXXDiagonal(m) && hasYYXDiagonal(m);
-	}
-
-	// Tests 000, 111, 222, 333 (with DIM ==4)
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
-	/* @ pure */
-	public boolean hasXXXDiagonal(Mark m) {
-		int coord = 0;
-		boolean level = true;
-		while (coord < DIM) {
-			if (!getField(coord, coord, coord).equals(m)) {
-				level = false;
-			}
-			coord++;
-		}
-		return level;
-	}
-
-	// Tests 030, 121, 212, 303 (with DIM ==4)
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
-	/* @ pure */
-	public boolean hasXYXDiagonal(Mark m) {
-		int coord = 0;
-		int column = DIM;
-		boolean level = true;
-		while (coord < DIM) {
-			if (!getField(coord, column, coord).equals(m)) {
-				level = false;
-			}
-			coord++;
-			column--;
-		}
-		return level;
-	}
-
-	// Tests 300, 211, 122, 033 (with DIM ==4)
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
-	/* @ pure */
-	public boolean hasYXXDiagonal(Mark m) {
-		int coord = 0;
-		int row = DIM;
-		boolean level = true;
-		while (coord < DIM) {
-			if (!getField(row, coord, coord).equals(m)) {
-				level = false;
-			}
-			coord++;
-			row--;
-		}
-		return level;
-	}
-
-	// Tests 330, 221, 112, 003 (with DIM ==4)
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
-	/* @ pure */
-	public boolean hasYYXDiagonal(Mark m) {
-		int coord = DIM;
-		int column = 0;
-		boolean level = true;
-		while (coord > 0) {
-			if (!getField(coord, coord, column).equals(m)) {
-				level = false;
-			}
-			coord--;
-			column++;
-		}
-		return level;
+		return hasXXXDiagonal(m) || hasXYXDiagonal(m) || hasYXXDiagonal(m) || hasYYXDiagonal(m);
 	}
 
 	/**
-	 * Test for every row if there is a diagonal between column and level.
+	 * Checks whether there is a vertical diagonal from top left to right bottom.
+	 * Tests 000, 111, 222, 333 (with DIM ==4)
 	 * 
-	 * @param m
+	 * @param m the mark of interest.
+	 * @return true if the diagonal is occupied by m.
+	 */ 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasXXXDiagonal(Mark m) {
+		boolean diagonal = true;
+		for (int i = 0; i < DIM; i++) {
+			if (getField(i, i, i) != m) {
+				diagonal = false;
+			}
+		}
+		return diagonal;
+	}
+
+	/**
+	 * Checks whether there is a vertical diagonal from top right to left bottom.
+	 * Tests 030, 121, 212, 303 (with DIM ==4)
+	 * 
+	 * @param m the mark of interest.
+	 * @return true if the diagonal is occupied by m.
+	 */ 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasXYXDiagonal(Mark m) {
+		boolean diagonal = true;
+		for (int i = 0; i < DIM; i++) { 
+			if (!getField(i, DIM - i - 1, i).equals(m)) {
+				diagonal = false;
+			}
+		}
+		return diagonal;
+	}
+
+	/**
+	 * Checks whether there is a vertical diagonal from bottom left to right top.
+	 * Tests 300, 211, 122, 033 (with DIM ==4)
+	 * 
+	 * @param m the mark of interest.
+	 * @return true if the diagonal is occupied by m.
+	 */ 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasYXXDiagonal(Mark m) {
+		boolean diagonal = true;
+		for (int i = 0; i < DIM; i++) { 
+			if (!getField(DIM - i - 1, i, i).equals(m)) {
+				diagonal = false;
+			}
+		}
+		return diagonal;
+	}
+	
+	/**
+	 * Checks whether there is a vertical diagonal from bottom right to left top.
+	 * Tests 330, 221, 112, 003 (with DIM ==4)
+	 * 
+	 * @param m the mark of interest.
+	 * @return true if the diagonal is occupied by m.
+	 */ 
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasYYXDiagonal(Mark m) {
+		boolean diagonal = true;
+		for (int i = 0; i < DIM; i++) { 
+			if (!getField(DIM - i - 1, DIM - i - 1, i).equals(m)) {
+				diagonal = false;
+			}
+		}
+		return diagonal;
+	}
+
+	
+	/**
+	 * Test for all 4 (x4) possibilities if there is a diagonal between column and level.
+	 * 
+	 * @param m the mark to check for.
 	 * @return true is Mark m has a complete diagonal on column and level.
 	 */
-	// TODO TESTING THIS, WORKS THIS?
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
 	/* @ pure */
 	public boolean hasLevelDiagonal(Mark m) {
-		int numberHits = 0;
-		int level = 0;
-		int dColumn = 0;
-		for (int row = 0; row < DIM; row++) {
-			while (level < DIM) {
-				if (getField(row, dColumn, level).equals(m)) {
-					numberHits++;
-					level++;
-					dColumn++;
-				} else {
-					break;
+		return hasLevelDiagonalTopBottom(m) || hasLevelDiagonalBottomTop(m) ||
+				hasLevelDiagonalLeftRight(m) || hasLevelDiagonalRightLeft(m);
+	}
+	
+	/**
+	 * Tests for every column if there is a diagonal between row and level from top to bottom.
+	 * 
+	 * @param m the mark to check for
+	 * @return true if Mark m holds a complete diagonal
+	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasLevelDiagonalTopBottom(Mark m) {
+		for (int column = 0; column < DIM; column++) {
+			boolean hasDiagonal = true;
+			for (int i = 0; i < DIM; i++) {
+				if (getField(i, column, i) != m) {
+					hasDiagonal = false;
 				}
 			}
-			if (numberHits == DIM) {
+			if (hasDiagonal == true) {
 				return true;
-			} else {
-				numberHits = 0;
-				level = DIM - 1;
-				dColumn = 0;
-				while (dColumn < DIM) {
-					if (getField(row, dColumn, level).equals(m)) {
-						numberHits++;
-						level--;
-						dColumn++;
-					} else {
-						break;
-					}
-				}
-				if (numberHits == DIM) {
-					return true;
-				}
 			}
 		}
 		return false;
 	}
+	
+	/**
+	 * Tests for every column if there is a diagonal between row and level from bottom to top.
+	 * 
+	 * @param m the mark to check for
+	 * @return true if Mark m holds a complete diagonal
+	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasLevelDiagonalBottomTop(Mark m) {
+		for (int column = 0; column < DIM; column++) {
+			boolean hasDiagonal = true;
+			for (int i = 0; i < DIM; i++) {
+				if (getField(DIM - i - 1, column, i) != m) {
+					hasDiagonal = false;
+				}
+			}
+			if (hasDiagonal == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Tests for every row if there is a diagonal between row and level from left to right.
+	 * 
+	 * @param m the mark to check for
+	 * @return true if Mark m holds a complete diagonal
+	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasLevelDiagonalLeftRight(Mark m) {
+		for (int row = 0; row < DIM; row++) {
+			boolean hasDiagonal = true;
+			for (int i = 0; i < DIM; i++) {
+				if (getField(row, i, i) != m) {
+					hasDiagonal = false;
+				}
+			}
+			if (hasDiagonal == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+			
+	/**
+	 * Tests for every row if there is a diagonal between row and level from right to left.
+	 * 
+	 * @param m the mark to check for
+	 * @return true if Mark m holds a complete diagonal
+	 */
+	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	/* @ pure */
+	public boolean hasLevelDiagonalRightLeft(Mark m) {
+		for (int row = 0; row < DIM; row++) {
+			boolean hasDiagonal = true;
+			for (int i = 0; i < DIM; i++) {
+				if (getField(row, i, DIM - i - 1) != m) {
+					hasDiagonal = false;
+				}
+			}
+			if (hasDiagonal == true) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 	/**
 	 * Tests if the whole board is full.
@@ -459,51 +543,38 @@ public class Board {
 	 * To String for board. Prints the board in 8 different ways.
 	 */
 	public String toString() {
-		//first info line 
+		// first info line
 		String board = "";
 		for (int i = 0; i < DIM; i++) {
 			board = board + "Level: " + i + "                ";
 		}
-		//Enter/return after level indications:
+		// Enter/return after level indications:
 		board = board + "\n";
-		
-		//Lines of the board itself. One line per Y level.
+
+		// Lines of the board itself. One line per Y level.
 		for (int y = 0; y < DIM; y++) {
-			//Per level
+			// Per level
 			for (int l = 0; l < DIM; l++) {
-				//All 4 X values
+				// All 4 X values
 				String row = "";
 				for (int x = 0; x < DIM; x++) {
 					row = row + getField(y, x, l).toShortString() + " ";
 				}
-				//Spaces for Next level:
+				// Spaces for Next level:
 				board = board + row + "        ";
 			}
-			//Enter/return after the first row of levels:
+			// Enter/return after the first row of levels:
 			board = board + "\n";
 		}
 		return board;
-		
-		
-		
-		
-		/* per level:
-		String level = "";
-		for (int k = 0; k < 4; k++) {
-			if (k > 0) {
-				level = level + "\n";
-			}
-			level = level + "Level: " + k + "\n";
-			
-			for (int j = 0; j < 4; j++) {
-				String row = "";
-				for (int i = 0; i < 4; i++) {
-					row = row + getField(i, j, k).toShortString() + " ";
-				}
-				level = level + row + "\n";
-			}
-		}
-		return level;
-	*/
+
+		/*
+		 * per level: String level = ""; for (int k = 0; k < 4; k++) { if (k >
+		 * 0) { level = level + "\n"; } level = level + "Level: " + k + "\n";
+		 * 
+		 * for (int j = 0; j < 4; j++) { String row = ""; for (int i = 0; i < 4;
+		 * i++) { row = row + getField(i, j, k).toShortString() + " "; } level =
+		 * level + row + "\n"; } } return level;
+		 */
 	}
 }
