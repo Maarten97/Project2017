@@ -186,7 +186,11 @@ public class Client extends Thread {
 					clientGame.processTurn(answer);
 					break;
 				case Protocol.SERVER_GAMEOVER:
-					print("Player " + replyList[1] + "has won the game!");
+					if(replyList[1] != null){
+						clientGame.gameOverWinner(replyList[1]);
+					} else {
+						clientGame.gameOverDraw();
+					}
 					break;
 				default:
 					printError(answer);

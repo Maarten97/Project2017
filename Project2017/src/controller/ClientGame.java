@@ -51,4 +51,16 @@ public class ClientGame extends Game {
 
 	}
 
+	public void gameOverWinner(String winner) {
+		super.getGameTUI().printMessage("Game is over, player " + winner + "has won!");
+		gameOverDraw();
+		
+		
+	}
+
+	public void gameOverDraw() {
+		// TODO Ask to start a new game!
+		
+	}
+
 }

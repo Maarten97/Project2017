@@ -61,7 +61,7 @@ public class Game /* extends Observable */ {
 			} else {
 				doorgaan = false;
 				gameTui.printMessage("Thanks for playing. See you next time!");
-				
+				System.exit(0);
 			}
 		}
 	}

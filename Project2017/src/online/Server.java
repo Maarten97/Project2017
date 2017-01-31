@@ -165,7 +165,8 @@ public class Server {
 	}
 
 	/**
-	 * Remove a client to the list with connected clientHandlers.
+	 * Remove a client to the list with connected clientHandlers, handlers in the lobby
+	 * and handlers that are playing a game.
 	 * 
 	 * @param handler
 	 *            the ClientHandler to remove.
@@ -173,6 +174,12 @@ public class Server {
 	public void removeHandler(ClientHandler handler) {
 		if (clients.contains(handler)) {
 			clients.remove(handler);
+			if (lobby.contains(handler)) {
+				lobby.remove(handler);
+			}
+			if (playGame.contains(handler)) {
+				playGame.remove(handler);
+			}
 		}
 	}
 
@@ -220,6 +227,14 @@ public class Server {
 
 	public void printError(String string) {
 		System.err.println(string);
+	}
+
+	public void closeGame(List<ClientHandler> players) {
+		for (ClientHandler c : players) {
+			playGame.remove(c);
+			lobby.add(c);
+		}
+		
 	}
 
 
