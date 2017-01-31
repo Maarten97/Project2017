@@ -21,8 +21,8 @@ public class GameTUI {
 	 * 
 	 * @return a print of all 4 board levels.
 	 */
-	public String toString() {
-		return game.getBoard().toString();
+	public String printBoard() {
+		return "\ncurrent game situation: \n\n" + game.getBoard().toString() + "\n";
 
 	}
 
@@ -71,6 +71,10 @@ public class GameTUI {
 		System.out.println(text);
 	}
 
+	public void printError(String text) {
+		System.err.println(text);
+	}
+	
 	public void printResult(Player player) {
 		System.out.println("Speler " + player.getName() + 
 				" (" + player.getMark().toString() + ") has won!");

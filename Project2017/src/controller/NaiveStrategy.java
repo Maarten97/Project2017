@@ -9,6 +9,7 @@ public class NaiveStrategy implements Strategy {
 	private static String name = "Naive";
 	
 	// -- Queries ----------------------------------------------------
+	
 	/**
 	 * Returns the name of this strategy.
 	 * @return strategy name

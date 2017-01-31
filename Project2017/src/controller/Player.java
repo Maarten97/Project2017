@@ -4,7 +4,8 @@ import model.Board;
 import model.Mark;
 
 /**
- * Abstract class for a player in the connect 4 3D. Module 2 project 
+ * Abstract class for a player. 
+ * 
  * @author Maarten Looijenga en Thomas Hogema
  */
 public abstract class Player {
@@ -30,8 +31,20 @@ public abstract class Player {
     	this.mark = mark;
     }
 	
+ // -- Commands ---------------------------------------------------
+
+    // @ requires board != null & !board.isFull();
+    /**
+     * Makes a move on the board.
+     * @param board the current board
+     */
+    public void makeMove(Board board) {
+        int[] keuze = determineMove(board);
+        board.setField(keuze[0], keuze[1], getMark());
+    }
     
  // -- Queries ----------------------------------------------------
+    
     /**
      * Returns the name of the player.
      */
@@ -45,31 +58,14 @@ public abstract class Player {
     /*@ pure */ public Mark getMark() {
         return mark;
     }
-
-    /*@
-       requires board != null & !board.isFull();
-       ensures board.isField(\result) & board.isEmptyField(\result);
-
-     */
+    
     /**
      * Determines the field for the next move.
      * @param board the current game board
      * @return the player's choice
      */
+    /* @ requires board != null & !board.isFull();
+     * @ ensures board.isField(\result) & board.isEmptyField(\result);
+     */
     public abstract int[] determineMove(Board board);
-
-    
- // -- Commands ---------------------------------------------------
-
-    /*@
-       requires board != null & !board.isFull();
-     */
-    /**
-     * Makes a move on the board.
-     * @param board the current board
-     */
-    public void makeMove(Board board) {
-        int[] keuze = determineMove(board);
-        board.setField(keuze[0], keuze[1], getMark());
-    }
 }

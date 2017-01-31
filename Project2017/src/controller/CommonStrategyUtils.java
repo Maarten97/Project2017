@@ -13,6 +13,8 @@ import model.Board;
  */
 public class CommonStrategyUtils {
 
+	// -- Queries ----------------------------------------------------
+	
 	/**
 	 * Returns a set of all free fields.
 	 * 

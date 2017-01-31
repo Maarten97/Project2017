@@ -72,16 +72,6 @@ public class ComputerPlayer extends Player {
 	}
 	
 	/**
-	 * Returns the strategy of this ComputerPlayer.
-	 * 
-	 * @return strategy of this ComputerPlayer.
-	 */
-	// @ ensures \result == strat;
-	public Strategy getStrategy() {
-		return strat;
-	}
-
-	/**
 	 * Sets the strategy of this ComputerPlayer.
 	 * 
 	 * @param strategy the strategy you want to set.
@@ -91,5 +81,17 @@ public class ComputerPlayer extends Player {
 	 */
 	public void setStrategy(Strategy strategy) {
 		this.strat = strategy;
+	}
+	
+	// -- Queries ----------------------------------------------------
+	
+	/**
+	 * Returns the strategy of this ComputerPlayer.
+	 * 
+	 * @return strategy of this ComputerPlayer.
+	 */
+	// @ ensures \result == strat;
+	public Strategy getStrategy() {
+		return strat;
 	}
 }

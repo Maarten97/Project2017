@@ -7,6 +7,8 @@ import view.GameTUI;
 
 public class Game /* extends Observable */ {
 
+	// -- Instance variables -----------------------------------------
+	
 	/*@
 	 * private invariant board != null;
 	 * private invariant gameTui != null;
@@ -20,7 +22,7 @@ public class Game /* extends Observable */ {
 	private GameTUI gameTui;
 	public static final int NUMBER_PLAYERS = 2;
 	
-
+	// -- Constructors -----------------------------------------------
 	
 	/**
 	 * Creates a new Game object with two players.
@@ -40,6 +42,8 @@ public class Game /* extends Observable */ {
 		currentPlayer = 0;
 	}
 
+	// -- Commands ---------------------------------------------------
+	
 	/**
 	 * Starts the game.
 	 * Asks after each ended game if the user want to continue. Continues until
@@ -94,29 +98,34 @@ public class Game /* extends Observable */ {
 	public void reset() {
 		currentPlayer = 0;
 		board.reset();
-
 	}
 
 	/**
-	 * Prints the game situation.
+	 * Prints the game situation using the provided TUI.
 	 */
 	public void update() {
-		System.out.println("\ncurrent game situation: \n\n" + gameTui.toString() + "\n");
+		System.out.println(gameTui.printBoard());
 	}
 
+	// -- Queries ----------------------------------------------------
+
+	/**
+	 * Returns the board if this game.
+	 * 
+	 * @return board the board that the current game is being played on.
+	 */
 	public Board getBoard() {
 		return board;
 	}
 
 	/**
 	 * Returns true if the game is over. The game is over when there is a
-	 * winner. In this game, it is not possible to get a draw.
+	 * winner or a draw. 
 	 *
 	 * @return true if the game is over
 	 */
 	// @ ensures \result == this.hasWinner();
-	/* @pure */
-	public boolean gameOver() {
+	/* @pure */	public boolean gameOver() {
 		return this.hasWinner() || this.isDraw();
 	}
 
@@ -124,10 +133,10 @@ public class Game /* extends Observable */ {
 	 * Checks if the mark m has won. A mark wins if it controls at least one
 	 * row, column or diagonal.
 	 *
-	 * @param m
-	 *            the mark of interest
+	 * @param m the mark of interest
 	 * @return true if the mark has won
 	 */
+	// @ requires m == Mark.XX || m == Mark.OO;
 	public boolean isWinner(Mark m) {
 		if (board.hasColumn(m)) {
 			return true;
@@ -145,8 +154,10 @@ public class Game /* extends Observable */ {
 			return false;
 		}
 	}
+	
 	/**
 	 * If the game has ended and there is a winner, it will return the Mark of the winner.
+	 * 
 	 * @return Mark.BLUE or Mark.RED.
 	 */
 	//@ requires hasWinner() == true;
@@ -163,19 +174,26 @@ public class Game /* extends Observable */ {
 	}
 
 	/**
-	 * Get a boolean
+	 * Check if there is a draw --> if all field are full.
 	 *
 	 * @return true if all fields are occupied
 	 */
-	// @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM;
-	// this.getField(i) != Mark.EMPTY);
-	// @ ensures hasWinner() == false
-	/* @pure */
-	public boolean isDraw() {
+	/* @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM * DIM
+	 *   this.getField(i) != Mark.EMPTY);
+	 * @ ensures hasWinner() == false 
+	 */
+	/* @pure */ public boolean isDraw() {
 		return board.isFull();
 	}
 	
-	public Player getCurrentPlayer(int currentPlayer){
+	/**
+	 * Get the player who has to make the next move.
+	 * 
+	 * @param current integer of current player
+	 * @return player the current player
+	 */
+	 // @ ensures current >=0 && < players.size
+	public Player getCurrentPlayer(int current) {
 		return players[currentPlayer];
 	}
 
@@ -186,8 +204,7 @@ public class Game /* extends Observable */ {
 	 * @return true if the student has a winner.
 	 */
 	// @ ensures \result == isWinner(Mark.BLUE) | \result == isWinner(Mark.RED);
-	/* @pure */
-	public boolean hasWinner() {
+	/* @pure */ public boolean hasWinner() {
 		return isWinner(Mark.BLUE) || isWinner(Mark.RED);
 	}
 }

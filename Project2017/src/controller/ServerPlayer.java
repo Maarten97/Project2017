@@ -10,12 +10,19 @@ public class ServerPlayer extends Player {
 		super(name, mark);
 	}
 
-	//plaatst een tile op de gegeven coordinaten.
-	public boolean placeTile(int row, int column, int level, Mark m, Board b) {
-		if (b.validMove(column,  row)) {
-			return true;
-		}
-		return false;
+	/**
+	 * Places a tile on the given coordiantes.
+	 * 
+	 * @param row Row the tile has to be placed on.
+	 * @param column Column the tile has to be placed on.
+	 * @param m Mark to be placed on this location.
+	 * @param b Board the move has to be made on
+	 */
+	/*
+	 * @ ensures 
+	 */
+	public void placeTile(int row, int column, int level, Mark m, Board b) {
+		b.setField(row, column, m);
 	}
 
 	//moet importeren
