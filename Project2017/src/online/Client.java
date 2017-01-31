@@ -22,6 +22,7 @@ public class Client extends Thread {
 	private Socket socket;
 	private Player opponentPlayer;
 	private Game game;
+	private ClientGame clientGame;
 	private static final String MESSAGE_SEPERATOR = " ";
 	private boolean offline; //TODO implement in main/constructor.
 	
@@ -194,18 +195,18 @@ public class Client extends Thread {
 
 		
 	}
-	//@ requires clientPlayer.hasMark == Mark.RED;
-	public void startServerGame(String reply1, String reply2) {
-		print("A game is being created for clients " + reply1 + "and" + reply2);
-		if (clientPlayer.getName().equals(reply1)) {
-			opponentPlayer = new ServerPlayer(reply2, Mark.BLUE);
-		} else {
-			opponentPlayer = new ServerPlayer(reply1, Mark.BLUE);
-		}
-		//TODO should we change the play() method in Game?
-
-	}
-	
+//	//@ requires clientPlayer.hasMark == Mark.RED;
+//	public void startServerGame(String reply1, String reply2) {
+//		print("A game is being created for clients " + reply1 + "and" + reply2);
+//		if (clientPlayer.getName().equals(reply1)) {
+//			opponentOnlinePlayer = new ServerPlayer(reply2, Mark.BLUE);
+//		} else {
+//			opponentPlayer = new ServerPlayer(reply1, Mark.BLUE);
+//		}
+//		clientGame = new ClientGame(clientPlayer, opponentPlayer, this);
+//		clientGame.start();
+//	}
+//	
 	public void serverAcceptRequest() {
 		print("Client has joined the server");
 		String start = readString("Enter 'start' if you want to start the game");

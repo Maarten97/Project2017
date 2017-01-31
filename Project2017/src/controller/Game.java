@@ -207,4 +207,13 @@ public class Game /* extends Observable */ {
 	/* @pure */ public boolean hasWinner() {
 		return isWinner(Mark.BLUE) || isWinner(Mark.RED);
 	}
+	
+	/**
+	 * Returns the TUI of this game.
+	 * 
+	 * @return GameTUI
+	 */
+	/*@ pure */ public GameTUI getGameTUI() {
+		return this.gameTui;
+	}
 }
