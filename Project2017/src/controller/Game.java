@@ -56,11 +56,11 @@ public class Game /* extends Observable */ {
 			reset();
 			play();
 			input = GameTUI.readString("\n> Play another time? Yes/No");
-			if (input.startsWith("y") || input.startsWith("Y")) {
+			if (input.toLowerCase().startsWith("y")) {
 				doorgaan = true;
 			} else {
 				doorgaan = false;
-				gameTui.printMessage("Thanks for playing. See you next time!");
+				GameTUI.printMessage("Thanks for playing. See you next time!");
 				System.exit(0);
 			}
 		}

@@ -2,6 +2,7 @@ package controller;
 
 import online.Client;
 import online.Protocol;
+import view.GameTUI;
 
 public class ClientGame extends Game {
 	private Client client;
@@ -52,14 +53,20 @@ public class ClientGame extends Game {
 	}
 
 	public void gameOverWinner(String winner) {
-		super.getGameTUI().printMessage("Game is over, player " + winner + "has won!");
+		GameTUI().printMessage("Game is over, player " + winner + "has won!");
 		gameOverDraw();
 		
 		
 	}
 
 	public void gameOverDraw() {
-		// TODO Ask to start a new game!
+		String input = GameTUI.readString("\n> Play another time? Yes/No");
+		if (input.toLowerCase().startsWith("y")) {
+			client.createGame();
+		} else {
+			GameTUI.printMessage("Thanks for playing. See you next time!");
+			System.exit(0);
+		}
 		
 	}
 

@@ -17,20 +17,19 @@ public class Client extends Thread {
 	private BufferedReader in;
 	private BufferedWriter out;
 	private Player clientPlayer;
-	private InetAddress host = null;
+	private Player opponentPlayer;
+	private InetAddress host;
 	private int port = 0;
 	private Socket socket;
-	private Player opponentPlayer;
 	private Game game;
 	private ClientGame clientGame;
 	private static final String MESSAGE_SEPERATOR = " ";
-	private boolean offline; //TODO implement in main/constructor.
+
 
 	
 	public static void main(String[] args) {
-		Client client = new Client();
-		client.start();
-		client.createGame();
+		new Client();
+
 	}
 
 	public Client() {
@@ -54,12 +53,9 @@ public class Client extends Thread {
 	}
 
 	public void setupClient() {
-//		clientPlayer = createPlayer(Mark.RED);
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
-			//TODO import Validator as Jar (Monday). 
-			//InetAddressValidator.getInstance().isValid(host);
 		} catch (UnknownHostException e) {
 			printError("That is not a valid IP-Adres");
 			setupClient();
@@ -90,6 +86,8 @@ public class Client extends Thread {
 			printError("Something went wrong");
 			setupClient();
 		}
+		this.start();
+		this.createGame();
 		
 
 	}
@@ -152,8 +150,6 @@ public class Client extends Thread {
 
 
 	private void readServerResponse(String answer) {
-		//TODO Server_InvalidCommand and Server_ConnectionLost not yet implemented.
-
 		String[] replyList = answer.split(MESSAGE_SEPERATOR);
 		while (replyList != null) {
 			switch (replyList[0]) {
@@ -186,7 +182,7 @@ public class Client extends Thread {
 					clientGame.processTurn(answer);
 					break;
 				case Protocol.SERVER_GAMEOVER:
-					if(replyList[1] != null){
+					if (replyList[1] != null) {
 						clientGame.gameOverWinner(replyList[1]);
 					} else {
 						clientGame.gameOverDraw();
@@ -246,7 +242,7 @@ public class Client extends Thread {
 		System.err.println(text);
 
 	}
-	//TODO should have a Thread for itself?
+
 	public static String readString(String tekst) {
 		System.out.print(tekst + " ");
 		String antw = null;
