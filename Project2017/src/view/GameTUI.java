@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import controller.*;
 
 /**
- * TUI for Tic Tac Toe 3D
+ * TUI for Tic Tac Toe 3D.
  * 
  * @author Maarten Looijenga en Thomas Hogema
  *

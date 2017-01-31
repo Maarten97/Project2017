@@ -35,14 +35,12 @@ public class ClientGame extends Game {
 		String[] words = message.split(MESSAGE_SEPERATOR);
 		int x = -1;
 		int z = -1;
-		int y = -1;
 		try {
 			x = Integer.parseInt(words[2]);
 			z = Integer.parseInt(words[3]);
-			y = Integer.parseInt(words[4]);
 		} catch (NumberFormatException e) {
-			super.getGameTUI().printError("Server failt");
-			//Disconnect!
+			GameTUI.printError("Server failt");
+			//TODO Disconnect!
 		}
 		if (words[1].equalsIgnoreCase(clientPlayer.getName())) {
 			clientPlayer.placeTile(x, z, clientPlayer.getMark(), super.getBoard());
