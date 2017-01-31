@@ -53,10 +53,11 @@ public class ServerGame extends Game {
 					getCurrentClientHandler().getUserName() + MESSAGE_SEPERATOR 
 					+ x + MESSAGE_SEPERATOR + z + MESSAGE_SEPERATOR + y, currentPlayer);
 			currentPlayerIndex = (currentPlayerIndex + 1) % NUMBER_PLAYERS;
-			getCurrentClientHandler().getPlayer().placeTile(x, z, y, 
+			getCurrentClientHandler().getPlayer().placeTile(x, z, 
 							getCurrentClientHandler().getMark(), super.getBoard());
 			if (super.gameOver()) {
 				//TODO implement gameover.
+				server.closeServer();
 			}
 		}
 	}

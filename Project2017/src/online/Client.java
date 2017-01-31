@@ -23,10 +23,10 @@ public class Client extends Thread {
 	private Player opponentPlayer;
 	private Game game;
 	private static final String MESSAGE_SEPERATOR = " ";
+	private boolean offline; //TODO implement in main/constructor.
 	
 	public static void main(String[] args) {
 		Client client = new Client();
-		//eerst startup en socket connection maken.
 		client.start();
 		client.createGame();
 	}
@@ -35,44 +35,19 @@ public class Client extends Thread {
 		print("Welcome by Connect Four 3D!");
 		String gameMode = readString("Do you want to play online? (Y/N)");
 		if (!gameMode.toLowerCase().startsWith("y")) {
+
 			setupOfflineGame();
 		} else {
 			setupClient();
 		}
 	}
 	
-	/**
-	 * Reads the messages in the socket connection. It opens the inputstream and
-	 * will continuously be checked.
-	 */
-
-	public void run() {
-		boolean running = true;
-		try {
-			while (running) {
-
-				while (in.ready()) {
-					readServerResponse(in.readLine());
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
-		
 	public void setupOfflineGame() {
 		print("\nPlayer 1, please answer the next questions:");
 		setClientPlayer(createPlayer(Mark.RED));
 		print("\nPlayer 2, please answer the next questions:");
 		opponentPlayer = createPlayer(Mark.BLUE);
-		Game game = new Game(getClientPlayer(), opponentPlayer);
+		game = new Game(getClientPlayer(), opponentPlayer);
 		game.start();
 	}
 
@@ -117,6 +92,34 @@ public class Client extends Thread {
 
 	}
 	
+	/**
+	 * Reads the messages in the socket connection. It opens the inputstream and
+	 * will continuously be checked.
+	 */
+
+	public void run() {
+		boolean running = true;
+		try {
+			while (running) {
+
+				while (in.ready()) {
+					readServerResponse(in.readLine());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+		
+
+	
 	public void createGame() {
 		setClientPlayer(createPlayer(Mark.RED));
 		String playerName = getClientPlayerName().toLowerCase();
@@ -146,9 +149,8 @@ public class Client extends Thread {
 	}
 
 
-	
 	private void readServerResponse(String answer) {
-		// Server_InvalidCommand and Server_ConnectionLost not yet implemented.
+		//TODO Server_InvalidCommand and Server_ConnectionLost not yet implemented.
 
 		String[] replyList = answer.split(MESSAGE_SEPERATOR);
 		while (replyList != null) {
@@ -184,7 +186,8 @@ public class Client extends Thread {
 					print("Player " + replyList[1] + "has won the game!");
 					break;
 				default:
-					print(answer);
+					printError(answer);
+					
 					
 			}
 		}
@@ -196,10 +199,8 @@ public class Client extends Thread {
 		print("A game is being created for clients " + reply1 + "and" + reply2);
 		if (clientPlayer.getName().equals(reply1)) {
 			opponentPlayer = new ServerPlayer(reply2, Mark.BLUE);
-			game = new Game(clientPlayer, opponentPlayer);
 		} else {
 			opponentPlayer = new ServerPlayer(reply1, Mark.BLUE);
-			game = new Game(opponentPlayer, clientPlayer);
 		}
 		//TODO should we change the play() method in Game?
 
@@ -260,6 +261,8 @@ public class Client extends Thread {
 	public void setClientPlayer(Player clientPlayer) {
 		this.clientPlayer = clientPlayer;
 	}
+
+
 	
 
 
