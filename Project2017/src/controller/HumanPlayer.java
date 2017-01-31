@@ -29,18 +29,16 @@ public class HumanPlayer extends Player {
 
 	// -- Commands ---------------------------------------------------
 
-	/*
-	 * @ requires board != null; ensures board.isField(\result) &&
-	 * board.isEmptyField(\result);
-	 * 
-	 */
 	/**
 	 * Asks the user to input the field where to place the next mark. This is
 	 * done using the standard input/output.
 	 * 
-	 * @param board
-	 *            the game board
+	 * @param board the game board
 	 * @return the player's chosen field
+	 */
+	/*
+	 * @ requires board != null; ensures board.isField(\result) &&
+	 * board.isEmptyField(\result);
 	 */
 	public int[] determineMove(Board board) {
 
@@ -66,7 +64,6 @@ public class HumanPlayer extends Player {
 							+ "is not a valid choice. Please provide another coordinate");
 				}
 			}
-
 		}
 		return new int[] {choiceX, choiceZ};
 	}
