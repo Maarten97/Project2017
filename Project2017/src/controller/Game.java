@@ -23,17 +23,14 @@ public class Game /* extends Observable */ {
 
 	
 	/**
-	 * Creates a new Game object.
+	 * Creates a new Game object with two players.
 	 * 
-	 * @param s0 
-	 * 		The first player.
-	 * @param s1
-	 * 		The second player.
+	 * @param s0 The first player.
+	 * @param s1 The second player.
 	 */
-    /*@
-    requires s0 != null;
-    requires s1 != null;
-   */
+    /* @ requires s0 != null;
+     * @ requires s1 != null;
+     */
 	public Game(Player s0, Player s1) {
 		gameTui = new GameTUI(this);
 		board = new Board();
@@ -44,7 +41,7 @@ public class Game /* extends Observable */ {
 	}
 
 	/**
-	 * Starts the Tic Tac Toe game. <br>
+	 * Starts the game.
 	 * Asks after each ended game if the user want to continue. Continues until
 	 * the user does not want to play anymore.
 	 */
@@ -59,12 +56,14 @@ public class Game /* extends Observable */ {
 				doorgaan = true;
 			} else {
 				doorgaan = false;
+				gameTui.printMessage("Thanks for playing. See you next time!");
+				
 			}
 		}
 	}
 	
     /**
-     * Plays the Tic Tac Toe game. 
+     * Plays the game. 
      * First the (still empty) board is shown. Then the game is played until it
      * is over. Players can make a move one after the other. After each move,
      * the changed game situation is printed. in the end, the winner will be 

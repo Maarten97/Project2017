@@ -8,39 +8,39 @@ import model.Board;
 
 /**
  * Class with common player methods and utils.
+ * 
+ * @author Maarten Looijenga en Thomas Hogema
  */
 public class CommonStrategyUtils {
 
 	/**
-	 * Returns a set of all free fields
+	 * Returns a set of all free fields.
+	 * 
 	 * @param b Board to find empty field from.
 	 * @return Set with all free indexes
 	 */
-	/*@ requires board != null; 
-	 */
+	//@ requires board != null; 
 	public static Set<int[]> getFreeFields(Board b) {
-		Set<int[]> randomFreeCoordinate = new HashSet<>();
-		
+		Set<int[]> randomFreeCoordinates = new HashSet<>();
 		for (int x = 0; x < Board.DIM; x++) {
 			for (int y = 0; y < Board.DIM; y++) {
 				for (int z = 0; z < Board.DIM; z++) {
 					if (b.isEmptyField(x, y, z)) {
-						randomFreeCoordinate.add(new int[]{x, y, z});
+						randomFreeCoordinates.add(new int[]{x, y, z});
 					}
 				}
 			}
 		}
-		return randomFreeCoordinate;
-		
+		return randomFreeCoordinates;
 	}
 	
 	/**
 	 * Get a random empty field.
+	 * 
 	 * @param b board to get free coordinates from
 	 * @return the coordinates of a random empty field in an int array
 	 */
-	/* @ requires board != null; 
-	 */
+	// @ requires board != null;
 	public static int[] getRandomFreeField(Board b) {
 		Set<int[]> freeFieldIndexes = getFreeFields(b);
 
