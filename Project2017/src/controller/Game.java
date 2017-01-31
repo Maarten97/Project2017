@@ -82,9 +82,9 @@ public class Game /* extends Observable */ {
 		}
 		if (hasWinner()) {
 			if (isWinner(players[0].getMark())) {
-				gameTui.printResult(players[0]);
+				gameTui.printWinner(players[0]);
 			} else {
-				gameTui.printResult(players[1]);
+				gameTui.printWinner(players[1]);
 			}
 		} else {
 			GameTUI.printDraw();

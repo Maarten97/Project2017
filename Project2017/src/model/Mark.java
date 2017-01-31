@@ -1,18 +1,19 @@
 package model;
+
+/**
+ * Enum to represent tiles. 
+ * 
+ * @author Thomas Hogema en Maarten Looijenga
+ *
+ */
 public enum Mark {
     
     EMPTY, XX, OO;
-
 
     /**
      * Returns the other mark.
      * 
      * @return The other mark. If the Mark is Empty, Empty will be returned.
-     */
-    /*
-     * @ ensures this == Mark.RED ==> \result == Mark.RED;
-     * @ ensures this == Mark.BLUE ==> \result == Mark.BLUE;
-     * @ ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
      */
     public Mark other() {
         if (this == XX) {
