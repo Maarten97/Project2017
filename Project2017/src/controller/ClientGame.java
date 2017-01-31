@@ -53,7 +53,7 @@ public class ClientGame extends Game {
 	}
 
 	public void gameOverWinner(String winner) {
-		GameTUI().printMessage("Game is over, player " + winner + "has won!");
+		GameTUI.printMessage("Game is over, player " + winner + "has won!");
 		gameOverDraw();
 		
 		

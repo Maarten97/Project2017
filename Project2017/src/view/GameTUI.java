@@ -91,7 +91,7 @@ public class GameTUI {
 	 * 
 	 * @param text Error to be printed
 	 */
-	public void printError(String text) {
+	public static void printError(String text) {
 		System.err.println(text);
 	}
 	
