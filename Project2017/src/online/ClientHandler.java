@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import controller.*;
+import model.Mark;
+
 public class ClientHandler extends Thread {
 
 	private Server server;
@@ -14,7 +17,9 @@ public class ClientHandler extends Thread {
 	private BufferedReader in;
 	private BufferedWriter out;
 	private String userName;
-	
+	private ServerPlayer player;
+	private Mark mark;
+
 	public ClientHandler(Server serverArg, Socket socketArg) throws IOException {
 		server = serverArg;
 		sock = socketArg;
@@ -71,6 +76,23 @@ public class ClientHandler extends Thread {
 
 	public void setUserName(String name) {
 		this.userName = name;
+	}
+
+	public ServerPlayer getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(ServerPlayer player) {
+		this.player = player;
+		this.setMark(player.getMark());
+	}
+
+	public Mark getMark() {
+		return mark;
+	}
+
+	public void setMark(Mark mark) {
+		this.mark = mark;
 	}
 
 }

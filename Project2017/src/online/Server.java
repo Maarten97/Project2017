@@ -17,7 +17,7 @@ public class Server {
 	private static final String MESSAGE_SEPERATOR = " ";
 	private int port = 1337;
 	public String localhost;
-	private Game game;
+	private ServerGame game;
 	private ServerPlayer player1;
 	private ServerPlayer player2;
 
@@ -114,22 +114,27 @@ public class Server {
 	
 			// Game
 			case Protocol.CLIENT_SETMOVE:
+				game.processTurn(input, clientHandler);
 				break;
 		}
 	}
+
 
 
 	//@ ensures playGame.size == 2;
 	private void startServerGame() {
 		lobby.remove(playGame.get(0));
 		String playerName1 = playGame.get(0).getUserName();
+		player1 = new ServerPlayer(playerName1, Mark.RED);
+		playGame.get(0).setPlayer(player1);
 		lobby.remove(playGame.get(1));
 		String playerName2 = playGame.get(1).getUserName();
-		player1 = new ServerPlayer(playerName1, Mark.RED);
 		player2 = new ServerPlayer(playerName2, Mark.BLUE);
-		game = new Game(player1, player2);
+		playGame.get(1).setPlayer(player2);
+		game = new ServerGame(playGame.get(0), playGame.get(1), this);
 		this.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
 										+ MESSAGE_SEPERATOR + playerName2, playGame);
+		game.start();
 	}
 
 	/**

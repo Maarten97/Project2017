@@ -70,7 +70,7 @@ public class Game /* extends Observable */ {
      * the changed game situation is printed. in the end, the winner will be 
      * printed. If there is a draw, this will be printed.
      */
-	private void play() {
+	public void play() {
 		update();
 		while (!this.gameOver()) {
 			players[currentPlayer].makeMove(board);
@@ -92,7 +92,7 @@ public class Game /* extends Observable */ {
 	 * Resets the game. <br>
 	 * The board is emptied and player[0] becomes the current player.
 	 */
-	private void reset() {
+	public void reset() {
 		currentPlayer = 0;
 		board.reset();
 
@@ -101,7 +101,7 @@ public class Game /* extends Observable */ {
 	/**
 	 * Prints the game situation.
 	 */
-	private void update() {
+	public void update() {
 		System.out.println("\ncurrent game situation: \n\n" + gameTui.toString() + "\n");
 	}
 
@@ -174,6 +174,10 @@ public class Game /* extends Observable */ {
 	/* @pure */
 	public boolean isDraw() {
 		return board.isFull();
+	}
+	
+	public Player getCurrentPlayer(int currentPlayer){
+		return players[currentPlayer];
 	}
 
 	/**
