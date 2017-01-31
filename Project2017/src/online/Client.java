@@ -21,6 +21,7 @@ public class Client extends Thread {
 	private int port = 0;
 	private Socket socket;
 	private Player opponentPlayer;
+	private Game game;
 	private static final String MESSAGE_SEPERATOR = " ";
 	
 	public static void main(String[] args) {
@@ -76,7 +77,7 @@ public class Client extends Thread {
 	}
 
 	public void setupClient() {
-		clientPlayer = createPlayer(Mark.RED);
+//		clientPlayer = createPlayer(Mark.RED);
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
 														+ "you want to connect to?"));
@@ -165,8 +166,7 @@ public class Client extends Thread {
 					print("Wait until another player joins!");
 					break;
 				case Protocol.SERVER_STARTGAME:
-					print("A game is being created for clients " + replyList[1] + 
-															"and" + replyList[2]);
+					startServerGame(replyList[1], replyList[2]);
 					break;
 
 				// GamePart
@@ -191,11 +191,24 @@ public class Client extends Thread {
 
 		
 	}
+	//@ requires clientPlayer.hasMark == Mark.RED;
+	public void startServerGame(String reply1, String reply2) {
+		print("A game is being created for clients " + reply1 + "and" + reply2);
+		if (clientPlayer.getName().equals(reply1)) {
+			opponentPlayer = new ServerPlayer(reply2, Mark.BLUE);
+			game = new Game(clientPlayer, opponentPlayer);
+		} else {
+			opponentPlayer = new ServerPlayer(reply1, Mark.BLUE);
+			game = new Game(opponentPlayer, clientPlayer);
+		}
+		//TODO should we change the play() method in Game?
+
+	}
 	
 	public void serverAcceptRequest() {
 		print("Client has joined the server");
 		String start = readString("Enter 'start' if you want to start the game");
-		if (start != "start") {
+		if (!start.contains("start")) {
 			serverAcceptRequest();
 		}
 		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);
