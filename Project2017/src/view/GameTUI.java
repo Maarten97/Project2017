@@ -22,7 +22,7 @@ public class GameTUI {
 	 * @return a print of all 4 board levels.
 	 */
 	public String printBoard() {
-		return game.getBoard().toString();
+		return "\ncurrent game situation: \n\n" + game.getBoard().toString() + "\n";
 
 	}
 

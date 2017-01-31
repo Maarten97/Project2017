@@ -10,6 +10,19 @@ import model.Mark;
  */
 public interface Strategy {
 
-	public String getName();
+	/**
+	 * Returns the name of the strategy.
+	 * 
+	 * @return name of the strategy
+	 */
+	/*@ pure */ public String getName();
+	
+	/**
+	 * Determines a move.
+	 * 
+	 * @param b Board the move has to be played on.
+	 * @param m Mark to be placed on the board.
+	 * @return an int array with the coordinates for a move.
+	 */
 	public int[] determineMove(Board b, Mark m);
 }
