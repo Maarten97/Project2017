@@ -20,7 +20,7 @@ public class GameTUITest {
 		int i = GameTUI.readInt("Typ je int: ");
 		System.out.println("je typte: " + i);
 		
-		HumanPlayer henk = new HumanPlayer("Henk", Mark.RED);
+		HumanPlayer henk = new HumanPlayer("Henk", Mark.XX);
 		henk.determineMove(new Board());
 	}
 

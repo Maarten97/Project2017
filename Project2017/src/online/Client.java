@@ -45,9 +45,9 @@ public class Client extends Thread {
 	
 	public void setupOfflineGame() {
 		print("\nPlayer 1, please answer the next questions:");
-		setClientPlayer(createPlayer(Mark.RED));
+		setClientPlayer(createPlayer(Mark.XX));
 		print("\nPlayer 2, please answer the next questions:");
-		opponentPlayer = createPlayer(Mark.BLUE);
+		opponentPlayer = createPlayer(Mark.OO);
 		game = new Game(getClientPlayer(), opponentPlayer);
 		game.start();
 	}
@@ -122,7 +122,7 @@ public class Client extends Thread {
 
 	
 	public void createGame() {
-		setClientPlayer(createPlayer(Mark.RED));
+		setClientPlayer(createPlayer(Mark.XX));
 		String playerName = getClientPlayerName().toLowerCase();
 		this.sendMessage(Protocol.CLIENT_JOINREQUEST + MESSAGE_SEPERATOR + playerName 
 													+ MESSAGE_SEPERATOR + "0 0 0 0");

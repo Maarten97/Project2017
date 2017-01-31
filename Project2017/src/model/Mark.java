@@ -1,7 +1,7 @@
 package model;
 public enum Mark {
     
-    EMPTY, RED, BLUE;
+    EMPTY, XX, OO;
 
 
     /**
@@ -15,10 +15,10 @@ public enum Mark {
      * @ ensures this == Mark.EMPTY ==> \result == Mark.EMPTY;
      */
     public Mark other() {
-        if (this == RED) {
-            return BLUE;
-        } else if (this == BLUE) {
-            return RED;
+        if (this == XX) {
+            return OO;
+        } else if (this == OO) {
+            return XX;
         } else {
             return EMPTY;
         }
@@ -30,8 +30,8 @@ public enum Mark {
      */
     public String toShortString() {
 		switch (this) {
-	        case RED: return "[X]";
-	        case BLUE: return "[O]";
+	        case XX: return "[X]";
+	        case OO: return "[O]";
 	        case EMPTY: return "[ ]";
 	        default: throw new IllegalArgumentException();
 		}

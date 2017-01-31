@@ -164,10 +164,10 @@ public class Game /* extends Observable */ {
 	//@ ensures \result == Mark.BLUE || \result == Mark.RED;
 	public Mark getWinner() {
 		if (hasWinner()) {
-			if (isWinner(Mark.BLUE)) {
-				return Mark.BLUE;
+			if (isWinner(Mark.OO)) {
+				return Mark.OO;
 			} else {
-				return Mark.RED;
+				return Mark.XX;
 			}
 		}
 		return Mark.EMPTY;
@@ -205,7 +205,7 @@ public class Game /* extends Observable */ {
 	 */
 	// @ ensures \result == isWinner(Mark.BLUE) | \result == isWinner(Mark.RED);
 	/* @pure */ public boolean hasWinner() {
-		return isWinner(Mark.BLUE) || isWinner(Mark.RED);
+		return isWinner(Mark.OO) || isWinner(Mark.XX);
 	}
 	
 	/**

@@ -125,11 +125,11 @@ public class Server {
 	private void startServerGame() {
 		lobby.remove(playGame.get(0));
 		String playerName1 = playGame.get(0).getUserName();
-		player1 = new ServerPlayer(playerName1, Mark.RED);
+		player1 = new ServerPlayer(playerName1, Mark.XX);
 		playGame.get(0).setPlayer(player1);
 		lobby.remove(playGame.get(1));
 		String playerName2 = playGame.get(1).getUserName();
-		player2 = new ServerPlayer(playerName2, Mark.BLUE);
+		player2 = new ServerPlayer(playerName2, Mark.OO);
 		playGame.get(1).setPlayer(player2);
 		game = new ServerGame(playGame.get(0), playGame.get(1), this);
 		this.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 

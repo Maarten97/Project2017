@@ -15,13 +15,13 @@ public class BoardToStringTest {
 	    System.out.println ((char)27 + "[2J");*/
 	    
 		Board b = new Board();
-		b.setField(0, 0, Mark.RED);
-		b.setField(0, 0, Mark.BLUE);
+		b.setField(0, 0, Mark.XX);
+		b.setField(0, 0, Mark.OO);
 		
 		System.out.println(b.toString());
 		System.out.println("hai");
 		System.out.println(b.getField(0, 0, 0));
-		System.out.println(Mark.RED == b.getField(0, 0, 0));
+		System.out.println(Mark.XX == b.getField(0, 0, 0));
 		System.out.println("test: "  + (false || true || false));
 	}
 }
