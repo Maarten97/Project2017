@@ -4,10 +4,15 @@ package online;
  * Programming Project module 2 Software Systems 2016-2017
  * Interface Protocol with the made agreements during the practical of 11-01-2017 
  * @author Niek Khasuntsev
- * @version 1.0.3 (26-01-2017)
+ * @version 1.0.4 (31-01-2017)
  * 
  * Changelog:
  * 
+ * v1.0.4:
+ * 	Added option for a draw in:
+ * 		-gameover
+ * 		-leaderboard
+ * 		
  * v1.0.3:
  * 	Deleted whisper commands
  * 
@@ -210,12 +215,16 @@ public interface Protocol {
 	 * Used to announce that the game is over 
 	 * 
 	 * Arguments:
-	 * - name = Name of the client that won the game
+	 * - name = Name of the client that won the game. If name == "null", then the game was a draw.
 	 * 
 	 * Example:
 	 * victor wins the game 
 	 * 
-	 * code: "gameover victor
+	 * code: "gameover victor"
+	 * 
+	 *	Draw
+	 *
+	 * code: "gameover"
 	 * Direction: Server -> Client		
 	 */
 	public static final String SERVER_GAMEOVER = "gameover";
@@ -371,7 +380,7 @@ public interface Protocol {
 	public static final String CLIENT_REQUESTLEADERBOARD = "requestleaderboard";
 	
 	/**
-	 * Used to send the data of the game to the leaderboad
+	 * Used to send the data of the game to the leaderboard. Can be ignored if the server saves the data to the leaderboard.
 	 * 
 	 * Arguments:
 	 * - name  = Name of the player
@@ -379,13 +388,17 @@ public interface Protocol {
 	 * - time = date and time when the game was played
 	 * 
 	 * Requirements for arguments:
-	 * - score = 0 || 1 (also  the client that disconnects, loses the game
+	 * - score = 0 || 1 || 3
+	 * 	 	0 = loss
+	 *   	1 = draw
+	 *   	3 = win
+	 *  	(also  the client that disconnects, loses the game)
 	 * - time = UNIX Timestamp
 	 * 
 	 * Example:
 	 * I won my last game 
 	 * 
-	 * code: setleaderboard niek 1 1484670803
+	 * code: "setleaderboard niek 3 1484670803"
 	 * 
 	 * Direction: Client -> Server
 	 */
@@ -403,9 +416,9 @@ public interface Protocol {
 	 * This is done as often as needed. Untill all the entries in the leaderboard are returned
 	 * 
 	 * Example: 
-	 * There are 2 entries in the leaderbaord:
+	 * There are 2 entries in the leaderbaord. 1 draw and 1 game that I lost
 	 * 
-	 * code: "broadcastleaderboard niek 1 1484670803 niek 0 1484671115
+	 * code: "broadcastleaderboard niek 1 1484670803 niek 0 1484671115"
 	 * 
 	 * Direction: Server -> Client
 	 * 
