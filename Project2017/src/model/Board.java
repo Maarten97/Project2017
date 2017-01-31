@@ -121,7 +121,6 @@ public class Board {
 	 */
 	// @ requires this.isField(row,col);
 	// @ ensures \result == (this.getField(row,col) == Mark.EMPTY);
-	// TODO make an exception of this.
 	/* @pure */ public boolean isEmptyField(int row, int col, int level) {
 		if (isField(row, col, level)) {
 			return fields[row][level][col] == Mark.EMPTY;
@@ -146,7 +145,7 @@ public class Board {
 	 * @param m the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */public boolean hasRow(Mark m) {
 		for (int level = 0; level < DIM; level++) {
 			for (int row = 0; row < DIM; row++) {
@@ -170,7 +169,7 @@ public class Board {
 	 * @param m the mark of interest
 	 * @return true if there is a column controlled by m
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */ public boolean hasColumn(Mark m) {
 		for (int level = 0; level < DIM; level++) {
 			for (int column = 0; column < DIM; column++) {
@@ -194,7 +193,7 @@ public class Board {
 	 * @param m the mark of interest
 	 * @return true if there is a level controlled by m
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */ public boolean hasLevel(Mark m) {
 		for (int col = 0; col < DIM; col++) {
 			for (int row = 0; row < DIM; row++) {
@@ -218,7 +217,7 @@ public class Board {
 	 * @param m the mark of interest
 	 * @return true if there is a diagonal controlled by m
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasPlaneDiagonal(Mark m) {
 		Boolean hasDiagonal = true;
@@ -254,7 +253,7 @@ public class Board {
 	 * @param m the mark to check
 	 * @return true if there is at least one vertical diagonal.
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasVerticalDiagonal(Mark m) {
 		return hasXXXDiagonal(m) || hasXYXDiagonal(m) || hasYXXDiagonal(m) || hasYYXDiagonal(m);
@@ -267,7 +266,7 @@ public class Board {
 	 * @param m the mark of interest.
 	 * @return true if the diagonal is occupied by m.
 	 */ 
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasXXXDiagonal(Mark m) {
 		boolean diagonal = true;
@@ -286,7 +285,7 @@ public class Board {
 	 * @param m the mark of interest.
 	 * @return true if the diagonal is occupied by m.
 	 */ 
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasXYXDiagonal(Mark m) {
 		boolean diagonal = true;
@@ -305,7 +304,7 @@ public class Board {
 	 * @param m the mark of interest.
 	 * @return true if the diagonal is occupied by m.
 	 */ 
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasYXXDiagonal(Mark m) {
 		boolean diagonal = true;
@@ -324,7 +323,7 @@ public class Board {
 	 * @param m the mark of interest.
 	 * @return true if the diagonal is occupied by m.
 	 */ 
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasYYXDiagonal(Mark m) {
 		boolean diagonal = true;
@@ -343,7 +342,7 @@ public class Board {
 	 * @param m the mark to check for.
 	 * @return true is Mark m has a complete diagonal on column and level.
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasLevelDiagonal(Mark m) {
 		return hasLevelDiagonalTopBottom(m) || hasLevelDiagonalBottomTop(m) ||
@@ -356,7 +355,7 @@ public class Board {
 	 * @param m the mark to check for
 	 * @return true if Mark m holds a complete diagonal
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasLevelDiagonalTopBottom(Mark m) {
 		for (int column = 0; column < DIM; column++) {
@@ -379,7 +378,7 @@ public class Board {
 	 * @param m the mark to check for
 	 * @return true if Mark m holds a complete diagonal
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasLevelDiagonalBottomTop(Mark m) {
 		for (int column = 0; column < DIM; column++) {
@@ -402,7 +401,7 @@ public class Board {
 	 * @param m the mark to check for
 	 * @return true if Mark m holds a complete diagonal
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasLevelDiagonalLeftRight(Mark m) {
 		for (int row = 0; row < DIM; row++) {
@@ -425,7 +424,7 @@ public class Board {
 	 * @param m the mark to check for
 	 * @return true if Mark m holds a complete diagonal
 	 */
-	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
+	// @requires Mark m == Mark.XX || Mark m == Mark.OO;
 	/* @ pure */
 	public boolean hasLevelDiagonalRightLeft(Mark m) {
 		for (int row = 0; row < DIM; row++) {
@@ -541,14 +540,5 @@ public class Board {
 			board = board + "\n";
 		}
 		return board;
-
-		/*
-		 * per level: String level = ""; for (int k = 0; k < 4; k++) { if (k >
-		 * 0) { level = level + "\n"; } level = level + "Level: " + k + "\n";
-		 * 
-		 * for (int j = 0; j < 4; j++) { String row = ""; for (int i = 0; i < 4;
-		 * i++) { row = row + getField(i, j, k).toShortString() + " "; } level =
-		 * level + row + "\n"; } } return level;
-		 */
 	}
 }
