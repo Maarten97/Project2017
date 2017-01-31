@@ -126,16 +126,10 @@ public class Server {
 		lobby.remove(playGame.get(1));
 		String playerName2 = playGame.get(1).getUserName();
 		player1 = new ServerPlayer(playerName1, Mark.RED);
-		game = new Game(player1, player2)
-		
-		
-			
-		
-		this.broadcast(Protocol.SERVER_STARTGAME, playGame);
-		//TODO now we should start a game
-		System.err.println("Do not expect to see this.");
-		
-		
+		player2 = new ServerPlayer(playerName2, Mark.BLUE);
+		game = new Game(player1, player2);
+		this.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
+										+ MESSAGE_SEPERATOR + playerName2, playGame);
 	}
 
 	/**
