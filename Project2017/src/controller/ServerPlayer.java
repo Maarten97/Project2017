@@ -21,7 +21,7 @@ public class ServerPlayer extends Player {
 	/*
 	 * @ ensures 
 	 */
-	public void placeTile(int row, int column, int level, Mark m, Board b) {
+	public void placeTile(int row, int column, Mark m, Board b) {
 		b.setField(row, column, m);
 	}
 
