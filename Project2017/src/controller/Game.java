@@ -134,11 +134,9 @@ public class Game /* extends Observable */ {
 			return true;
 		} else if (board.hasRow(m)) {
 			return true;
-		} else if (board.hasPlaneDiagonal(m)) {
-			return true;
-		} else if (board.hasVerticalDiagonal(m)) {
-			return true;
 		} else if (board.hasLevel(m)) {
+			return true;
+		} else if (board.hasPlaneDiagonal(m)) {
 			return true;
 		} else if (board.hasVerticalDiagonal(m)) {
 			return true;
@@ -172,6 +170,7 @@ public class Game /* extends Observable */ {
 	 */
 	// @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM;
 	// this.getField(i) != Mark.EMPTY);
+	// @ ensures hasWinner() == false
 	/* @pure */
 	public boolean isDraw() {
 		return board.isFull();
