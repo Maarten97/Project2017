@@ -101,7 +101,7 @@ public class Game /* extends Observable */ {
 	 * Prints the game situation.
 	 */
 	public void update() {
-		System.out.println("\ncurrent game situation: \n\n" + gameTui.toString() + "\n");
+		System.out.println("\ncurrent game situation: \n\n" + gameTui.printBoard() + "\n");
 	}
 
 	public Board getBoard() {
