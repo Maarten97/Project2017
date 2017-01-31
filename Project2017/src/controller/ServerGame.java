@@ -24,6 +24,7 @@ public class ServerGame extends Game {
 	public void start() {
 		reset();
 		currentPlayerIndex = 0;
+		sendTurn(); 
 		
 	}
 	

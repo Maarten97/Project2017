@@ -67,4 +67,6 @@ public class HumanPlayer extends Player {
 		}
 		return new int[] {choiceX, choiceZ};
 	}
+
+
 }

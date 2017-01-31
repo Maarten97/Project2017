@@ -25,6 +25,7 @@ public class Client extends Thread {
 	private ClientGame clientGame;
 	private static final String MESSAGE_SEPERATOR = " ";
 	private boolean offline; //TODO implement in main/constructor.
+
 	
 	public static void main(String[] args) {
 		Client client = new Client();
@@ -175,13 +176,14 @@ public class Client extends Thread {
 				// GamePart
 				case Protocol.SERVER_MOVEREQUEST:
 					print("It is your turn to make a move");
-					// doMove
+					clientGame.doPlayerMove();
 					break;
 				case Protocol.SERVER_DENYMOVE:
 					printError("That move was not valid");
+					clientGame.doPlayerMove();
 					break;
 				case Protocol.SERVER_NOTIFYMOVE:
-					// TODO implement
+					clientGame.processTurn(answer);
 					break;
 				case Protocol.SERVER_GAMEOVER:
 					print("Player " + replyList[1] + "has won the game!");
@@ -195,18 +197,8 @@ public class Client extends Thread {
 
 		
 	}
-//	//@ requires clientPlayer.hasMark == Mark.RED;
-//	public void startServerGame(String reply1, String reply2) {
-//		print("A game is being created for clients " + reply1 + "and" + reply2);
-//		if (clientPlayer.getName().equals(reply1)) {
-//			opponentOnlinePlayer = new ServerPlayer(reply2, Mark.BLUE);
-//		} else {
-//			opponentPlayer = new ServerPlayer(reply1, Mark.BLUE);
-//		}
-//		clientGame = new ClientGame(clientPlayer, opponentPlayer, this);
-//		clientGame.start();
-//	}
-//	
+
+
 	public void serverAcceptRequest() {
 		print("Client has joined the server");
 		String start = readString("Enter 'start' if you want to start the game");
@@ -215,7 +207,19 @@ public class Client extends Thread {
 		}
 		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);
 	}
-
+	
+	//@ requires clientPlayer.hasMark == Mark.XX;
+	public void startServerGame(String reply1, String reply2) {
+		print("A game is being created for clients " + reply1 + "and" + reply2);
+		if (clientPlayer.getName().equals(reply1)) {
+			opponentPlayer = new ServerPlayer(reply2, Mark.OO);
+		} else {
+			opponentPlayer = new ServerPlayer(reply1, Mark.OO);
+		}
+		clientGame = new ClientGame(clientPlayer, opponentPlayer, this);
+		clientGame.start();
+	}
+	
 
 	/** send a message to a ClientHandler. */
 	public void sendMessage(String msg) {

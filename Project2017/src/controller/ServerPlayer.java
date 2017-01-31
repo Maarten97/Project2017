@@ -27,21 +27,6 @@ public class ServerPlayer extends Player {
 	}
 
 	/**
-	 * Places a tile on the given coordinates.
-	 * 
-	 * @param row Row the tile has to be placed on.
-	 * @param column Column the tile has to be placed on.
-	 * @param m Mark to be placed on this location.
-	 * @param b Board the move has to be made on
-	 */
-	/*
-	 * @ requires name != null; requires mark == Mark.RED || mark == Mark.BLUE;
-	 */
-	public void placeTile(int row, int column, Mark m, Board b) {
-		b.setField(row, column, m);
-	}
-
-	/**
 	 * Needs to be overwritten because Player is an abstract class.
 	 * Redundant code.
 	 */
