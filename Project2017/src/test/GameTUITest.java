@@ -14,11 +14,11 @@ public class GameTUITest {
 
 	public static void main(String[] args) {
 
-		String a = GameTUI.readString("typ hier wat leuks: ");
+		/*String a = GameTUI.readString("typ hier wat leuks: ");
 		System.out.println("je typte: " + a);
 		
 		int i = GameTUI.readInt("Typ je int: ");
-		System.out.println("je typte: " + i);
+		System.out.println("je typte: " + i);*/
 		
 		HumanPlayer henk = new HumanPlayer("Henk", Mark.XX);
 		henk.determineMove(new Board());

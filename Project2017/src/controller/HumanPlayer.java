@@ -31,7 +31,7 @@ public class HumanPlayer extends Player {
 
 	/**
 	 * Asks the user to input the field where to place the next mark. This is
-	 * done using the standard input/output.
+	 * done using the standard input/output. The user can also ask for a hint.
 	 * 
 	 * @param board the game board
 	 * @return the player's chosen field
@@ -41,16 +41,31 @@ public class HumanPlayer extends Player {
 	 * board.isEmptyField(\result);
 	 */
 	public int[] determineMove(Board board) {
-
 		boolean needsInput = true;
 		int choiceX = -1;
 		int choiceZ = -1;
-
+		
 		while (needsInput) {
+			String answer = GameTUI.readString("\n Tip: if you're stuck, type 'hint' to get a "
+					+ "suggestion for a move \n > " + getName() + " (" + getMark().toString() + ")" 
+					+ ", What row do you want to place your tile? ");
+			
+			if (answer.toLowerCase().equals("hint")) {
+				int[] sug = CommonStrategyUtils.getRandomFreeField(board);
+				GameTUI.printMessage("A possible move is column " + sug[1] + " and row " + sug[0]);
+				
+				choiceX = GameTUI.readInt("> " + getName() + " (" + getMark().toString() + ")" + 
+						", " + "What row do you want to place your tile? ");
+			} else {
+				try {
+					choiceX = Integer.parseInt(answer);
+				} catch (NumberFormatException e) {
+					GameTUI.printMessage("Please provide an integer as input");
+					continue;
+				}
+			}
+			
 			choiceZ = GameTUI.readInt("> " + getName() + " (" + getMark().toString() + ")" + ", "
-					+ "What column do you want to place your tile? ");
-
-			choiceX = GameTUI.readInt("> " + getName() + " (" + getMark().toString() + ")" + ", "
 					+ "What row do you want to place your tile? ");
 
 			needsInput = !board.validMove(choiceX, choiceZ);

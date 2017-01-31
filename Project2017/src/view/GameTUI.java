@@ -82,7 +82,7 @@ public class GameTUI {
 	 * 
 	 * @param text Text to be printed
 	 */
-	public void printMessage(String text) {
+	public static void printMessage(String text) {
 		System.out.println(text);
 	}
 
