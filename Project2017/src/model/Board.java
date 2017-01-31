@@ -4,8 +4,6 @@ package model;
  * Board of the 3D 4 in a row game.
  * 
  * @author Thomas Hogema en Maarten Looijenga
- * @version 1.0
- *
  */
 public class Board {
 	// TODO Still have to change the JML and the Javadoc and separate queries
@@ -154,8 +152,7 @@ public class Board {
 	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 * 
-	 * @param m
-	 *            the mark of interest
+	 * @param m the mark of interest
 	 * @return true if there is a row controlled by m
 	 */
 	// @requires Mark m == Mark.RED || Mark m == Mark.BLUE;
@@ -471,8 +468,7 @@ public class Board {
 	 */
 	// @ ensures \result == (\forall int i; i <= 0 & i < DIM * DIM * DIM;
 	// this.getField(i) != Mark.EMPTY);
-	/* @pure */
-	public boolean isFull() {
+	/* @pure */ public boolean isFull() {
 		for (int x = 0; x < DIM; x++) {
 			for (int y = 0; y < DIM; y++) {
 				for (int z = 0; z < DIM; z++) {
@@ -504,17 +500,13 @@ public class Board {
 	}
 
 	/**
-	 * Sets the content of the field represented by the (row,col,level)
+	 * Sets the content of the field represented by the (row, column, level)
 	 * collection to the mark m.
 	 * 
-	 * @param row
-	 *            the field's row
-	 * @param col
-	 *            the field's column
-	 * @param level
-	 *            the height(or level) of the field.
-	 * @param m
-	 *            the mark to be placed
+	 * @param row the field's row
+	 * @param col the field's column
+	 * @param level the height(or level) of the field.
+	 * @param m the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
 	// @ ensures this.getField(row,col,level) == m;

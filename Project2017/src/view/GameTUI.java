@@ -59,6 +59,7 @@ public class GameTUI {
 
 		} catch (IOException e) {
 		} catch (NumberFormatException e) {
+			//als geen geldige int (dus waarschijnlijke 
 			return -12845;
 		}
 
@@ -66,7 +67,9 @@ public class GameTUI {
 	}
 	
 	
-	
+	public void printMessage(String text) {
+		System.out.println(text);
+	}
 
 	public void printResult(Player player) {
 		System.out.println("Speler " + player.getName() + 
