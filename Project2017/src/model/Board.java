@@ -140,6 +140,32 @@ public class Board {
 	}
 
 	/**
+	 * Checks if the mark m has won. A mark wins if it controls at least one
+	 * row, column or diagonal.
+	 *
+	 * @param m the mark of interest
+	 * @return true if the mark has won
+	 */
+	// @ requires m == Mark.XX || m == Mark.OO;
+	public boolean isWinner(Mark m) {
+		if (hasColumn(m)) {
+			return true;
+		} else if (hasRow(m)) {
+			return true;
+		} else if (hasLevel(m)) {
+			return true;
+		} else if (hasPlaneDiagonal(m)) {
+			return true;
+		} else if (hasVerticalDiagonal(m)) {
+			return true;
+		} else if (hasLevelDiagonal(m)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Checks whether there is a row which is full and only contains the mark m.
 	 * 
 	 * @param m the mark of interest
