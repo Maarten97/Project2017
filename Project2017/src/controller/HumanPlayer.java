@@ -80,7 +80,6 @@ public class HumanPlayer extends Player {
 				}
 			}
 		}
-		System.out.println("column(X) = " + choiceX + " row(Z) = " + choiceZ);
 		return new int[] {choiceZ, choiceX};
 	}
 
