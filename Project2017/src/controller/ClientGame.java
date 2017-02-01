@@ -29,6 +29,7 @@ public class ClientGame extends Game {
 		choise = clientPlayer.determineMove(super.getBoard());
 		int x = choise[1];
 		int z = choise[0];
+		System.out.println("x: " + x + " z: " + z);
 		client.sendMessage(Protocol.CLIENT_SETMOVE + MESSAGE_SEPERATOR + clientPlayer.getName() + 
 				MESSAGE_SEPERATOR + x + MESSAGE_SEPERATOR + z);
 	}
