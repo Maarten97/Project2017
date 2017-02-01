@@ -9,6 +9,7 @@ import java.net.Socket;
 
 import controller.*;
 import model.Mark;
+import view.GameTUI;
 
 public class ClientHandler extends Thread {
 
@@ -49,7 +50,7 @@ public class ClientHandler extends Thread {
 	}
 
 	public void sendMessage(String message) {
-		System.out.println(message);
+		GameTUI.printMessage("Server sended message: " + message);
 		try {
 			out.write(message);
 			out.newLine();

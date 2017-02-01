@@ -8,18 +8,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import controller.*;
-import model.Mark;
+import view.GameTUI;
 
 public class Server {
 
 	private static final String MESSAGE_SEPERATOR = " ";
 	private int port = 1337;
 	public String localhost;
-	private ServerGame game;
-	private ServerPlayer player1;
-	private ServerPlayer player2;
 
 	/**
 	 * All clients connected to the server.
@@ -28,6 +28,7 @@ public class Server {
 	private List<ClientHandler> playGame;
 	private List<ClientHandler> lobby;
 	private ServerSocket serverSock;
+	private Map<ServerGame, List<ClientHandler>> gamesPlaying;
 
 	/**
 	 * All games that has been started.
@@ -42,19 +43,21 @@ public class Server {
 		this.clients = new ArrayList<>();
 		this.playGame = new ArrayList<>();
 		this.lobby = new ArrayList<>();
+		gamesPlaying = new HashMap<>();
 
+		
 		try {
-			String inputPort = readString("\nWhat is the Server's port? " 
+			String inputPort = GameTUI.readString("\nWhat is the Server's port? " 
 										+ "\n(Leave blank for standard port)");
 			if (inputPort.equals("")) {
 				port = Protocol.PORTNUMBER;
 			} else {
 				port = Integer.parseInt(inputPort);
 			}
-			print("\nStarting Server + \nIP Server: " + this.getIP());
+			GameTUI.printMessage("\nStarting Server + \nIP Server: " + this.getIP());
 			this.start();
 		} catch (NumberFormatException e) {
-			printError("ERROR: not a valid portnummer!");
+			GameTUI.printError("ERROR: not a valid portnummer!");
 			new Server();
 		}
 	}
@@ -66,13 +69,13 @@ public class Server {
 			while (true) {
 				Socket sock = serverSock.accept();
 				i++;
-				print("Client number " + i + " connected");
+				GameTUI.printMessage("Client number " + i + " connected");
 				ClientHandler handler = new ClientHandler(this, sock);
 				handler.start();
 				addHandler(handler);
 			}
 		} catch (IOException e) {
-			printError("ERROR: could not create a socket on port " + port);
+			GameTUI.printError("ERROR: could not create a socket on port " + port);
 			start();
 		}
 
@@ -83,13 +86,13 @@ public class Server {
 	 * @param input The message that was sended to the server
 	 * @param clientHandler The clientHandler that sended the message.
 	 */
-	//TODO Synchronized?
 	public synchronized void sendedMessage(String input, ClientHandler clientHandler) {
+		GameTUI.printMessage("Message recieved: " + input);
 		String[] words = input.split(MESSAGE_SEPERATOR);
 		switch (words[0]) {
 		// Lobby
 			case Protocol.CLIENT_JOINREQUEST:
-				if (!lobby.contains(words[1])) {
+				if (!lobby.equals(words[1])) {
 					clientHandler.setUserName(words[1]);
 					lobby.add(clientHandler);
 					clientHandler.sendMessage(Protocol.SERVER_ACCEPTREQUEST + MESSAGE_SEPERATOR +
@@ -101,6 +104,7 @@ public class Server {
 				}
 				break;
 			case Protocol.CLIENT_GAMEREQUEST:
+
 				if (!playGame.contains(clientHandler)) {
 					playGame.add(clientHandler);
 				}
@@ -114,7 +118,11 @@ public class Server {
 	
 			// Game
 			case Protocol.CLIENT_SETMOVE:
-				game.processTurn(input, clientHandler);
+				for (ServerGame s : gamesPlaying.keySet()) {
+					if (gamesPlaying.get(s).contains(clientHandler)) {
+						s.processTurn(input, clientHandler);
+					}
+				}
 				break;
 			default:
 				clientHandler.sendMessage(Protocol.SERVER_INVALIDCOMMAND 
@@ -127,16 +135,10 @@ public class Server {
 	//@ ensures playGame.size == 2;
 	private void startServerGame() {
 		lobby.remove(playGame.get(0));
-		String playerName1 = playGame.get(0).getUserName();
-		player1 = new ServerPlayer(playerName1, Mark.XX);
-		playGame.get(0).setPlayer(player1);
 		lobby.remove(playGame.get(1));
-		String playerName2 = playGame.get(1).getUserName();
-		player2 = new ServerPlayer(playerName2, Mark.OO);
-		playGame.get(1).setPlayer(player2);
-		game = new ServerGame(playGame.get(0), playGame.get(1), this);
-		this.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
-										+ MESSAGE_SEPERATOR + playerName2, playGame);
+		ServerGame game = new ServerGame(playGame.get(0), playGame.get(1), this);
+		gamesPlaying.put(game, playGame);
+		playGame.clear();
 		game.start();
 	}
 
@@ -193,7 +195,7 @@ public class Server {
 		try {
 			serverSock.close();
 		} catch (IOException e) {
-			printError(e.getMessage());
+			GameTUI.printError(e.getMessage());
 		}
 	}
 
@@ -209,27 +211,6 @@ public class Server {
 				handler.sendMessage(message);
 			}
 		}
-	}
-
-	public static String readString(String tekst) {
-		System.out.print(tekst);
-		String antw = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			antw = in.readLine();
-		} catch (IOException e) {
-		}
-
-		return (antw == null) ? "" : antw;
-	}
-
-	public void print(String string) {
-		System.out.println(string);
-
-	}
-
-	public void printError(String string) {
-		System.err.println(string);
 	}
 
 	public void closeGame(List<ClientHandler> players) {

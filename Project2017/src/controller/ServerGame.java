@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Mark;
 import online.*;
 import view.GameTUI;
 
@@ -12,6 +13,8 @@ public class ServerGame extends Game {
 	private List<ClientHandler> currentPlayer;
 	public static final String MESSAGE_SEPERATOR = " ";
 	private Server server;
+	private ServerPlayer player1;
+	private ServerPlayer player2;
 
 	public ServerGame(ClientHandler c1, ClientHandler c2, Server server) {
 		super(c1.getPlayer(), c2.getPlayer());
@@ -19,8 +22,20 @@ public class ServerGame extends Game {
 		this.currentPlayer = new ArrayList<>();
 		currentPlayer.add(0, c1);
 		currentPlayer.add(1, c2);
+		String playerName1 = c1.getUserName();
+		String playerName2 = c2.getUserName();
+		player1 = new ServerPlayer(playerName1, Mark.XX);
+		player2 = new ServerPlayer(playerName2, Mark.XX);
+		c1.setPlayer(player1);
+		c2.setPlayer(player2);
+		server.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
+								+ MESSAGE_SEPERATOR + playerName2, currentPlayer);
+
+		
 	}
 
+
+	
 	@Override
 	public void start() {
 		reset();
