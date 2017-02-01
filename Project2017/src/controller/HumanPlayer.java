@@ -55,7 +55,7 @@ public class HumanPlayer extends Player {
 				GameTUI.printMessage("A possible move is column " + sug[1] + " and row " + sug[0]);
 				
 				choiceX = GameTUI.readInt("> " + getName() + " (" + getMark().toString() + ")" + 
-						", " + "What row do you want to place your tile? ");
+						", " + "What column do you want to place your tile? ");
 			} else {
 				try {
 					choiceX = Integer.parseInt(answer);
