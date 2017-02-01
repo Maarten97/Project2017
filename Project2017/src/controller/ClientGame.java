@@ -20,9 +20,11 @@ public class ClientGame extends Game {
 	@Override
 	public void start() {
 		reset();
+		update();
 	}
 
 	public void doPlayerMove() {
+		update();
 		int[] choise = null;
 		choise = clientPlayer.determineMove(super.getBoard());
 		String x = String.valueOf(choise[0]);
