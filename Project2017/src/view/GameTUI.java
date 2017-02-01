@@ -46,7 +46,7 @@ public class GameTUI {
 	 * @return entered String, or "" if null.
 	 */
 	public static String readString(String tekst) {
-		System.out.print(tekst);
+		System.out.print(tekst + " ");
 		String antw = null;
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

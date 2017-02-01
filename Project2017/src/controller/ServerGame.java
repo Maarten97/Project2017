@@ -28,7 +28,7 @@ public class ServerGame extends Game {
 	}
 
 	public void sendTurn() {
-		getCurrentClientHandler().sendMessage(Protocol.SERVER_MOVEREQUEST 
+		getCurrentClientHandler().sendMessage(Protocol.SERVER_MOVEREQUEST + MESSAGE_SEPERATOR 
 								+ getCurrentClientHandler().getUserName());
 	}
 

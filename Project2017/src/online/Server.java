@@ -84,7 +84,7 @@ public class Server {
 	 * @param clientHandler The clientHandler that sended the message.
 	 */
 	//TODO Synchronized?
-	public /* synchronized */ void sendedMessage(String input, ClientHandler clientHandler) {
+	public synchronized void sendedMessage(String input, ClientHandler clientHandler) {
 		String[] words = input.split(MESSAGE_SEPERATOR);
 		switch (words[0]) {
 		// Lobby
@@ -116,6 +116,9 @@ public class Server {
 			case Protocol.CLIENT_SETMOVE:
 				game.processTurn(input, clientHandler);
 				break;
+			default:
+				clientHandler.sendMessage(Protocol.SERVER_INVALIDCOMMAND 
+											+ MESSAGE_SEPERATOR + input);
 		}
 	}
 
@@ -236,6 +239,13 @@ public class Server {
 		}
 		
 	}
+
+	public void connectionLost(ClientHandler clientHandler) {
+		String name = clientHandler.getName().toLowerCase();
+		removeHandler(clientHandler);
+		broadcast(Protocol.SERVER_CONNECTIONLOST + MESSAGE_SEPERATOR + name, clients);
+	}
+
 
 
 

@@ -42,6 +42,7 @@ public class ClientHandler extends Thread {
 		} catch (IOException e) {
 			printError("Could not read input");
 			print(e.getMessage());
+			server.connectionLost(this);
 			close();
 
 		}

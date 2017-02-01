@@ -177,64 +177,65 @@ public class Client extends Thread {
 	 * invoke the right method.
 	 * @param answer The message the ClientHandler sended.
 	 */
-	private void readServerResponse(String answer) {
+	private synchronized void readServerResponse(String answer) {
+		System.out.println(answer);
 		String[] replyList = answer.split(MESSAGE_SEPERATOR);
-		while (replyList != null) {
-			switch (replyList[0]) {
+		//while (replyList != null) {
+		switch (replyList[0]) {
 			// Lobbypart
-				case Protocol.SERVER_ACCEPTREQUEST:
-					this.serverAcceptRequest();
-					break;
-				case Protocol.SERVER_DENYREQUEST:
-					GameTUI.printError("The name '" + replyList[1] + "' is not allowed." + 
-														"Please choose an other one.");
-					this.createGame();
-					break;
-				case Protocol.SERVER_WAITFORCLIENT:
-					GameTUI.printMessage("Wait until another player joins!");
-					break;
-				case Protocol.SERVER_STARTGAME:
-					startServerGame(replyList[1], replyList[2]);
-					break;
+			case Protocol.SERVER_STARTGAME:
+				startServerGame(replyList[1], replyList[2]);
+				break;
+			case Protocol.SERVER_ACCEPTREQUEST:
+				this.serverAcceptRequest();
+				
+				break;
+			case Protocol.SERVER_DENYREQUEST:
+				GameTUI.printError("The name '" + replyList[1] + "' is not allowed." + 
+													"Please choose an other one.");
+				this.createGame();
+				break;
+			case Protocol.SERVER_WAITFORCLIENT:
+				GameTUI.printMessage("Wait until another player joins!");
+				break;
 
 				// GamePart
-				case Protocol.SERVER_MOVEREQUEST:
-					GameTUI.printMessage("It is your turn to make a move");
-					clientGame.doPlayerMove();
-					break;
-				case Protocol.SERVER_DENYMOVE:
-					GameTUI.printError("That move was not valid");
-					clientGame.doPlayerMove();
-					break;
-				case Protocol.SERVER_NOTIFYMOVE:
-					clientGame.processTurn(answer);
-					break;
-				case Protocol.SERVER_GAMEOVER:
-					if (replyList[1] != null) {
-						clientGame.gameOverWinner(replyList[1]);
-					} else {
-						gameOverDraw();
-					}
-					break;
+			case Protocol.SERVER_MOVEREQUEST:
+				GameTUI.printMessage("It is your turn to make a move");
+				clientGame.doPlayerMove();
+				break;
+			case Protocol.SERVER_DENYMOVE:
+				GameTUI.printError("That move was not valid");
+				clientGame.doPlayerMove();
+				break;
+			case Protocol.SERVER_NOTIFYMOVE:
+				clientGame.processTurn(answer);
+				break;
+			case Protocol.SERVER_GAMEOVER:
+				if (replyList[1] != null) {
+					clientGame.gameOverWinner(replyList[1]);
+				} else {
+					gameOverDraw();
+				}
+				break;
 				
 				//Errors from Server	
-				case Protocol.SERVER_CONNECTIONLOST:
-					GameTUI.printMessage(replyList[1] + "has left.");
-					gameOverDraw();
-					break;
+			case Protocol.SERVER_CONNECTIONLOST:
+				GameTUI.printMessage(replyList[1] + "has left.");
+				gameOverDraw();
+				break;
 				//TODO what to do now?	
-				case Protocol.SERVER_INVALIDCOMMAND:
-					GameTUI.printError("That last command was not valid.");
-					break;
-				default:
-					GameTUI.printError(answer);
-					
-					
-			}
+			case Protocol.SERVER_INVALIDCOMMAND:
+				GameTUI.printError("That last command was not valid.");
+				GameTUI.printError("Invalid message: " + replyList[1]);
+				break;
+			default:
+				GameTUI.printError(answer);		
 		}
+	}
 
 		
-	}
+	//}
 
 	/** 
 	 * Answer to message "acceptrequest" from the Server. It lets the player know that
@@ -242,11 +243,13 @@ public class Client extends Thread {
 	 */
 	public void serverAcceptRequest() {
 		GameTUI.printMessage("Client has joined the server");
-		String start = GameTUI.readString("Enter 'start' if you want to start the game");
-		if (!start.contains("start")) {
+		String start = GameTUI.readString("Enter 'start' if you want to start the"
+														+ " game").toLowerCase();
+		if (!start.equals("start")) {
 			serverAcceptRequest();
 		}
 		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);
+		
 	}
 	
 	/**
@@ -258,7 +261,7 @@ public class Client extends Thread {
 	//@ requires clientPlayer.hasMark() == Mark.XX;
 	//@ ensures opponentPlayer.hasMark() == Mark.OO;
 	public void startServerGame(String reply1, String reply2) {
-		GameTUI.printMessage("A game is being created for clients " + reply1 + "and" + reply2);
+		GameTUI.printMessage("A game is being created for clients " + reply1 + " and " + reply2);
 		if (clientPlayer.getName().equals(reply1)) {
 			opponentPlayer = new ServerPlayer(reply2, Mark.OO);
 		} else {
