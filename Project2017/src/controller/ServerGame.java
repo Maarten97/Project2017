@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import online.*;
+import view.GameTUI;
 
 public class ServerGame extends Game {
 
@@ -44,9 +45,11 @@ public class ServerGame extends Game {
 				z = Integer.parseInt(words[3]);
 			} catch (NumberFormatException e) {
 				getCurrentClientHandler().sendMessage(Protocol.SERVER_DENYMOVE);
+				GameTUI.printError("Could not compile coordinates to int.");
 			}
 			if (!super.getBoard().validMove(x, z)) {
 				getCurrentClientHandler().sendMessage(Protocol.SERVER_DENYMOVE);
+				GameTUI.printError("Move is not valid. x: " + x + "z: " + z);
 			} else {
 				y = super.getBoard().dropDown(x, z);
 				server.broadcast(Protocol.SERVER_NOTIFYMOVE + MESSAGE_SEPERATOR + 
