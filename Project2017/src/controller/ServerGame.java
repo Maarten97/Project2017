@@ -53,7 +53,7 @@ public class ServerGame extends Game {
 						getCurrentClientHandler().getUserName()	+ MESSAGE_SEPERATOR 
 						+ x + MESSAGE_SEPERATOR + z + MESSAGE_SEPERATOR + y, currentPlayer);
 
-				getCurrentClientHandler().getPlayer().placeTile(x, z, 
+				getCurrentClientHandler().getPlayer().placeTile(z, x, 
 						getCurrentClientHandler().getMark(), super.getBoard());
 				if (super.gameOver()) {
 					if (super.hasWinner()) {

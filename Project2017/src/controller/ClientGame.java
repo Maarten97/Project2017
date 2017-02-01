@@ -46,9 +46,9 @@ public class ClientGame extends Game {
 			//TODO Disconnect!
 		}
 		if (words[1].equalsIgnoreCase(clientPlayer.getName())) {
-			clientPlayer.placeTile(x, z, clientPlayer.getMark(), super.getBoard());
+			clientPlayer.placeTile(z, x, clientPlayer.getMark(), super.getBoard());
 		} else {
-			opponent.placeTile(x, z, opponent.getMark(), super.getBoard());
+			opponent.placeTile(z, x, opponent.getMark(), super.getBoard());
 		}
 
 	}
