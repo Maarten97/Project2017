@@ -20,7 +20,7 @@ public class Server {
 	private ServerGame game;
 	private ServerPlayer player1;
 	private ServerPlayer player2;
-
+	private boolean isplaying;
 	/**
 	 * All clients connected to the server.
 	 */
@@ -42,6 +42,7 @@ public class Server {
 		this.clients = new ArrayList<>();
 		this.playGame = new ArrayList<>();
 		this.lobby = new ArrayList<>();
+		isplaying = false;
 
 		try {
 			String inputPort = readString("\nWhat is the Server's port? " 
@@ -89,7 +90,7 @@ public class Server {
 		switch (words[0]) {
 		// Lobby
 			case Protocol.CLIENT_JOINREQUEST:
-				if (!lobby.contains(words[1])) {
+				if (!lobby.equals(words[1])) {
 					clientHandler.setUserName(words[1]);
 					lobby.add(clientHandler);
 					clientHandler.sendMessage(Protocol.SERVER_ACCEPTREQUEST + MESSAGE_SEPERATOR +
@@ -101,10 +102,18 @@ public class Server {
 				}
 				break;
 			case Protocol.CLIENT_GAMEREQUEST:
+				if (isplaying) {
+					clientHandler.sendMessage(Protocol.SERVER_WAITFORCLIENT);
+					while (isplaying) {
+						//waiting for game to exit.
+					}
+				}
+
 				if (!playGame.contains(clientHandler)) {
 					playGame.add(clientHandler);
 				}
 				if (playGame.size() == 2) {
+					isplaying = true;
 					startServerGame();
 				}
 				if (playGame.size() < 2) {
@@ -234,8 +243,10 @@ public class Server {
 
 	public void closeGame(List<ClientHandler> players) {
 		for (ClientHandler c : players) {
+			isplaying = false;
 			playGame.remove(c);
 			lobby.add(c);
+			game = null;
 		}
 		
 	}
