@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 
 import controller.*;
 import model.*;
+import view.GameTUI;
 
 public class Client extends Thread {
 
@@ -27,7 +28,7 @@ public class Client extends Thread {
 
 
 	/**
-	 * Creates a new Client
+	 * Creates a new Client.
 	 * @param args No arguments are given.
 	 */
 	public static void main(String[] args) {
@@ -39,8 +40,8 @@ public class Client extends Thread {
 	 * User is asked if he/she wants to play online or offline. 
 	 */
 	public Client() {
-		print("Welcome by Connect Four 3D!");
-		String gameMode = readString("Do you want to play online? (Y/N)");
+		GameTUI.printMessage("Welcome by Connect Four 3D!");
+		String gameMode = GameTUI.readString("Do you want to play online? (Y/N)");
 		if (!gameMode.toLowerCase().startsWith("y")) {
 
 			setupOfflineGame();
@@ -49,30 +50,33 @@ public class Client extends Thread {
 		}
 	}
 	/**
-	 * If the player wants to play offline, this method is used to create two players and start an offline game.
+	 * If the player wants to play offline, this method is used to create two players and 
+	 * start an offline game.
 	 */
 	public void setupOfflineGame() {
-		print("\nPlayer 1, please answer the next questions:");
+		GameTUI.printMessage("\nPlayer 1, please answer the next questions:");
 		setClientPlayer(createPlayer(Mark.XX));
-		print("\nPlayer 2, please answer the next questions:");
+		GameTUI.printMessage("\nPlayer 2, please answer the next questions:");
 		opponentPlayer = createPlayer(Mark.OO);
 		game = new Game(getClientPlayer(), opponentPlayer);
 		game.start();
 	}
 
 	/**
-	 * If the player wants to play online, this method is used to make a connection whit a server. It will ask for input on Server's IP and port. Then a Socket
+	 * If the player wants to play online, this method is used to make a connection whit a server. 
+	 * It will ask for input on Server's IP and port. Then a Socket is created and the 
+	 * Thread is started.
 	 */
 	public void setupClient() {
 		try {
-			this.host = InetAddress.getByName(readString("What is the Server's IP "
+			this.host = InetAddress.getByName(GameTUI.readString("What is the Server's IP "
 														+ "you want to connect to?"));
 		} catch (UnknownHostException e) {
-			printError("That is not a valid IP-Adres");
+			GameTUI.printError("That is not a valid IP-Adres");
 			setupClient();
 		}
 		try {
-			String inputPort = readString("\nWhat is the Server's port? " + 
+			String inputPort = GameTUI.readString("\nWhat is the Server's port? " + 
 										"\n(leave blank for standard port)");
 			if (inputPort.equals("")) {
 				port = Protocol.PORTNUMBER;
@@ -86,15 +90,16 @@ public class Client extends Thread {
 
 		try {
 			socket = new Socket(host, port);
+			GameTUI.printMessage("Trying to start a connection");
 		} catch (IOException e) {
-			printError("\nUnfortunatly, no Socket could be created.");
+			GameTUI.printError("\nUnfortunatly, no Socket could be created.");
 			setupClient();
 		}
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		} catch (IOException e) {
-			printError("Something went wrong");
+			GameTUI.printError("Something went wrong");
 			setupClient();
 		}
 		this.start();
@@ -130,7 +135,10 @@ public class Client extends Thread {
 	}
 		
 
-	
+	/** 
+	 * CreateGame() will create a player for this client and send a joinrequest to 
+	 * the connected server.
+	 */
 	public void createGame() {
 		setClientPlayer(createPlayer(Mark.XX));
 		String playerName = getClientPlayerName().toLowerCase();
@@ -138,16 +146,21 @@ public class Client extends Thread {
 													+ MESSAGE_SEPERATOR + "0 0 0 0");
 	}
 	
+	/**
+	 * The clientPlayer is created for an Game.
+	 * @param mark The Mark that this player will be, for the online Client this is always Mark.XX;
+	 * @return the created Player.
+	 */
 	public Player createPlayer(Mark mark) {
-		String playerType = readString("Are you a human? (Y/N)");
+		String playerType = GameTUI.readString("Are you a human? (Y/N)");
 		if (!playerType.toLowerCase().equals("y") && !playerType.toLowerCase().equals("n")) {
-			printError("Please enter a 'y' or a 'n'");
+			GameTUI.printError("Please enter a 'y' or a 'n'");
 			createPlayer(mark);
 		}
 
-		String playerName = readString("What is your name?");
+		String playerName = GameTUI.readString("What is your name?");
 		if (playerName.contains(" ")) {
-			printError("Please do not use a space in your name.");
+			GameTUI.printError("Please do not use a space in your name.");
 			createPlayer(mark);
 		}
 		if (playerType.toLowerCase().equals("y")) {
@@ -159,7 +172,11 @@ public class Client extends Thread {
 		}
 	}
 
-
+	/**
+	 * Reads all the messages send by the ClientHandlers from the Server. Each message will 
+	 * invoke the right method.
+	 * @param answer The message the ClientHandler sended.
+	 */
 	private void readServerResponse(String answer) {
 		String[] replyList = answer.split(MESSAGE_SEPERATOR);
 		while (replyList != null) {
@@ -169,12 +186,12 @@ public class Client extends Thread {
 					this.serverAcceptRequest();
 					break;
 				case Protocol.SERVER_DENYREQUEST:
-					printError("The name '" + replyList[1] + "' is not allowed." + 
+					GameTUI.printError("The name '" + replyList[1] + "' is not allowed." + 
 														"Please choose an other one.");
 					this.createGame();
 					break;
 				case Protocol.SERVER_WAITFORCLIENT:
-					print("Wait until another player joins!");
+					GameTUI.printMessage("Wait until another player joins!");
 					break;
 				case Protocol.SERVER_STARTGAME:
 					startServerGame(replyList[1], replyList[2]);
@@ -182,11 +199,11 @@ public class Client extends Thread {
 
 				// GamePart
 				case Protocol.SERVER_MOVEREQUEST:
-					print("It is your turn to make a move");
+					GameTUI.printMessage("It is your turn to make a move");
 					clientGame.doPlayerMove();
 					break;
 				case Protocol.SERVER_DENYMOVE:
-					printError("That move was not valid");
+					GameTUI.printError("That move was not valid");
 					clientGame.doPlayerMove();
 					break;
 				case Protocol.SERVER_NOTIFYMOVE:
@@ -196,11 +213,21 @@ public class Client extends Thread {
 					if (replyList[1] != null) {
 						clientGame.gameOverWinner(replyList[1]);
 					} else {
-						clientGame.gameOverDraw();
+						gameOverDraw();
 					}
 					break;
+				
+				//Errors from Server	
+				case Protocol.SERVER_CONNECTIONLOST:
+					GameTUI.printMessage(replyList[1] + "has left.");
+					gameOverDraw();
+					break;
+				//TODO what to do now?	
+				case Protocol.SERVER_INVALIDCOMMAND:
+					GameTUI.printError("That last command was not valid.");
+					break;
 				default:
-					printError(answer);
+					GameTUI.printError(answer);
 					
 					
 			}
@@ -209,19 +236,29 @@ public class Client extends Thread {
 		
 	}
 
-
+	/** 
+	 * Answer to message "acceptrequest" from the Server. It lets the player know that
+	 * the client has joined. The player can enter start when it wants to start a game.
+	 */
 	public void serverAcceptRequest() {
-		print("Client has joined the server");
-		String start = readString("Enter 'start' if you want to start the game");
+		GameTUI.printMessage("Client has joined the server");
+		String start = GameTUI.readString("Enter 'start' if you want to start the game");
 		if (!start.contains("start")) {
 			serverAcceptRequest();
 		}
 		this.sendMessage(Protocol.CLIENT_GAMEREQUEST);
 	}
 	
-	//@ requires clientPlayer.hasMark == Mark.XX;
+	/**
+	 * if the Server starts a game, a message is send to the clients. This method creates 
+	 * a clientGame and initializes a opponentPlayer.
+	 * @param reply1 The name of player1.
+	 * @param reply2 The name of player2.
+	 */
+	//@ requires clientPlayer.hasMark() == Mark.XX;
+	//@ ensures opponentPlayer.hasMark() == Mark.OO;
 	public void startServerGame(String reply1, String reply2) {
-		print("A game is being created for clients " + reply1 + "and" + reply2);
+		GameTUI.printMessage("A game is being created for clients " + reply1 + "and" + reply2);
 		if (clientPlayer.getName().equals(reply1)) {
 			opponentPlayer = new ServerPlayer(reply2, Mark.OO);
 		} else {
@@ -231,40 +268,37 @@ public class Client extends Thread {
 		clientGame.start();
 	}
 	
+	/**
+	 * If an onlineGame is over, there will be asked if the player wants to play
+	 * a new game on the same Server. If he does not want to, the client will be
+	 * terminated.
+	 */
+	public void gameOverDraw() {
+		String input = GameTUI.readString("\n> Play another time? Yes/No");
+		if (input.toLowerCase().startsWith("y")) {
+			createGame();
+		} else {
+			GameTUI.printMessage("Thanks for playing. See you next time!");
+			System.exit(0);
+		}
+		
+	}
+	
 
-	/** send a message to a ClientHandler. */
+	/** 
+	 * Send a message to a ClientHandler. 
+	 */
 	public void sendMessage(String msg) {
 		try {
 			out.write(msg);
 			out.newLine();
 			out.flush();
 		} catch (IOException e) {
-			System.err.println("Connection lost");
+			GameTUI.printError("Connection lost");
 		}
 
 	}
 
-	public void print(String text) {
-		System.out.println(text);
-
-	}
-
-	public void printError(String text) {
-		System.err.println(text);
-
-	}
-
-	public static String readString(String tekst) {
-		System.out.print(tekst + " ");
-		String antw = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			antw = in.readLine();
-		} catch (IOException e) {
-		}
-		System.out.println(antw);
-		return (antw == null) ? "" : antw;
-	}
 
 	public String getClientPlayerName() {
 		return getClientPlayer().getName();

@@ -52,20 +52,11 @@ public class ClientGame extends Game {
 
 	public void gameOverWinner(String winner) {
 		GameTUI.printMessage("Game is over, player " + winner + "has won!");
-		gameOverDraw();
+		client.gameOverDraw();
 		
 		
 	}
 
-	public void gameOverDraw() {
-		String input = GameTUI.readString("\n> Play another time? Yes/No");
-		if (input.toLowerCase().startsWith("y")) {
-			client.createGame();
-		} else {
-			GameTUI.printMessage("Thanks for playing. See you next time!");
-			System.exit(0);
-		}
-		
-	}
+
 
 }
