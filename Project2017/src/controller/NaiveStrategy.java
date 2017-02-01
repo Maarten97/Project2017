@@ -12,6 +12,7 @@ public class NaiveStrategy implements Strategy {
 	
 	/**
 	 * Returns the name of this strategy.
+	 * 
 	 * @return strategy name
 	 */
 	@Override
@@ -21,6 +22,7 @@ public class NaiveStrategy implements Strategy {
 	
 	/**
 	 * Returns a random free coordinate.
+	 * 
 	 * @return a random free coordinate.
 	 */
 	@Override
