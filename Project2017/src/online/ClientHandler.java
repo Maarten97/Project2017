@@ -49,6 +49,7 @@ public class ClientHandler extends Thread {
 	}
 
 	public void sendMessage(String message) {
+		System.out.println(message);
 		try {
 			out.write(message);
 			out.newLine();

@@ -14,6 +14,7 @@ public class ServerGame extends Game {
 
 	public ServerGame(ClientHandler c1, ClientHandler c2, Server server) {
 		super(c1.getPlayer(), c2.getPlayer());
+		this.server = server;
 		this.currentPlayer = new ArrayList<>();
 		currentPlayer.add(0, c1);
 		currentPlayer.add(1, c2);
@@ -39,8 +40,8 @@ public class ServerGame extends Game {
 			int z = -1;
 			int y = -1;
 			try {
-				x = Integer.parseInt(words[1]);
-				z = Integer.parseInt(words[2]);
+				x = Integer.parseInt(words[2]);
+				z = Integer.parseInt(words[3]);
 			} catch (NumberFormatException e) {
 				getCurrentClientHandler().sendMessage(Protocol.SERVER_DENYMOVE);
 			}
