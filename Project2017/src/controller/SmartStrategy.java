@@ -77,7 +77,6 @@ public class SmartStrategy implements Strategy {
 						sameOrEmpty = false;
 					}
 				}
-				System.out.println("Looked at: " + row+","+col+" sameOrEmpty: " + sameOrEmpty);
 				if (sameOrEmpty == true) {
 					return new int[]{row, col};
 				}
