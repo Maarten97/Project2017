@@ -81,7 +81,7 @@ public class Game /* extends Observable */ {
 			currentPlayer = (currentPlayer + 1) % NUMBER_PLAYERS;
 		}
 		if (hasWinner()) {
-			if (isWinner(players[0].getMark())) {
+			if (board.isWinner(players[0].getMark())) {
 				gameTui.printWinner(players[0]);
 			} else {
 				gameTui.printWinner(players[1]);
@@ -128,32 +128,6 @@ public class Game /* extends Observable */ {
 	/* @pure */	public boolean gameOver() {
 		return this.hasWinner() || this.isDraw();
 	}
-
-	/**
-	 * Checks if the mark m has won. A mark wins if it controls at least one
-	 * row, column or diagonal.
-	 *
-	 * @param m the mark of interest
-	 * @return true if the mark has won
-	 */
-	// @ requires m == Mark.XX || m == Mark.OO;
-	public boolean isWinner(Mark m) {
-		if (board.hasColumn(m)) {
-			return true;
-		} else if (board.hasRow(m)) {
-			return true;
-		} else if (board.hasLevel(m)) {
-			return true;
-		} else if (board.hasPlaneDiagonal(m)) {
-			return true;
-		} else if (board.hasVerticalDiagonal(m)) {
-			return true;
-		} else if (board.hasLevelDiagonal(m)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
 	/**
 	 * If the game has ended and there is a winner, it will return the Mark of the winner.
@@ -164,7 +138,7 @@ public class Game /* extends Observable */ {
 	//@ ensures \result == Mark.BLUE || \result == Mark.RED;
 	public Mark getWinner() {
 		if (hasWinner()) {
-			if (isWinner(Mark.OO)) {
+			if (board.isWinner(Mark.OO)) {
 				return Mark.OO;
 			} else {
 				return Mark.XX;
@@ -205,7 +179,7 @@ public class Game /* extends Observable */ {
 	 */
 	// @ ensures \result == isWinner(Mark.BLUE) | \result == isWinner(Mark.RED);
 	/* @pure */ public boolean hasWinner() {
-		return isWinner(Mark.OO) || isWinner(Mark.XX);
+		return board.isWinner(Mark.OO) || board.isWinner(Mark.XX);
 	}
 	
 	/**

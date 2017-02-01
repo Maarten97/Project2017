@@ -57,7 +57,7 @@ public class ServerGame extends Game {
 				if (super.gameOver()) {
 					if (super.hasWinner()) {
 						String winnerName = null;
-						if (isWinner(currentPlayer.get(0).getMark())) {
+						if (super.getBoard().isWinner(currentPlayer.get(0).getMark())) {
 							winnerName = currentPlayer.get(0).getUserName();
 						} else {
 							winnerName = currentPlayer.get(1).getUserName();
