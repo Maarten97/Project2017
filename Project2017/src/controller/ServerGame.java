@@ -41,8 +41,8 @@ public class ServerGame extends Game {
 			int z = -1;
 			int y = -1;
 			try {
-				x = Integer.parseInt(words[2]);
-				z = Integer.parseInt(words[3]);
+				x = Integer.parseInt(words[1]);
+				z = Integer.parseInt(words[2]);
 			} catch (NumberFormatException e) {
 				getCurrentClientHandler().sendMessage(Protocol.SERVER_DENYMOVE);
 				GameTUI.printError("Could not compile coordinates to int.");
