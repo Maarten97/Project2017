@@ -69,8 +69,8 @@ public class SmartStrategy implements Strategy {
 	 * @return next move as int array
 	 */
 	private int[] possibleColumn(Board b, Mark m) {
-		for (int col = 0; col < Board.DIM; col++) {
-			for (int row = 0; row < Board.DIM; row++) {
+		for (int row = 0; row < Board.DIM; row++) {
+			for (int col = 0; col < Board.DIM; col++) {
 				boolean sameOrEmpty = true;
 				for (int level = 0; level < Board.DIM; level++) {
 					if (b.getField(row, col, level) == m.other()) {
