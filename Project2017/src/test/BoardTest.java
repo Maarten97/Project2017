@@ -7,22 +7,19 @@ import org.junit.Test;
 
 import model.*;
 
+/**
+ * Provides a JUnit test file for the class board. Testclass yields if
+ * board.DIM == 4.
+ * 
+ * @author Maarten Looijenga en Thomas Hogema
+ *
+ */
 public class BoardTest {
-
-	/**
-	 * Provides a JUnit test file for the class board. Testclass yields if
-	 * board.DIM == 4.
-	 * 
-	 * @author Maarten Looijenga
-	 *
-	 */
 
 	private Board board;
 	private static final int DIM = 4;
 
 	@Before
-	// TODO kan ik ook tiles op board leggen zonder de methode setTiles() te
-	// gebruiken?
 	public void setUp() throws Exception {
 		board = new Board();
 		board.setField(0, 0, Mark.OO);
