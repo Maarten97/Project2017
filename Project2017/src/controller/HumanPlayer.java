@@ -48,7 +48,7 @@ public class HumanPlayer extends Player {
 		while (needsInput) {
 			String answer = GameTUI.readString("\n Tip: if you're stuck, type 'hint' to get a "
 					+ "suggestion for a move \n > " + getName() + " (" + getMark().toString() + ")" 
-					+ ", What row do you want to place your tile? ");
+					+ ", What column do you want to place your tile? ");
 			
 			if (answer.toLowerCase().equals("hint")) {
 				int[] sug = CommonStrategyUtils.getRandomFreeField(board);
@@ -80,7 +80,8 @@ public class HumanPlayer extends Player {
 				}
 			}
 		}
-		return new int[] {choiceX, choiceZ};
+		System.out.println("column(X) = " + choiceX + " row(Z) = " + choiceZ);
+		return new int[] {choiceZ, choiceX};
 	}
 
 
