@@ -112,11 +112,20 @@ public class BoardTest {
 	public void testHasLevel() {
 		assertFalse(board.hasLevel(Mark.XX));
 		assertFalse(board.hasLevel(Mark.OO));
+		System.out.println(board.toString());
+		board.setField(3, 3, Mark.OO);
+		board.setField(3, 3, Mark.XX);
+		board.setField(3, 3, Mark.XX);
+		board.setField(3, 3, Mark.XX);
+		assertFalse(board.hasLevel(Mark.XX));
+		assertFalse(board.hasLevel(Mark.OO));
 		board.setField(1, 3, Mark.XX);
 		board.setField(1, 3, Mark.XX);
 		board.setField(1, 3, Mark.XX);
+		
 		assertFalse(board.hasLevel(Mark.OO));
 		assertTrue(board.hasLevel(Mark.XX));
+		System.out.println(board.toString());
 	}
 
 	@Test
