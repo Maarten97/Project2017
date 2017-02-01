@@ -62,15 +62,15 @@ public class SmartStrategy implements Strategy {
 //	}
 	
 	/**
-	 * Very basic strategy which tries to build columns.
+	 * Very basic strategy which tries to build columns. And looks if it doesn't create a possibility for the other mark to win
 	 * 
 	 * @param b Board to play on
 	 * @param m Mark to be placed
 	 * @return next move as int array
 	 */
 	private int[] possibleColumn(Board b, Mark m) {
-		for (int row = 0; row < Board.DIM; row++) {
-			for (int col = 0; col < Board.DIM; col++) {
+		for (int col = 0; col < Board.DIM; col++) {
+			for (int row = 0; row < Board.DIM; row++) {
 				boolean sameOrEmpty = true;
 				for (int level = 0; level < Board.DIM; level++) {
 					if (b.getField(row, col, level) == m.other()) {
@@ -78,13 +78,27 @@ public class SmartStrategy implements Strategy {
 					}
 				}
 				if (sameOrEmpty == true) {
-					System.out.println("smart strat made move row: " + row + " col: " + col);
-					return new int[] {row, col};
+					if (!createsOportunity(b, m, new int[] {row, col})) {
+						System.out.println("smart strat made move row: " + row + " col: " + col);
+						return new int[] {row, col};
+					}
 				}
 			}
 		}
 		//this should only happen if every possible column contains a tile from the opponent.
 		return null;
+	}
+	
+	/**
+	 * Checks if the next move creates an opportunity for the opponent.
+	 */
+	private boolean createsOportunity(Board board, Mark m, int[] move) {
+		Board b = board.deepCopy();
+		b.setField(move[0], move[1], m);
+		if (moveToWin(b, m.other()) != null) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
