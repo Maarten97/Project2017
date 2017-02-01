@@ -291,6 +291,16 @@ public class BoardTest {
 		assertNotEquals(board.getField(0, 0, 0), Mark.XX);
 		assertNotEquals(board.getField(0, 0, 2), Mark.XX);
 		assertEquals(board.getField(0, 0, 1), Mark.XX);
-
+	}
+	
+	@Test
+	public void isWinnerTest() {
+		
+		board.isWinner(Mark.XX);
+		assertFalse(board.isWinner(Mark.XX));
+		assertFalse(board.isWinner(Mark.OO));
+		board.setField(3, 1, Mark.OO);
+		assertFalse(board.isWinner(Mark.XX));
+		assertTrue(board.isWinner(Mark.OO));
 	}
 }

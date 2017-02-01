@@ -38,6 +38,11 @@ public class SmartStrategy implements Strategy {
 			return moveToWin(b, m.other());
 		}
 		
+		//check if there is a move that creates an opportunity for a winning move
+		if (opportunity(b, m) != null) {
+			return opportunity(b, m);
+		}
+		
 		//builds a column
 		if (possibleColumn(b, m) != null) {
 			return possibleColumn(b, m);
@@ -62,7 +67,7 @@ public class SmartStrategy implements Strategy {
 //	}
 	
 	/**
-	 * Very basic strategy which tries to build columns. And looks if it doesn't create a possibility for the other mark to win
+	 * Strategy which tries to build columns. And looks if it doesn't create a possibility for the other mark to win
 	 * 
 	 * @param b Board to play on
 	 * @param m Mark to be placed
@@ -78,7 +83,7 @@ public class SmartStrategy implements Strategy {
 					}
 				}
 				if (sameOrEmpty == true) {
-					if (!createsOportunity(b, m, new int[] {row, col})) {
+					if (!createsOpponentOportunity(b, m, new int[] {row, col})) {
 						System.out.println("smart strat made move row: " + row + " col: " + col);
 						return new int[] {row, col};
 					}
@@ -91,14 +96,41 @@ public class SmartStrategy implements Strategy {
 	
 	/**
 	 * Checks if the next move creates an opportunity for the opponent.
+	 * 
+	 * @param board
+	 * @param m
+	 * @param move
+	 * @return
 	 */
-	private boolean createsOportunity(Board board, Mark m, int[] move) {
+	private boolean createsOpponentOportunity(Board board, Mark m, int[] move) {
 		Board b = board.deepCopy();
 		b.setField(move[0], move[1], m);
 		if (moveToWin(b, m.other()) != null) {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Check if there is a move that creates an opportunity to win.
+	 * 
+	 * @param board
+	 * @param m
+	 * @return
+	 */
+	private int[] opportunity(Board board, Mark m) {
+		//get all possible moves:
+		Set<int[]> moves = CommonStrategyUtils.getFreeFields(board);
+		for (int[] move : moves) {
+			Board b = board.deepCopy();
+			b.setField(move[0], move[1], m);
+			if (moveToWin(b, m) != null) {
+				if (!createsOpponentOportunity(b, m, move)) {
+					return move;
+				}
+			}
+		}
+		return null;
 	}
 	
 	/**
