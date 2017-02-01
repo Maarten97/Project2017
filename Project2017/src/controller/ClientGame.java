@@ -17,7 +17,7 @@ public class ClientGame extends Game {
 		this.opponent = s1;
 	}
 
-	@Override
+	@Override 
 	public void start() {
 		reset();
 		update();
@@ -30,7 +30,7 @@ public class ClientGame extends Game {
 		int x = choise[1];
 		int z = choise[0];
 		System.out.println("x: " + x + " z: " + z);
-		client.sendMessage(Protocol.CLIENT_SETMOVE + MESSAGE_SEPERATOR + clientPlayer.getName() + 
+		client.sendMessage(Protocol.CLIENT_SETMOVE + 
 				MESSAGE_SEPERATOR + x + MESSAGE_SEPERATOR + z);
 	}
 
@@ -41,7 +41,7 @@ public class ClientGame extends Game {
 		int z = -1;
 		try {
 			x = Integer.parseInt(words[2]);
-			z = Integer.parseInt(words[3]);
+			z = Integer.parseInt(words[4]);
 		} catch (NumberFormatException e) {
 			GameTUI.printError("Server failt");
 			//TODO Disconnect!
