@@ -26,12 +26,18 @@ public class Client extends Thread {
 	private static final String MESSAGE_SEPERATOR = " ";
 
 
-	
+	/**
+	 * Creates a new Client
+	 * @param args No arguments are given.
+	 */
 	public static void main(String[] args) {
 		new Client();
 
 	}
-
+	
+	/**
+	 * User is asked if he/she wants to play online or offline. 
+	 */
 	public Client() {
 		print("Welcome by Connect Four 3D!");
 		String gameMode = readString("Do you want to play online? (Y/N)");
@@ -42,7 +48,9 @@ public class Client extends Thread {
 			setupClient();
 		}
 	}
-	
+	/**
+	 * If the player wants to play offline, this method is used to create two players and start an offline game.
+	 */
 	public void setupOfflineGame() {
 		print("\nPlayer 1, please answer the next questions:");
 		setClientPlayer(createPlayer(Mark.XX));
@@ -52,6 +60,9 @@ public class Client extends Thread {
 		game.start();
 	}
 
+	/**
+	 * If the player wants to play online, this method is used to make a connection whit a server. It will ask for input on Server's IP and port. Then a Socket
+	 */
 	public void setupClient() {
 		try {
 			this.host = InetAddress.getByName(readString("What is the Server's IP "
