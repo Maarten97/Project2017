@@ -303,15 +303,25 @@ public class Client extends Thread {
 
 	}
 
-
+	/**
+	 * Gets the current name of the player.
+	 * @return String of the name of the player.
+	 */
 	public String getClientPlayerName() {
 		return getClientPlayer().getName();
 	}
 
+	/**
+	 * Gets the current player.
+	 * @return the current player.
+	 */
 	public Player getClientPlayer() {
 		return clientPlayer;
 	}
 
+	/**
+	 * Sets the current player.
+	 */
 	public void setClientPlayer(Player clientPlayer) {
 		this.clientPlayer = clientPlayer;
 	}

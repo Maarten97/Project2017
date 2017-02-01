@@ -1,8 +1,6 @@
 package online;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -117,10 +115,13 @@ public class Server {
 				break;
 	
 			// Game
+				//This case might be broken, see report.
 			case Protocol.CLIENT_SETMOVE:
 				for (ServerGame s : gamesPlaying.keySet()) {
 					if (gamesPlaying.get(s).contains(clientHandler)) {
 						s.processTurn(input, clientHandler);
+					} else {
+						GameTUI.printError("Could not resolve right ClientHandler");
 					}
 				}
 				break;

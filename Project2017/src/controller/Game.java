@@ -49,7 +49,8 @@ public class Game /* extends Observable */ {
 	 * Asks after each ended game if the user want to continue. Continues until
 	 * the user does not want to play anymore.
 	 */
-	public void start() {
+
+		/* @ pure */	public void start() {
 		boolean doorgaan = true;
 		String input = null;
 		while (doorgaan) {
@@ -73,6 +74,10 @@ public class Game /* extends Observable */ {
      * the changed game situation is printed. in the end, the winner will be 
      * printed. If there is a draw, this will be printed.
      */
+	/*@ requires board != null;
+	 * 	requires currentPlayer <= 0 && currentPlayer > 2;
+	 * 	requires players[] != null;
+	 */
 	public void play() {
 		update();
 		while (!this.gameOver()) {
@@ -95,6 +100,8 @@ public class Game /* extends Observable */ {
 	 * Resets the game. <br>
 	 * The board is emptied and player[0] becomes the current player.
 	 */
+	// @ requires board != null;
+	// @ ensures getCurrentPlayer() == player[0];
 	public void reset() {
 		currentPlayer = 0;
 		board.reset();
@@ -103,7 +110,7 @@ public class Game /* extends Observable */ {
 	/**
 	 * Prints the game situation using the provided TUI.
 	 */
-	public void update() {
+	/* @ pure */ public void update() {
 		System.out.println(gameTui.printBoard());
 	}
 
@@ -114,7 +121,7 @@ public class Game /* extends Observable */ {
 	 * 
 	 * @return board the board that the current game is being played on.
 	 */
-	public Board getBoard() {
+	/* @ pure */ public Board getBoard() {
 		return board;
 	}
 

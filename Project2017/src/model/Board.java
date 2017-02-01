@@ -6,9 +6,6 @@ package model;
  * @author Thomas Hogema en Maarten Looijenga
  */
 public class Board {
-	// TODO Still have to change the JML and the Javadoc and separate queries
-	// and commands
-
 	// -- Instance variables -----------------------------------------
 	
 	public static final int DIM = 4;
@@ -516,6 +513,7 @@ public class Board {
 	 * @param m the mark to be placed
 	 */
 	// @ requires this.isField(row,col,level);
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
 	// @ ensures this.getField(row,col,level) == m;
 	public void setField(int row, int col, int level, Mark m) {
 		if (this.isField(row, col, level)) {
@@ -524,11 +522,33 @@ public class Board {
 
 	}
 
+	/**
+	 * Sets the content of the field represented by the (row, column)
+	 * collection to the mark m, level will be calculated by the 
+	 * dropdown method.
+	 * 
+	 * @param row the field's row
+	 * @param col the field's column
+	 * @param m the mark to be placed
+	 */
+	// @ requires Mark m == Mark.XX || Mark m == Mark.OO;
+	// @ requires 0 <= row & row < DIM;
+	// @ requires 0 <= col & col < DIM;
+	// @ ensures this.getField(row,col,dropDown(row,col) == m;
 	public void setField(int row, int col, Mark m) {
 		int level = dropDown(row, col);
 		setField(row, col, level, m);
 	}
 
+	/**
+	 * This method puts the stone on the lowest level as possible.
+	 * @param row the field's row
+	 * @param col the field's column
+	 * @return lowest index as possible for given row and col.
+	 */
+	// @ requires 0 <= row & row < DIM;
+	// @ requires 0 <= col & col < DIM;
+	// @ ensures \result >= 0 && \result <=DIM;
 	public int dropDown(int row, int col) {
 		for (int i = 3; i > 0; i--) {
 			if (!isEmptyField(row, col, i - 1)) {
@@ -541,6 +561,7 @@ public class Board {
 	/**
 	 * To String for board. Prints the 4 levels of board.
 	 */
+	/*@ pure */
 	public String toString() {
 		// first info line
 		String board = "";
