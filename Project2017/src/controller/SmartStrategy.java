@@ -78,6 +78,7 @@ public class SmartStrategy implements Strategy {
 					}
 				}
 				if (sameOrEmpty == true) {
+					System.out.println("smart strat made move row: " + row + " col: " + col);
 					return new int[]{row, col};
 				}
 			}
