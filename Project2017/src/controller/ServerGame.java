@@ -52,6 +52,7 @@ public class ServerGame extends Game {
 				GameTUI.printError("Move is not valid. x: " + x + "z: " + z);
 			} else {
 				y = super.getBoard().dropDown(x, z);
+				System.out.println(super.getBoard().toString());
 				server.broadcast(Protocol.SERVER_NOTIFYMOVE + MESSAGE_SEPERATOR + 
 						getCurrentClientHandler().getUserName()	+ MESSAGE_SEPERATOR 
 						+ x + MESSAGE_SEPERATOR + z + MESSAGE_SEPERATOR + y, currentPlayer);
