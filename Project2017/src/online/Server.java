@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import controller.*;
+import view.GameTUI;
 
 public class Server {
 
@@ -85,8 +86,8 @@ public class Server {
 	 * @param input The message that was sended to the server
 	 * @param clientHandler The clientHandler that sended the message.
 	 */
-	//TODO Synchronized?
 	public synchronized void sendedMessage(String input, ClientHandler clientHandler) {
+		GameTUI.printMessage("Message recieved: " + input);
 		String[] words = input.split(MESSAGE_SEPERATOR);
 		switch (words[0]) {
 		// Lobby

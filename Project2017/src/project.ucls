@@ -130,7 +130,7 @@
   </class>  
   <interface id="15" language="java" name="online.Protocol" project="Project2017" 
     file="/Project2017/src/online/Protocol.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="487" y="292"/>    
+    <position height="-1" width="-1" x="705" y="290"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -157,7 +157,7 @@
   </class>  
   <class id="18" language="java" name="test.GameTUITest" project="Project2017" 
     file="/Project2017/src/test/GameTUITest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="640" y="755"/>    
+    <position height="-1" width="-1" x="750" y="752"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -166,7 +166,7 @@
   </class>  
   <class id="19" language="java" name="test.BoardTest" project="Project2017" file="/Project2017/src/test/BoardTest.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="468" y="822"/>    
+    <position height="-1" width="-1" x="568" y="827"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -175,7 +175,7 @@
   </class>  
   <class id="20" language="java" name="test.BoardToStringTest" project="Project2017" 
     file="/Project2017/src/test/BoardToStringTest.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="641" y="636"/>    
+    <position height="-1" width="-1" x="760" y="643"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -339,6 +339,8 @@
   </generalization>  
   <association id="68">    
     <bendpoint x="1468" y="849"/>    
+    <bendpoint x="1479" y="1275"/>    
+    <bendpoint x="1478" y="1486"/>    
     <end type="SOURCE" refId="10" navigable="false">      
       <attribute id="69" name="player1"/>      
       <multiplicity id="70" minimum="0" maximum="1"/>    
