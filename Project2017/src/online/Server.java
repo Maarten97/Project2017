@@ -8,19 +8,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import controller.*;
-import model.Mark;
 
 public class Server {
 
 	private static final String MESSAGE_SEPERATOR = " ";
 	private int port = 1337;
 	public String localhost;
-	private ServerGame game;
-	private ServerPlayer player1;
-	private ServerPlayer player2;
-	private boolean isplaying;
+
 	/**
 	 * All clients connected to the server.
 	 */
@@ -28,6 +27,7 @@ public class Server {
 	private List<ClientHandler> playGame;
 	private List<ClientHandler> lobby;
 	private ServerSocket serverSock;
+	private Map<ServerGame, List<ClientHandler>> gamesPlaying;
 
 	/**
 	 * All games that has been started.
@@ -42,8 +42,9 @@ public class Server {
 		this.clients = new ArrayList<>();
 		this.playGame = new ArrayList<>();
 		this.lobby = new ArrayList<>();
-		isplaying = false;
+		gamesPlaying = new HashMap<>();
 
+		
 		try {
 			String inputPort = readString("\nWhat is the Server's port? " 
 										+ "\n(Leave blank for standard port)");
@@ -102,18 +103,11 @@ public class Server {
 				}
 				break;
 			case Protocol.CLIENT_GAMEREQUEST:
-				if (isplaying) {
-					clientHandler.sendMessage(Protocol.SERVER_WAITFORCLIENT);
-					while (isplaying) {
-						//waiting for game to exit.
-					}
-				}
 
 				if (!playGame.contains(clientHandler)) {
 					playGame.add(clientHandler);
 				}
 				if (playGame.size() == 2) {
-					isplaying = true;
 					startServerGame();
 				}
 				if (playGame.size() < 2) {
@@ -123,7 +117,11 @@ public class Server {
 	
 			// Game
 			case Protocol.CLIENT_SETMOVE:
-				game.processTurn(input, clientHandler);
+				for (ServerGame s : gamesPlaying.keySet()) {
+					if (gamesPlaying.get(s).contains(clientHandler)) {
+						s.processTurn(input, clientHandler);
+					}
+				}
 				break;
 			default:
 				clientHandler.sendMessage(Protocol.SERVER_INVALIDCOMMAND 
@@ -136,17 +134,10 @@ public class Server {
 	//@ ensures playGame.size == 2;
 	private void startServerGame() {
 		lobby.remove(playGame.get(0));
-		String playerName1 = playGame.get(0).getUserName();
-		player1 = new ServerPlayer(playerName1, Mark.XX);
-		playGame.get(0).setPlayer(player1);
 		lobby.remove(playGame.get(1));
-		String playerName2 = playGame.get(1).getUserName();
-		player2 = new ServerPlayer(playerName2, Mark.OO);
-		playGame.get(1).setPlayer(player2);
-		game = new ServerGame(playGame.get(0), playGame.get(1), this);
-		this.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
-										+ MESSAGE_SEPERATOR + playerName2, playGame);
-		game.start();
+		ServerGame game = new ServerGame(playGame.get(0), playGame.get(1), this);
+		gamesPlaying.put(game, playGame);
+		playGame.clear();
 	}
 
 	/**
@@ -243,10 +234,8 @@ public class Server {
 
 	public void closeGame(List<ClientHandler> players) {
 		for (ClientHandler c : players) {
-			isplaying = false;
 			playGame.remove(c);
 			lobby.add(c);
-			game = null;
 		}
 		
 	}
