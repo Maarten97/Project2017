@@ -40,6 +40,7 @@ public abstract class Player {
      */
     public void makeMove(Board board) {
         int[] keuze = determineMove(board);
+        System.out.println("Making move: " + keuze[0] + "," + keuze[1] + "," + getMark().toString());
         board.setField(keuze[0], keuze[1], getMark());
     }
     

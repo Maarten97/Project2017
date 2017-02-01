@@ -25,6 +25,7 @@ public class SmartStrategy implements Strategy {
 	 * 
 	 * @return next move as int array
 	 */
+	// @ assures /result != null;
 	@Override
 	public int[] determineMove(Board b, Mark m) {
 		//checks if there is a move that will win the game
@@ -34,7 +35,7 @@ public class SmartStrategy implements Strategy {
 		
 		//checks if there is a move that blocks the opponent winning a game
 		if (moveToWin(b, m.other()) != null) {
-			return moveToWin(b, m);
+			return moveToWin(b, m.other());
 		}
 		
 		//builds a column
@@ -76,8 +77,9 @@ public class SmartStrategy implements Strategy {
 						sameOrEmpty = false;
 					}
 				}
+				System.out.println("Looked at: " + row+","+col+" sameOrEmpty: " + sameOrEmpty);
 				if (sameOrEmpty == true) {
-					return new int[]{col, row};
+					return new int[]{row, col};
 				}
 			}
 		}
