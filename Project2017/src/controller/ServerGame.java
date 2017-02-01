@@ -52,7 +52,7 @@ public class ServerGame extends Game {
 				server.broadcast(Protocol.SERVER_NOTIFYMOVE + MESSAGE_SEPERATOR + 
 						getCurrentClientHandler().getUserName()	+ MESSAGE_SEPERATOR 
 						+ x + MESSAGE_SEPERATOR + z + MESSAGE_SEPERATOR + y, currentPlayer);
-				currentPlayerIndex = (currentPlayerIndex + 1) % NUMBER_PLAYERS;
+
 				getCurrentClientHandler().getPlayer().placeTile(x, z, 
 						getCurrentClientHandler().getMark(), super.getBoard());
 				if (super.gameOver()) {
@@ -70,6 +70,7 @@ public class ServerGame extends Game {
 					}
 					server.closeGame(currentPlayer);
 				}
+				currentPlayerIndex = (currentPlayerIndex + 1) % NUMBER_PLAYERS;
 				sendTurn();
 			}
 		}
