@@ -124,6 +124,7 @@ public class Client extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			GameTUI.printError("Server disconnected");
 		} finally {
 			try {
 				in.close();
@@ -279,7 +280,7 @@ public class Client extends Thread {
 	public void gameOverDraw() {
 		String input = GameTUI.readString("\n> Play another time? Yes/No");
 		if (input.toLowerCase().startsWith("y")) {
-			createGame();
+			serverAcceptRequest();
 		} else {
 			GameTUI.printMessage("Thanks for playing. See you next time!");
 			System.exit(0);
