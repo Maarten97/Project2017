@@ -70,6 +70,7 @@ public class ServerGame extends Game {
 					}
 					server.closeGame(currentPlayer);
 				}
+				sendTurn();
 			}
 		}
 	}

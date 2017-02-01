@@ -34,6 +34,7 @@ public class ClientGame extends Game {
 	}
 
 	public void processTurn(String message) {
+		System.out.println("Procossing turn.");
 		String[] words = message.split(MESSAGE_SEPERATOR);
 		int x = -1;
 		int z = -1;
