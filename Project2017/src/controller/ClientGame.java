@@ -25,10 +25,10 @@ public class ClientGame extends Game {
 	public void doPlayerMove() {
 		int[] choise = null;
 		choise = clientPlayer.determineMove(super.getBoard());
-		String x = String.valueOf(choise[0]);
-		String y = String.valueOf(choise[1]);
+		int x = choise[1];
+		int z = choise[0];
 		client.sendMessage(Protocol.CLIENT_SETMOVE + MESSAGE_SEPERATOR + clientPlayer.getName() + 
-				MESSAGE_SEPERATOR + x + MESSAGE_SEPERATOR + y);
+				MESSAGE_SEPERATOR + x + MESSAGE_SEPERATOR + z);
 	}
 
 	public void processTurn(String message) {
