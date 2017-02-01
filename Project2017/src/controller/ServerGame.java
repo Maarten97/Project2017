@@ -30,7 +30,7 @@ public class ServerGame extends Game {
 		c2.setPlayer(player2);
 		server.broadcast(Protocol.SERVER_STARTGAME + MESSAGE_SEPERATOR + playerName1 
 								+ MESSAGE_SEPERATOR + playerName2, currentPlayer);
-		start();
+
 		
 	}
 

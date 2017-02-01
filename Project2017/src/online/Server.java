@@ -47,17 +47,17 @@ public class Server {
 
 		
 		try {
-			String inputPort = readString("\nWhat is the Server's port? " 
+			String inputPort = GameTUI.readString("\nWhat is the Server's port? " 
 										+ "\n(Leave blank for standard port)");
 			if (inputPort.equals("")) {
 				port = Protocol.PORTNUMBER;
 			} else {
 				port = Integer.parseInt(inputPort);
 			}
-			print("\nStarting Server + \nIP Server: " + this.getIP());
+			GameTUI.printMessage("\nStarting Server + \nIP Server: " + this.getIP());
 			this.start();
 		} catch (NumberFormatException e) {
-			printError("ERROR: not a valid portnummer!");
+			GameTUI.printError("ERROR: not a valid portnummer!");
 			new Server();
 		}
 	}
@@ -69,13 +69,13 @@ public class Server {
 			while (true) {
 				Socket sock = serverSock.accept();
 				i++;
-				print("Client number " + i + " connected");
+				GameTUI.printMessage("Client number " + i + " connected");
 				ClientHandler handler = new ClientHandler(this, sock);
 				handler.start();
 				addHandler(handler);
 			}
 		} catch (IOException e) {
-			printError("ERROR: could not create a socket on port " + port);
+			GameTUI.printError("ERROR: could not create a socket on port " + port);
 			start();
 		}
 
@@ -139,6 +139,7 @@ public class Server {
 		ServerGame game = new ServerGame(playGame.get(0), playGame.get(1), this);
 		gamesPlaying.put(game, playGame);
 		playGame.clear();
+		game.start();
 	}
 
 	/**
@@ -194,7 +195,7 @@ public class Server {
 		try {
 			serverSock.close();
 		} catch (IOException e) {
-			printError(e.getMessage());
+			GameTUI.printError(e.getMessage());
 		}
 	}
 
@@ -210,27 +211,6 @@ public class Server {
 				handler.sendMessage(message);
 			}
 		}
-	}
-
-	public static String readString(String tekst) {
-		System.out.print(tekst);
-		String antw = null;
-		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-			antw = in.readLine();
-		} catch (IOException e) {
-		}
-
-		return (antw == null) ? "" : antw;
-	}
-
-	public void print(String string) {
-		System.out.println(string);
-
-	}
-
-	public void printError(String string) {
-		System.err.println(string);
 	}
 
 	public void closeGame(List<ClientHandler> players) {
