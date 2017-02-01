@@ -27,8 +27,8 @@ public class CommonStrategyUtils {
 		for (int x = 0; x < Board.DIM; x++) {
 			for (int y = 0; y < Board.DIM; y++) {
 				for (int z = 0; z < Board.DIM; z++) {
-					if (b.isEmptyField(x, y, z)) {
-						randomFreeCoordinates.add(new int[]{x, y, z});
+					if (b.validMove(x, z)) {
+						randomFreeCoordinates.add(new int[]{x, z, y});
 					}
 				}
 			}
