@@ -134,7 +134,7 @@ public class Board {
 	 */
 	/* @ pure */ public boolean validMove(int x, int z) {
 		if (x >= 0 && x < DIM && z >= 0 && z < DIM) {
-			return isEmptyField(x, z, dropDown(x, z));
+			return isEmptyField(z, x, dropDown(z, x));
 		}
 		return false;
 	}
